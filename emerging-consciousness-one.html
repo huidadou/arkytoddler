@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emerging Consciousness in Progress — Arkytoddler</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F2ED;
+    --bg-dark: #0D0D0D;
+    --text: #2A2A28;
+    --text-light: #F5F2ED;
+    --muted: #B0ADA6;
+    --coral: #FF4F3B;
+    --coral-dim: rgba(255, 79, 59, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  ::selection {
+    background: var(--coral);
+    color: var(--text-light);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ========== NAV ========== */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.8rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(245, 242, 237, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(176, 173, 166, 0.12);
+  }
+
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.3rem;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    transition: color 0.3s ease;
+  }
+
+  .nav-brand:hover { color: var(--coral); }
+
+  .nav-brand span {
+    color: var(--coral);
+    font-style: italic;
+  }
+
+  .nav-back {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: color 0.3s ease;
+  }
+
+  .nav-back:hover { color: var(--coral); }
+
+  .nav-back-arrow {
+    width: 24px;
+    height: 1px;
+    background: currentColor;
+    position: relative;
+    transition: width 0.3s ease;
+  }
+
+  .nav-back:hover .nav-back-arrow { width: 36px; }
+
+  .nav-back-arrow::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -3px;
+    width: 7px;
+    height: 7px;
+    border-left: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  /* ========== ARTICLE HERO ========== */
+  .article-hero {
+    min-height: 65vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 8rem 2rem 4rem;
+    text-align: center;
+  }
+
+  .article-hero-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 0%, var(--muted) 40%, var(--muted) 60%, transparent 100%);
+    opacity: 0.15;
+  }
+
+  .article-hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--coral);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .article-hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-top: 1.5rem;
+    max-width: 780px;
+    opacity: 0;
+    animation: riseIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+  }
+
+  .article-hero-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 560px;
+    margin-top: 1.8rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .article-hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1s forwards;
+  }
+
+  .article-hero-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .article-hero-dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--coral);
+    opacity: 0.5;
+  }
+
+  .article-hero-location {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .article-hero-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--coral);
+    margin-top: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+
+  /* ========== ARTICLE BODY ========== */
+  .article-content {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  .article-section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 1.6rem;
+    color: var(--coral);
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .article-section-label.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .article-para {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1.1rem;
+    line-height: 1.9;
+    color: var(--text);
+    margin-bottom: 1.8rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .article-para.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .article-questions {
+    margin: 2.5rem 0;
+    padding-left: 1.8rem;
+    border-left: 2px solid var(--coral);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .article-questions.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .article-question {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+
+  .article-question:last-child {
+    margin-bottom: 0;
+  }
+
+  .article-blockquote {
+    margin: 2.5rem 0;
+    padding: 2rem 2rem 2rem 2.2rem;
+    background: var(--coral-dim);
+    border-left: 3px solid var(--coral);
+    border-radius: 0 4px 4px 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .article-blockquote.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .article-blockquote p {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: 0.8rem;
+  }
+
+  .article-blockquote p:last-child {
+    margin-bottom: 0;
+  }
+
+  .article-prompt {
+    margin: 2.5rem 0;
+    padding: 2rem;
+    background: var(--bg-dark);
+    border-radius: 4px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .article-prompt.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .article-prompt p {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: var(--text-light);
+    opacity: 0.85;
+  }
+
+  .article-emphasis {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 1.5rem;
+    line-height: 1.5;
+    color: var(--text);
+    text-align: center;
+    max-width: 540px;
+    margin: 3rem auto;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(176, 173, 166, 0.2);
+    border-bottom: 1px solid rgba(176, 173, 166, 0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .article-emphasis.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Footnotes */
+  .article-footnotes {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(176, 173, 166, 0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .article-footnotes.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .footnotes-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 1.5rem;
+  }
+
+  .footnote {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .footnote::before {
+    content: attr(data-num);
+    position: absolute;
+    left: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--coral);
+    top: 0.15rem;
+  }
+
+  .footnote a {
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(176, 173, 166, 0.3);
+    transition: all 0.3s ease;
+    word-break: break-all;
+  }
+
+  .footnote a:hover {
+    color: var(--coral);
+    border-bottom-color: var(--coral);
+  }
+
+  sup {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--coral);
+    cursor: default;
+    margin-left: 1px;
+  }
+
+  /* ========== FOOTER ========== */
+  .footer {
+    background: var(--bg-dark);
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.8rem;
+    color: var(--text-light);
+    letter-spacing: -0.01em;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  .footer-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-link:hover { color: var(--coral); }
+
+  .footer-line {
+    width: 40px;
+    height: 1px;
+    background: var(--coral);
+    margin: 2rem auto 0;
+    opacity: 0.5;
+  }
+
+  .footer-copy {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    color: rgba(176, 173, 166, 0.4);
+    margin-top: 1.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ========== ANIMATIONS ========== */
+  @keyframes riseIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+    .nav {
+      padding: 1.4rem 1.5rem;
+    }
+
+    .article-hero {
+      min-height: 55vh;
+      padding: 7rem 1.5rem 3rem;
+    }
+
+    .article-content {
+      padding: 2rem 1.5rem 5rem;
+    }
+
+    .article-prompt p {
+      font-size: 0.78rem;
+    }
+
+    .article-blockquote {
+      padding: 1.5rem 1.5rem 1.5rem 1.8rem;
+    }
+
+    .article-hero-meta {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .article-hero-dot {
+      display: none;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="arkytoddler_1.html" class="nav-brand">Arky<span>toddler</span></a>
+    <a href="veritas.html" class="nav-back">
+      <span class="nav-back-arrow"></span>
+      Veritas
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="article-hero">
+    <div class="article-hero-line"></div>
+    <div class="article-hero-tag">Consciousness</div>
+    <h1 class="article-hero-title">Emerging Consciousness in Progress</h1>
+    <p class="article-hero-subtitle">Recent developments in generative artificial intelligence are challenging our understanding of consciousness.</p>
+    <div class="article-hero-meta">
+      <span class="article-hero-date">September 15, 2025</span>
+      <span class="article-hero-dot"></span>
+      <span class="article-hero-location">Singapore</span>
+    </div>
+    <div class="article-hero-divider"></div>
+  </section>
+
+  <!-- ARTICLE BODY -->
+  <article class="article-content">
+
+    <div class="article-section-label anim">One</div>
+
+    <p class="article-para anim">Let us now turn to the human dimension for this inquiry.</p>
+
+    <p class="article-para anim">A number of scientists and mathematicians have addressed the question of consciousness through the lens of Gödel's incompleteness theorems. Two figures stand out as particularly interesting to me: Roger Penrose and Douglas Hofstadter.</p>
+
+    <p class="article-para anim">Roger Penrose, the English mathematician and physicist awarded the 2020 Nobel Prize in Physics for his contributions to general relativity and black hole theory, is also known for his controversial work on the nature of consciousness and machine intelligence, detailed in his books <em>The Emperor's New Mind</em> and <em>Shadows of the Mind</em>.</p>
+
+    <p class="article-para anim">Douglas Hofstadter, a cognitive and computer scientist whose work centers on the mind, consciousness, and self-reference, explored these themes profoundly in his influential books <em>Gödel, Escher, Bach: An Eternal Golden Braid</em> and <em>I Am a Strange Loop</em>.</p>
+
+    <p class="article-para anim">In this essay, I will explain and compare their theories on the nature and origin of consciousness, examine their logical coherence, and consider potential directions for future discussion.</p>
+
+    <p class="article-para anim">To understand their arguments, we must begin at the heart of Gödel's theorems, the point from which both Penrose and Hofstadter draw foundational insights.</p>
+
+    <div class="article-section-label anim">Gödel's Incompleteness Theorem</div>
+
+    <p class="article-para anim">Gödel's incompleteness theorems are fundamental results in mathematical logic that establish strict limits on provability within any formal axiomatic system.</p>
+
+    <p class="article-para anim">This was a profound bombshell for the mathematical community. It directly countered the prevailing goal, championed by mathematicians like David Hilbert, of establishing a complete and self-consistent foundation for all mathematics. Hilbert's program had aimed to prove the consistency of complex systems (like real analysis) using finitary methods from simpler ones, ultimately reducing all mathematics to the consistency of arithmetic. Gödel's theorems showed this to be impossible.</p>
+
+    <p class="article-para anim">They consist of two theorems: the first theorem states that any consistent, formalized axiomatic system of number theory contains statements that are undecidable within the system. The second incompleteness theorem, an extension of the first, shows that the system cannot demonstrate its own consistency.</p>
+
+    <p class="article-para anim">The theorems can be formally stated as follows:</p>
+
+    <div class="article-blockquote anim">
+      <p><strong>First incompleteness theorem.</strong> Any consistent formal system F within which a certain amount of elementary arithmetic can be carried out is incomplete; i.e., there are statements of the language of F which can neither be proved nor disproved in F.</p>
+      <p><strong>Second incompleteness theorem.</strong> For any consistent system F within which a certain amount of elementary arithmetic can be carried out, the consistency of F cannot be proved in F itself.</p>
+    </div>
+
+    <p class="article-para anim">Before we delve into Gödel's proof, it is essential to first clarify the key concepts embedded in these statements.</p>
+
+    <div class="article-section-label anim">Key Concepts</div>
+
+    <p class="article-para anim"><strong>Formal systems.</strong> Formal systems consist of their language, set of axioms, rules of inference, and theorems.</p>
+
+    <div class="article-questions anim">
+      <p class="article-question"><strong>Formal language:</strong> A set of symbols and syntactic rules used to form well-structured expressions or formulas.</p>
+      <p class="article-question"><strong>Axioms:</strong> Formulas that are assumed to be true within the system, serving as the foundational premises.</p>
+      <p class="article-question"><strong>Rules of inference:</strong> Logical rules that allow new formulas to be derived from axioms or previously derived formulas.</p>
+      <p class="article-question"><strong>Theorems:</strong> Formulas that can be deduced from the axioms by correctly applying the rules of inference.</p>
+    </div>
+
+    <p class="article-para anim">Let us use the popular game of chess as an analogy for a formal system.</p>
+
+    <div class="article-questions anim">
+      <p class="article-question"><strong>Formal language:</strong> The board, squares, pieces, and their permissible arrangements and moves.</p>
+      <p class="article-question"><strong>Axioms:</strong> The initial conditions and setup of the game, including an 8x8 board of alternating dark and light squares with 32 pieces in specific starting positions.</p>
+      <p class="article-question"><strong>Rules of inference:</strong> The move rules, such as turn-taking, piece-specific movement, capture rules, and special cases like en passant, promotion, and castling.</p>
+      <p class="article-question"><strong>Theorems:</strong> All legally reachable board configurations resulting from sequential application of the move rules to the initial setup.</p>
+    </div>
+
+    <p class="article-para anim"><strong>Completeness.</strong> Gödel's incompleteness theorems address the syntactic completeness of a formal system. A formal system is considered complete if, for every statement within its language, either the statement or its negation is provable from the system's axioms. In other words, the system can decide the truth value of every statement it can express.</p>
+
+    <p class="article-para anim"><strong>Consistency.</strong> The theorems require these formal systems to be consistent. Consistency means the system cannot produce contradictions. For instance, it cannot simultaneously prove a statement P(x) and its negation, not-P(x).</p>
+
+    <p class="article-para anim">In chess, the system is consistent: any board configuration is either possible or impossible under the initial setup and rules; it cannot be both. A single board state cannot, for example, be checkmate for both White and Black at once. Every legal move, derived from the rules, leads to another legal position.</p>
+
+    <p class="article-para anim">Two stronger forms of consistency are relevant: 1-consistency and omega-consistency.</p>
+
+    <p class="article-para anim">1-consistency is stronger than simple consistency. A system is 1-consistent if it does not prove an existential statement (there exists x such that P(x)) while also proving the negation of every specific instance, such as not-P(0), not-P(1), not-P(2), and so on.</p>
+
+    <p class="article-para anim">Omega-consistency is stricter still. A system is omega-consistent if, whenever it proves that there exists x such that P(x), it does not also prove not-P(n) for every numeral n.</p>
+
+    <p class="article-para anim"><strong>Axiomatizability.</strong> The formal system must also be axiomatizable in the context of Gödel's theorems. The set of axioms must be finite or at least decidable; that is, there must exist an algorithm (an effective method) capable of mechanically determining whether a given statement is an axiom. If this condition holds, the theory is termed recursively axiomatizable, or simply axiomatizable.</p>
+
+    <p class="article-para anim">In the chess example, the set of axioms is finite, rendering it axiomatizable. A finite set is recursive: one can straightforwardly construct an algorithm (for example, "Is the statement on this list?") to verify membership.</p>
+
+    <p class="article-para anim"><strong>Elementary arithmetic.</strong> Finally, the system must allow "a certain amount of elementary arithmetic" to be carried out. This phrase means the formal system must be sufficiently powerful to express fundamental properties of the natural numbers and their basic operations (e.g., addition and multiplication).</p>
+
+    <p class="article-para anim">One might ask whether the chess system is 1-consistent or omega-consistent. These concepts, however, are purely syntactic and apply only to systems capable of expressing elementary arithmetic. Since chess lacks such expressive power, these notions are irrelevant to it.</p>
+
+    <p class="article-para anim">What, then, qualifies as an arithmetic formal system? Examples include systems that generate number theory, i.e., statements about properties of natural numbers (e.g., "3 is prime" or "1792 is the sum of two squares").</p>
+
+    <p class="article-para anim"><strong>Decidability.</strong> Decidability is central to understanding Gödel's theorems. In computability (recursion) theory, a decision method, a mechanical method, and a procedure are different ways of describing the same fundamental concept: an algorithm.</p>
+
+    <p class="article-para anim">A decidable set is a direct consequence of this. A set of numbers is decidable if there exists a computable function that can determine, for any given number, whether it belongs to the set. The function must always produce a "yes" or "no" answer in a finite amount of time. The concept of a recursive set is synonymous with a decidable set.</p>
+
+    <p class="article-para anim"><strong>Computability.</strong> Computability is the ability to solve a problem by an effective procedure.</p>
+
+    <p class="article-para anim"><strong>The Turing machine.</strong> Another way to look at computation is by equating it to the action of a Turing machine. Introduced by Alan Turing around 90 years ago, a Turing machine is a theoretical and mathematically idealized computer which can run forever and never makes mistakes.</p>
+
+    <p class="article-para anim">A Turing machine consists of an infinite tape, a read/write head, a state register, and a table of rules.</p>
+
+    <p class="article-para anim">With the initial state (the axioms) and the table of rules, the machine is able to change its state accordingly, and the process is endless.</p>
+
+    <div class="article-section-label anim">Formal Systems</div>
+
+    <p class="article-para anim">Here we examine some formal systems pertinent to the incompleteness theorems.</p>
+
+    <p class="article-para anim"><strong>Robinson arithmetic.</strong> Robinson arithmetic, commonly denoted as Q, was introduced by R. M. Robinson in 1950 and later discussed in the influential 1953 work <em>Undecidable Theories</em> by Tarski, Mostowski, and Robinson.</p>
+
+    <p class="article-para anim">Robinson arithmetic is regarded as the weakest standard system of arithmetic relevant to discussions of incompleteness and decidability. It treats 0 as the smallest natural number and is defined by seven axioms.</p>
+
+    <p class="article-para anim"><strong>Peano Arithmetic (PA).</strong> Peano Arithmetic (PA) was introduced by Giuseppe Peano in 1889 and serves as the classical formal system for the arithmetic of natural numbers (0, 1, 2, ...). It provides axioms defining fundamental properties, such as the existence of a unique successor for every number, and incorporates the principle of mathematical induction.</p>
+
+    <p class="article-para anim">PA is notably stronger than systems like Primitive Recursive Arithmetic (PRA), as it permits full induction over all first-order formulas, rather than restricting induction to quantifier-free statements. It is this expressive power that makes PA a central object of study in metamathematics, and the system to which Gödel's incompleteness theorems are most famously applied. Gödel demonstrated that if PA is consistent, then it is necessarily incomplete: there exist arithmetical truths that cannot be proven within PA itself.</p>
+
+    <p class="article-para anim"><strong>Primitive Recursive Arithmetic (PRA).</strong> Primitive Recursive Arithmetic (PRA) is a formal system of arithmetic that is stronger than Robinson Arithmetic (Q). First proposed by Norwegian mathematician Thoralf Skolem in 1923 as a formalization of his finitistic conception of arithmetic, it was later rigorously formalized by Stephen Kleene. PRA is sufficiently powerful to formalize most finitary mathematics, though it remains weaker than Peano Arithmetic (PA).</p>
+
+    <p class="article-para anim">Finitary mathematics, central to David Hilbert's program of establishing mathematical consistency through finite, combinatorial methods, deals with concrete, finite objects such as individual numerals. These can be explicitly written down and manipulated. Finitary reasoning focuses on such objects and the rules governing their manipulation, rather than on infinite sets like the complete set of natural numbers N.</p>
+
+    <p class="article-para anim">PRA is not defined by a traditional list of axioms, but rather by a set of rules for constructing and defining primitive recursive functions. These are a class of total computable functions from natural numbers to natural numbers, constructed from initial functions (zero, successor, and projection) using composition and primitive recursion. All such functions are guaranteed to terminate after finitely many steps.</p>
+
+    <p class="article-para anim">Unlike PA, which uses full first-order logic and allows induction over arbitrary formulas, PRA employs only quantifier-free induction. This restriction makes it a conservative, finitistically acceptable system, but also one of weaker proof-theoretic strength than PA.</p>
+
+    <p class="article-para anim"><strong>Second-order arithmetic (PA2).</strong> Second-order arithmetic, also often denoted by Z2, is stronger than PA. It employs second-order logic, i.e., quantifiers can be applied not just to numerals but also to properties.</p>
+
+    <p class="article-para anim"><strong>Zermelo-Fraenkel Set Theory (ZFC).</strong> Named after mathematicians Ernst Zermelo and Abraham Fraenkel, this is the most common axiomatic system for modern mathematics. Proposed in the early twentieth century, it is a system of axioms that defines sets and their properties. Almost all mathematical objects, including numbers, can be constructed within ZFC. Because it can represent arithmetic, ZFC is also subject to Gödel's theorems: if it is consistent, it cannot prove its own consistency.</p>
+
+    <p class="article-para anim">The goal of ZFC is to generate a consistent and rigorous framework for mathematics and to avoid paradoxes such as Russell's Paradox. The core idea of ZFC is that all mathematical objects, including numbers, functions, and geometric figures, can be represented as sets.</p>
+
+    <p class="article-para anim"><strong>The system of <em>Principia Mathematica</em>.</strong> This is the logical system that Kurt Gödel specifically analyzed in his original 1931 paper. It was an ambitious attempt by Alfred North Whitehead and Bertrand Russell to create a complete and consistent system for all of mathematics, built from fundamental logical principles. Gödel's work demonstrated that their goal was, in principle, unattainable.</p>
+
+  </article>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-name">Arkytoddler</div>
+    <div class="footer-links">
+      <a href="#" class="footer-link">Substack</a>
+      <a href="#" class="footer-link">X</a>
+      <a href="#" class="footer-link">GitHub</a>
+    </div>
+    <div class="footer-line"></div>
+    <p class="footer-copy">&copy; 2026 Arkytoddler. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const animElements = document.querySelectorAll('.anim');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    animElements.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

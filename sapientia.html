@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sapientia — Arkytoddler</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F2ED;
+    --bg-dark: #0D0D0D;
+    --text: #2A2A28;
+    --text-light: #F5F2ED;
+    --muted: #B0ADA6;
+    --coral: #FF4F3B;
+    --coral-dim: rgba(255, 79, 59, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  ::selection {
+    background: var(--coral);
+    color: var(--text-light);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ========== NAV ========== */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.8rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(245, 242, 237, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(176, 173, 166, 0.12);
+  }
+
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.3rem;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    transition: color 0.3s ease;
+  }
+
+  .nav-brand:hover { color: var(--coral); }
+
+  .nav-brand span {
+    color: var(--coral);
+    font-style: italic;
+  }
+
+  .nav-back {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: color 0.3s ease;
+  }
+
+  .nav-back:hover { color: var(--coral); }
+
+  .nav-back-arrow {
+    width: 24px;
+    height: 1px;
+    background: currentColor;
+    position: relative;
+    transition: width 0.3s ease;
+  }
+
+  .nav-back:hover .nav-back-arrow { width: 36px; }
+
+  .nav-back-arrow::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -3px;
+    width: 7px;
+    height: 7px;
+    border-left: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  /* ========== HERO ========== */
+  .sap-hero {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 8rem 2rem 4rem;
+    text-align: center;
+  }
+
+  .sap-hero-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 0%, var(--muted) 40%, var(--muted) 60%, transparent 100%);
+    opacity: 0.2;
+  }
+
+  .sap-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--coral);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .sap-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    margin-top: 1.2rem;
+    opacity: 0;
+    animation: riseIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+  }
+
+  .sap-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: var(--coral);
+    margin-top: 0.8rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .sap-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 520px;
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1s forwards;
+  }
+
+  .sap-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--coral);
+    margin-top: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+
+  /* ========== ARTICLES LIST ========== */
+  .articles {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 2rem 8rem;
+  }
+
+  .article-item {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 2.5rem;
+    align-items: start;
+    padding: 4rem 0;
+    border-top: 1px solid rgba(176, 173, 166, 0.18);
+    text-decoration: none;
+    color: inherit;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+  }
+
+  .article-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .article-item:hover .article-title { color: var(--coral); }
+  .article-item:hover .article-index { color: var(--coral); }
+
+  .article-item:hover .article-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .article-item--fragment {
+    cursor: default;
+  }
+
+  .article-index {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 3rem;
+    line-height: 1;
+    color: rgba(176, 173, 166, 0.3);
+    transition: color 0.4s ease;
+    padding-top: 0.2rem;
+  }
+
+  .article-body {
+    position: relative;
+  }
+
+  .article-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 1rem;
+    opacity: 0.7;
+  }
+
+  .article-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    transition: color 0.4s ease;
+  }
+
+  .article-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--muted);
+    margin-top: 0.6rem;
+    line-height: 1.5;
+  }
+
+  .article-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--muted);
+    margin-top: 1.2rem;
+    max-width: 540px;
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.8rem;
+  }
+
+  .article-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0.6;
+  }
+
+  .article-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--coral);
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all 0.4s ease;
+  }
+
+  .article-arrow-line {
+    width: 20px;
+    height: 1px;
+    background: var(--coral);
+    position: relative;
+  }
+
+  .article-arrow-line::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -3px;
+    width: 6px;
+    height: 6px;
+    border-right: 1px solid var(--coral);
+    border-top: 1px solid var(--coral);
+    transform: rotate(45deg);
+  }
+
+  .article-arrow-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .article-arrow-row .article-arrow {
+    margin-top: 0;
+  }
+
+  a.article-arrow-one {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: none;
+    letter-spacing: 0.06em;
+    color: var(--coral);
+    text-decoration: none;
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.3s ease;
+  }
+
+  a.article-arrow-one:hover {
+    opacity: 0.75;
+  }
+
+  /* ========== FOOTER ========== */
+  .footer {
+    background: var(--bg-dark);
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.8rem;
+    color: var(--text-light);
+    letter-spacing: -0.01em;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  .footer-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-link:hover { color: var(--coral); }
+
+  .footer-line {
+    width: 40px;
+    height: 1px;
+    background: var(--coral);
+    margin: 2rem auto 0;
+    opacity: 0.5;
+  }
+
+  .footer-copy {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    color: rgba(176, 173, 166, 0.4);
+    margin-top: 1.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ========== ANIMATIONS ========== */
+  @keyframes riseIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+    .nav { padding: 1.4rem 1.5rem; }
+
+    .sap-hero {
+      min-height: 55vh;
+      padding: 7rem 1.5rem 3rem;
+    }
+
+    .articles { padding: 1rem 1.5rem 6rem; }
+
+    .article-item {
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding: 3rem 0;
+    }
+
+    .article-index {
+      font-size: 2rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .article-arrow {
+      opacity: 0.6;
+      transform: translateX(0);
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="arkytoddler.html" class="nav-brand">Arky<span>toddler</span></a>
+    <a href="arkytoddler.html" class="nav-back">
+      <span class="nav-back-arrow"></span>
+      Home
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="sap-hero">
+    <div class="sap-hero-line"></div>
+    <div class="sap-number">02 — The Creative</div>
+    <h1 class="sap-title">Sapientia</h1>
+    <p class="sap-subtitle">Wisdom</p>
+    <p class="sap-desc">Poetry, art, products, systems — creations that emerge from nothing and come alive through experience.</p>
+    <div class="sap-divider"></div>
+  </section>
+
+  <!-- ARTICLES -->
+  <div class="articles">
+
+    <!-- Article 1 -->
+    <div class="article-item article-item--fragment">
+      <div class="article-index">1</div>
+      <div class="article-body">
+        <div class="article-tag">Poetry</div>
+        <h2 class="article-title">Poem on Passion of Pi<br>in Primes by Paula</h2>
+        <p class="article-desc">A constrained poem where prime numbers govern structure, weaving the transcendental nature of π through arithmetic symphony.</p>
+        <div class="article-meta">
+          <span class="article-date">January, 2024, Singapore</span>
+        </div>
+        <div class="article-arrow-row">
+          <div class="article-arrow">
+            Read <span class="article-arrow-line"></span>
+          </div>
+          <a href="poem-passion-pi.html" class="article-arrow-one">One.</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 2 -->
+    <a class="article-item" href="wir-sind-was-wir-erleben.html">
+      <div class="article-index">2</div>
+      <div class="article-body">
+        <div class="article-tag">Translation</div>
+        <h2 class="article-title">Du bist, was du erlebst</h2>
+        <p class="article-subtitle">You are what you experience</p>
+        <p class="article-desc">A bilingual translation of Greta Lührs' philosophical essay on the nature of experience, from Husserl's stream of consciousness to the modern experience economy.</p>
+        <div class="article-meta">
+          <span class="article-date">Excerpt von Hohe Luft</span>
+        </div>
+        <div class="article-arrow">
+          Read <span class="article-arrow-line"></span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-name">Arkytoddler</div>
+    <div class="footer-links">
+      <a href="https://substack.com/@paulazheng" class="footer-link">Substack</a>
+      <a href="https://x.com/@arkytoddler" class="footer-link">X</a>
+      <a href="https://github.com/huidadou" class="footer-link">GitHub</a>
+      <a href="https://instagram.com/arkytoddler" class="footer-link">Instagram</a>
+    </div>
+    <div class="footer-line"></div>
+    <p class="footer-copy">&copy; 2026 Arkytoddler. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const articles = document.querySelectorAll('.article-item');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    articles.forEach(a => observer.observe(a));
+  </script>
+
+</body>
+</html>

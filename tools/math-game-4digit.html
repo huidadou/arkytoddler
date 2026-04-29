@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addition Practice - 4 Digit</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100%;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        html, body {
+            height: 100%;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: #718096;
+        }
+        
+        .problem-area {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .problem {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        
+        .answer-input {
+            font-size: 1.5rem;
+            padding: 15px 20px;
+            border: 3px solid #cbd5e0;
+            border-radius: 10px;
+            width: 150px;
+            text-align: center;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .answer-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .button:active {
+            transform: translateY(0);
+        }
+        
+        .controls {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .feedback {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 20px 0;
+            min-height: 30px;
+        }
+        
+        .correct {
+            color: #38a169;
+        }
+        
+        .incorrect {
+            color: #e53e3e;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .history-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .history-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a5568;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .history-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .history-date {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 0.9rem;
+        }
+        
+        .history-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+        
+        .history-empty {
+            text-align: center;
+            color: #718096;
+            font-style: italic;
+            padding: 20px;
+        }
+        
+        .toggle-history {
+            background: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .toggle-history:hover {
+            background: #cbd5e0;
+        }
+        
+        .stat-card {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4a5568;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #718096;
+            margin-top: 5px;
+        }
+        
+        .number-count {
+            margin-bottom: 20px;
+        }
+        
+        .count-selector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .count-button {
+            background: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .count-button:hover {
+            background: #cbd5e0;
+        }
+        
+        .count-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .count-display {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #4a5568;
+            min-width: 100px;
+        }
+        
+        .mode-button {
+            background: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+        
+        .mode-button:hover {
+            background: #cbd5e0;
+        }
+        
+        .mode-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .flash-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: flashIn 0.3s ease-in-out;
+        }
+        
+        @keyframes flashIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .timer-display {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .current-time {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #4a5568;
+            background: #edf2f7;
+            padding: 15px 25px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        #currentTimer {
+            color: #667eea;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">🧮 Addition Practice - 4 Digit</div>
+            <div class="subtitle">Add random four-digit numbers (like 1234, 5678, 9012, etc.)</div>
+        </div>
+        
+        <div class="mode-selector">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 1.2rem; font-weight: 600; color: #4a5568; margin-bottom: 15px;">Practice Mode</div>
+                <div style="display: flex; justify-content: center; gap: 10px;">
+                    <button class="mode-button active" id="normalMode" onclick="setMode('normal')">📝 Normal</button>
+                    <button class="mode-button" id="flashMode" onclick="setMode('flash')">⚡ Flash</button>
+                </div>
+                <div style="font-size: 0.9rem; color: #718096; margin-top: 10px;" id="modeDescription">
+                    See all numbers at once
+                </div>
+                
+                <div id="flashTimeSection" style="display: none; margin-top: 15px;">
+                    <div style="font-size: 1rem; font-weight: 600; color: #4a5568; margin-bottom: 10px;">Flash Speed</div>
+                    <div style="display: flex; justify-content: center; gap: 8px;">
+                        <button class="mode-button active" id="flash1s" onclick="setFlashTime(1000)">1.0s</button>
+                        <button class="mode-button" id="flash05s" onclick="setFlashTime(500)">0.5s</button>
+                        <button class="mode-button" id="flash03s" onclick="setFlashTime(300)">0.3s</button>
+                        <button class="mode-button" id="flash01s" onclick="setFlashTime(100)">0.1s</button>
+                    </div>
+                    <div style="font-size: 0.8rem; color: #718096; margin-top: 8px;" id="flashTimeDescription">
+                        Each number shows for 1.0 second
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="number-count" id="numberCountSection" style="display: none;">
+            <div class="count-selector">
+                <button class="count-button" onclick="changeCount(-1)">−</button>
+                <div class="count-display">Adding <span id="numberCount">3</span> numbers</div>
+                <button class="count-button" onclick="changeCount(1)">+</button>
+            </div>
+        </div>
+        
+        <div class="problem-area">
+            <div class="problem" id="problem"></div>
+            <div>
+                <input type="number" class="answer-input" id="answerInput" placeholder="?" onkeypress="handleKeyPress(event)" oninput="checkAnswerInstantly()">
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="button" onclick="checkAnswer()" id="checkButton">Check Answer</button>
+            <button class="button" onclick="generateNewProblem()" id="newProblemButton">New Problem</button>
+            <button class="button" onclick="exitSession()" style="background: #e53e3e; margin-left: 20px;" onmouseover="this.style.background='#c53030'" onmouseout="this.style.background='#e53e3e'" id="exitButton">🚪 Exit Session</button>
+        </div>
+        
+        <div class="feedback" id="feedback"></div>
+        
+        <div class="timer-display">
+            <div class="current-time">Time: <span id="currentTimer">0.0s</span></div>
+            <div class="current-time" style="margin-top: 10px;">Question <span id="sessionProgress">1</span> of 20</div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="correctCount">0</div>
+                <div class="stat-label">Correct</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalCount">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="accuracy">0%</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="averageTime">0.0s</div>
+                <div class="stat-label">Avg Time</div>
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <button class="toggle-history" onclick="toggleHistory()">📊 View Session History & Rankings</button>
+        </div>
+        
+        <div class="history-section" id="historySection" style="display: none;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <!-- Rankings Podium -->
+                <div style="background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); border-radius: 15px; padding: 20px; border: 2px solid #e2e8f0;">
+                    <div style="font-size: 1.3rem; font-weight: bold; color: #4a5568; margin-bottom: 20px; text-align: center;">
+                        🏆 Top 5 Rankings
+                    </div>
+                    <div id="rankingsList">
+                        <div style="text-align: center; color: #718096; font-style: italic; padding: 20px;">
+                            Complete sessions to see your best performances!
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Sessions -->
+                <div style="background: #f8fafc; border-radius: 15px; padding: 20px; border: 2px solid #e2e8f0;">
+                    <div style="font-size: 1.3rem; font-weight: bold; color: #4a5568; margin-bottom: 20px; text-align: center;">
+                        📈 Recent Sessions
+                    </div>
+                    <div id="historyList">
+                        <div style="text-align: center; color: #718096; font-style: italic; padding: 20px;">
+                            No sessions completed yet. Finish your first session to see history!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentNumbers = [];
+        let correctAnswer = 0;
+        let stats = {
+            correct: 0,
+            total: 0,
+            totalTime: 0
+        };
+        let numberCount = 3;
+        let startTime = 0;
+        let timerInterval = null;
+        let sessionQuestions = 0;
+        let maxSessionQuestions = 20;
+        let sessionHistory = [];
+        let historyVisible = false;
+        let currentMode = 'normal';
+        let flashIndex = 0;
+        let flashInterval = null;
+        let isFlashing = false;
+        let flashTime = 1000; // Default 1 second
+        let mistakes = []; // Track mistakes for detailed feedback
+
+        // Generate four-digit numbers
+        function generateFourDigitNumber() {
+            return Math.floor(Math.random() * 9000) + 1000; // 1000 to 9999
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Update button states
+            document.getElementById('normalMode').classList.toggle('active', mode === 'normal');
+            document.getElementById('flashMode').classList.toggle('active', mode === 'flash');
+            
+            // Show/hide flash time controls
+            const flashTimeSection = document.getElementById('flashTimeSection');
+            if (mode === 'flash') {
+                flashTimeSection.style.display = 'block';
+            } else {
+                flashTimeSection.style.display = 'none';
+            }
+            
+            // Update description
+            const flashTimeText = flashTime === 1000 ? '1.0 second' : '0.5 second';
+            const description = mode === 'normal' ? 'See all numbers at once' : `Numbers flash one by one for ${flashTimeText} each`;
+            document.getElementById('modeDescription').textContent = description;
+            
+            // Clear any ongoing flash
+            clearInterval(flashInterval);
+            isFlashing = false;
+            
+            // Generate new problem if session is active (not on start screen and not session complete)
+            const feedbackElement = document.getElementById('feedback');
+            const isStartScreen = document.getElementById('answerInput').style.display === 'none';
+            const isSessionComplete = feedbackElement.innerHTML.includes('Session Complete');
+            
+            if (!isStartScreen && !isSessionComplete) {
+                generateNewProblem();
+            }
+        }
+        
+        function setFlashTime(time) {
+            flashTime = time;
+            
+            // Update button states
+            document.getElementById('flash1s').classList.toggle('active', time === 1000);
+            document.getElementById('flash05s').classList.toggle('active', time === 500);
+            document.getElementById('flash03s').classList.toggle('active', time === 300);
+            document.getElementById('flash01s').classList.toggle('active', time === 100);
+            
+            // Update descriptions
+            const timeText = time === 1000 ? '1.0 second' : time === 500 ? '0.5 second' : time === 300 ? '0.3 second' : '0.1 second';
+            document.getElementById('flashTimeDescription').textContent = `Each number shows for ${timeText}`;
+            
+            if (currentMode === 'flash') {
+                document.getElementById('modeDescription').textContent = `Numbers flash one by one for ${timeText} each`;
+            }
+            
+            // Generate new problem if in flash mode and session is active
+            const feedbackElement = document.getElementById('feedback');
+            const isStartScreen = document.getElementById('answerInput').style.display === 'none';
+            const isSessionComplete = feedbackElement.innerHTML.includes('Session Complete');
+            
+            if (currentMode === 'flash' && !isStartScreen && !isSessionComplete) {
+                generateNewProblem();
+            }
+        }
+        
+        function setModeAndUpdateStart(mode) {
+            currentMode = mode;
+            
+            // Update the main mode buttons
+            document.getElementById('normalMode').classList.toggle('active', mode === 'normal');
+            document.getElementById('flashMode').classList.toggle('active', mode === 'flash');
+            
+            // Show/hide flash time controls
+            const flashTimeSection = document.getElementById('flashTimeSection');
+            const startFlashTimeSection = document.getElementById('startFlashTimeSection');
+            if (mode === 'flash') {
+                flashTimeSection.style.display = 'block';
+                if (startFlashTimeSection) startFlashTimeSection.style.display = 'block';
+            } else {
+                flashTimeSection.style.display = 'none';
+                if (startFlashTimeSection) startFlashTimeSection.style.display = 'none';
+            }
+            
+            // Update description
+            const flashTimeText = flashTime === 1000 ? '1.0 second' : '0.5 second';
+            const description = mode === 'normal' ? 'See all numbers at once' : `Numbers flash one by one for ${flashTimeText} each`;
+            document.getElementById('modeDescription').textContent = description;
+            
+            // Refresh the start screen to show updated mode selection
+            showStartScreen();
+        }
+
+        function generateNewProblem() {
+            currentNumbers = [];
+            
+            // Generate the specified number of random four-digit numbers
+            for (let i = 0; i < numberCount; i++) {
+                currentNumbers.push(generateFourDigitNumber());
+            }
+            
+            // Calculate correct answer
+            correctAnswer = currentNumbers.reduce((sum, num) => sum + num, 0);
+            
+            // Clear any previous flash
+            clearInterval(flashInterval);
+            isFlashing = false;
+            
+            if (currentMode === 'normal') {
+                // Display the problem normally
+                document.getElementById('problem').textContent = currentNumbers.join(' + ') + ' = ?';
+            } else {
+                // Start flash sequence
+                startFlashSequence();
+            }
+            
+            document.getElementById('answerInput').value = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('answerInput').focus();
+            
+            // Update session progress
+            updateSessionProgress();
+            
+            // Start timer
+            startTimer();
+        }
+        
+        function startFlashSequence() {
+            flashIndex = 0;
+            isFlashing = true;
+            document.getElementById('problem').textContent = 'Get ready...';
+            
+            setTimeout(() => {
+                flashNextNumber();
+            }, 500);
+        }
+        
+        function flashNextNumber() {
+            if (flashIndex < currentNumbers.length) {
+                const problemElement = document.getElementById('problem');
+                problemElement.innerHTML = `<span class="flash-number">${currentNumbers[flashIndex]}</span>`;
+                
+                flashIndex++;
+                
+                setTimeout(() => {
+                    if (flashIndex < currentNumbers.length) {
+                        flashNextNumber();
+                    } else {
+                        // Flash sequence complete
+                        setTimeout(() => {
+                            problemElement.textContent = 'What was the sum?';
+                            isFlashing = false;
+                        }, flashTime);
+                    }
+                }, flashTime);
+            }
+        }
+        
+        function startTimer() {
+            startTime = Date.now();
+            clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 100);
+        }
+        
+        function updateTimer() {
+            const elapsed = (Date.now() - startTime) / 1000;
+            document.getElementById('currentTimer').textContent = elapsed.toFixed(1) + 's';
+        }
+        
+        function stopTimer() {
+            clearInterval(timerInterval);
+            return (Date.now() - startTime) / 1000;
+        }
+
+        function checkAnswer() {
+            const userAnswer = parseInt(document.getElementById('answerInput').value);
+            const feedbackElement = document.getElementById('feedback');
+            
+            if (isNaN(userAnswer)) {
+                feedbackElement.textContent = 'Please enter a number!';
+                feedbackElement.className = 'feedback incorrect';
+                return;
+            }
+            
+            stats.total++;
+            
+            // Show the original numbers in flash mode
+            if (currentMode === 'flash') {
+                document.getElementById('problem').textContent = currentNumbers.join(' + ') + ' = ' + correctAnswer;
+            }
+            
+            if (userAnswer === correctAnswer) {
+                stats.correct++;
+                feedbackElement.textContent = '🎉 Correct! Well done!';
+                feedbackElement.className = 'feedback correct';
+            } else {
+                // Track the mistake
+                mistakes.push({
+                    problem: currentNumbers.join(' + ') + ' = ?',
+                    userAnswer: userAnswer,
+                    correctAnswer: correctAnswer,
+                    questionNumber: sessionQuestions + 1
+                });
+                feedbackElement.textContent = `❌ Not quite. The answer is ${correctAnswer}`;
+                feedbackElement.className = 'feedback incorrect';
+            }
+            
+            updateStats();
+        }
+
+        function updateStats() {
+            document.getElementById('correctCount').textContent = stats.correct;
+            document.getElementById('totalCount').textContent = stats.total;
+            
+            const accuracy = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+            
+            const averageTime = stats.total > 0 ? (stats.totalTime / stats.total).toFixed(1) : 0;
+            document.getElementById('averageTime').textContent = averageTime + 's';
+        }
+
+        function changeCount(delta) {
+            const newCount = numberCount + delta;
+            if (newCount >= 2 && newCount <= 10) {
+                numberCount = newCount;
+                document.getElementById('numberCount').textContent = numberCount;
+                generateNewProblem();
+            }
+        }
+        
+        function changeCountOnStart(delta) {
+            const newCount = numberCount + delta;
+            if (newCount >= 2 && newCount <= 10) {
+                numberCount = newCount;
+                showStartScreen(); // Refresh the start screen to update the display
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                checkAnswer();
+            }
+        }
+
+        function checkAnswerInstantly() {
+            const userAnswer = parseInt(document.getElementById('answerInput').value);
+            const feedbackElement = document.getElementById('feedback');
+            
+            if (isNaN(userAnswer) || userAnswer === 0) {
+                feedbackElement.textContent = '';
+                feedbackElement.className = 'feedback';
+                return;
+            }
+            
+            if (userAnswer === correctAnswer) {
+                const timeElapsed = stopTimer();
+                stats.correct++;
+                stats.total++;
+                stats.totalTime += timeElapsed;
+                sessionQuestions++;
+                
+                feedbackElement.textContent = '🎉 Correct! Well done!';
+                feedbackElement.className = 'feedback correct';
+                updateStats();
+                
+                // Check if session is complete
+                if (sessionQuestions >= maxSessionQuestions) {
+                    setTimeout(() => {
+                        showSessionComplete();
+                    }, 800);
+                } else {
+                    // Generate new problem immediately
+                    setTimeout(() => {
+                        generateNewProblem();
+                    }, 800);
+                }
+            } else {
+                // Track the mistake for instant feedback
+                mistakes.push({
+                    problem: currentNumbers.join(' + ') + ' = ?',
+                    userAnswer: userAnswer,
+                    correctAnswer: correctAnswer,
+                    questionNumber: sessionQuestions + 1
+                });
+            }
+        }
+
+        function showSessionComplete() {
+            stopTimer();
+            const feedbackElement = document.getElementById('feedback');
+            const accuracy = Math.round((stats.correct / stats.total) * 100);
+            const averageTime = (stats.totalTime / stats.total).toFixed(1);
+            
+            // Save session to history
+            saveSessionToHistory(accuracy, averageTime);
+            
+            const modeIcon = currentMode === 'flash' ? '⚡' : '📝';
+            const modeText = currentMode === 'flash' ? 'Flash' : 'Normal';
+            const rankData = calculateRank(accuracy, averageTime);
+            
+            // Generate mistake details
+            let mistakeDetails = '';
+            if (mistakes.length > 0) {
+                mistakeDetails = `
+                    <div style="background: #fef2f2; padding: 15px; border-radius: 10px; margin: 15px 0; border: 2px solid #fecaca;">
+                        <div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin-bottom: 10px;">
+                            ❌ Problems You Got Wrong (${mistakes.length} out of 20)
+                        </div>
+                        <div style="max-height: 200px; overflow-y: auto;">
+                            ${mistakes.map(mistake => `
+                                <div style="background: white; padding: 8px; margin: 5px 0; border-radius: 6px; border-left: 3px solid #dc2626; font-size: 0.9rem;">
+                                    <strong>Q${mistake.questionNumber}:</strong> ${mistake.problem}<br>
+                                    <span style="color: #dc2626;">Your answer: ${mistake.userAnswer}</span> | 
+                                    <span style="color: #16a34a;">Correct: ${mistake.correctAnswer}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                mistakeDetails = `
+                    <div style="background: #f0fdf4; padding: 15px; border-radius: 10px; margin: 15px 0; border: 2px solid #bbf7d0;">
+                        <div style="font-size: 1.3rem; font-weight: 600; color: #16a34a; text-align: center;">
+                            🎉 Perfect Score! (0 out of 20)
+                        </div>
+                        <div style="font-size: 1rem; color: #166534; text-align: center; margin-top: 5px;">
+                            Outstanding performance! You're a math wizard! 🌟
+                        </div>
+                    </div>
+                `;
+            }
+            
+            feedbackElement.innerHTML = `
+                <div style="background: #f0fff4; padding: 20px; border-radius: 15px; border: 2px solid #38a169;">
+                    <div style="font-size: 2rem; margin-bottom: 15px;">🎉 Session Complete!</div>
+                    <div style="font-size: 1.2rem; color: #2d3748; margin-bottom: 10px;">
+                        You answered ${stats.correct} out of 20 questions correctly
+                    </div>
+                    <div style="font-size: 1rem; color: #4a5568; margin-bottom: 15px;">
+                        ${modeIcon} ${modeText} Mode • Adding ${numberCount} numbers
+                    </div>
+                    <div style="font-size: 1.1rem; color: #4a5568; margin-bottom: 20px;">
+                        Accuracy: ${accuracy}% | Average Time: ${averageTime}s
+                    </div>
+                    ${mistakeDetails}
+                    
+                    <div style="background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 2px solid ${rankData.color};">
+                        <div style="font-size: 1.4rem; font-weight: bold; color: ${rankData.color}; margin-bottom: 8px;">
+                            ${rankData.icon} ${rankData.rank}
+                        </div>
+                        <div style="font-size: 1rem; color: #4a5568; font-style: italic;">
+                            ${rankData.description}
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <div style="font-size: 1.1rem; font-weight: 600; color: #4a5568; margin-bottom: 15px;">Choose Mode for Next Session:</div>
+                        <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 15px;">
+                            <button onclick="setModeForNext('normal')" id="nextNormalMode" style="background: ${currentMode === 'normal' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#e2e8f0'}; color: ${currentMode === 'normal' ? 'white' : '#4a5568'}; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; min-width: 90px;">📝 Normal</button>
+                            <button onclick="setModeForNext('flash')" id="nextFlashMode" style="background: ${currentMode === 'flash' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#e2e8f0'}; color: ${currentMode === 'flash' ? 'white' : '#4a5568'}; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; min-width: 90px;">⚡ Flash</button>
+                        </div>
+                        
+                        <div id="nextFlashSpeedSection" style="margin-bottom: 15px; ${currentMode === 'flash' ? '' : 'display: none;'}">
+                            <div style="font-size: 1rem; font-weight: 600; color: #4a5568; margin-bottom: 10px;">Flash Speed:</div>
+                            <div style="display: flex; justify-content: center; gap: 6px;">
+                                <button onclick="setFlashTimeForNext(1000)" id="nextFlash1s" style="background: ${flashTime === 1000 ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#e2e8f0'}; color: ${flashTime === 1000 ? 'white' : '#4a5568'}; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: all 0.3s ease; min-width: 50px;">1.0s</button>
+                                <button onclick="setFlashTimeForNext(500)" id="nextFlash05s" style="background: ${flashTime === 500 ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#e2e8f0'}; color: ${flashTime === 500 ? 'white' : '#4a5568'}; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: all 0.3s ease; min-width: 50px;">0.5s</button>
+                                <button onclick="setFlashTimeForNext(300)" id="nextFlash03s" style="background: ${flashTime === 300 ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#e2e8f0'}; color: ${flashTime === 300 ? 'white' : '#4a5568'}; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: all 0.3s ease; min-width: 50px;">0.3s</button>
+                                <button onclick="setFlashTimeForNext(100)" id="nextFlash01s" style="background: ${flashTime === 100 ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#e2e8f0'}; color: ${flashTime === 100 ? 'white' : '#4a5568'}; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: all 0.3s ease; min-width: 50px;">0.1s</button>
+                            </div>
+                        </div>
+                        
+                        <div style="font-size: 1.1rem; font-weight: 600; color: #4a5568; margin-bottom: 15px;">Choose Level for Next Session:</div>
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 20px;">
+                            <button onclick="changeCountForNext(-1)" style="background: #e2e8f0; color: #4a5568; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.background='#cbd5e0'" onmouseout="this.style.background='#e2e8f0'">−</button>
+                            <div style="font-size: 1rem; font-weight: 600; color: #4a5568; min-width: 120px; text-align: center;">Adding <span id="nextNumberCount">${numberCount}</span> numbers</div>
+                            <button onclick="changeCountForNext(1)" style="background: #e2e8f0; color: #4a5568; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.background='#cbd5e0'" onmouseout="this.style.background='#e2e8f0'">+</button>
+                        </div>
+                    </div>
+                    
+                    <button onclick="startNewSession()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 30px; font-size: 1.1rem; font-weight: 600; border-radius: 10px; cursor: pointer;">
+                        🎯 Start New Session
+                    </button>
+                </div>
+            `;
+            feedbackElement.className = 'feedback';
+            
+            // Hide session buttons after completion
+            document.getElementById('checkButton').style.display = 'none';
+            document.getElementById('newProblemButton').style.display = 'none';
+            document.getElementById('exitButton').style.display = 'none';
+        }
+        
+        function startNewSession() {
+            stats = {
+                correct: 0,
+                total: 0,
+                totalTime: 0
+            };
+            sessionQuestions = 0;
+            mistakes = []; // Reset mistakes for new session
+            updateStats();
+            generateNewProblem();
+        }
+        
+        function updateSessionProgress() {
+            document.getElementById('sessionProgress').textContent = sessionQuestions + 1;
+        }
+
+        function showStartScreen() {
+            const feedbackElement = document.getElementById('feedback');
+            const modeIcon = currentMode === 'flash' ? '⚡' : '📝';
+            const modeText = currentMode === 'flash' ? 'Flash' : 'Normal';
+            const flashTimeText = flashTime === 1000 ? '1.0 second' : flashTime === 500 ? '0.5 second' : '0.3 second';
+            const modeDescription = currentMode === 'flash' ? `Numbers flash one by one for ${flashTimeText} each` : 'See all numbers at once';
+            
+            feedbackElement.innerHTML = `
+                <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 30px; border-radius: 20px; border: 3px solid #667eea; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">🚀</div>
+                    <div style="font-size: 1.8rem; font-weight: bold; color: #2d3748; margin-bottom: 15px;">
+                        Ready to Practice Addition?
+                    </div>
+                    <div style="font-size: 1.2rem; color: #4a5568; margin-bottom: 25px; line-height: 1.5;">
+                        You'll solve 20 addition problems with four-digit numbers.<br>
+                        Try to be both fast and accurate!
+                    </div>
+                    <div style="margin-bottom: 25px;">
+                        <div style="font-size: 1.1rem; font-weight: 600; color: #4a5568; margin-bottom: 15px;">Choose Your Mode:</div>
+                        <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 10px;">
+                            <button onclick="setModeAndUpdateStart('normal')" style="background: ${currentMode === 'normal' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#e2e8f0'}; color: ${currentMode === 'normal' ? 'white' : '#4a5568'}; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.3s ease; min-width: 100px;">📝 Normal</button>
+                            <button onclick="setModeAndUpdateStart('flash')" style="background: ${currentMode === 'flash' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#e2e8f0'}; color: ${currentMode === 'flash' ? 'white' : '#4a5568'}; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.3s ease; min-width: 100px;">⚡ Flash</button>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #718096;">
+                            ${modeIcon} ${modeText}: ${modeDescription}
+                        </div>
+                        
+                        <div id="startFlashTimeSection" style="margin-top: 15px; ${currentMode === 'flash' ? '' : 'display: none;'}">
+                            <div style="font-size: 1rem; font-weight: 600; color: #4a5568; margin-bottom: 10px;">Flash Speed:</div>
+                            <div style="display: flex; justify-content: center; gap: 8px;">
+                                <button onclick="setFlashTimeAndUpdateStart(1000)" id="startFlash1s" style="background: ${flashTime === 1000 ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#e2e8f0'}; color: ${flashTime === 1000 ? 'white' : '#4a5568'}; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; min-width: 60px;">1.0s</button>
+                                <button onclick="setFlashTimeAndUpdateStart(500)" id="startFlash05s" style="background: ${flashTime === 500 ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#e2e8f0'}; color: ${flashTime === 500 ? 'white' : '#4a5568'}; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; min-width: 60px;">0.5s</button>
+                                <button onclick="setFlashTimeAndUpdateStart(300)" id="startFlash03s" style="background: ${flashTime === 300 ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#e2e8f0'}; color: ${flashTime === 300 ? 'white' : '#4a5568'}; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; min-width: 60px;">0.3s</button>
+                                <button onclick="setFlashTimeAndUpdateStart(100)" id="startFlash01s" style="background: ${flashTime === 100 ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#e2e8f0'}; color: ${flashTime === 100 ? 'white' : '#4a5568'}; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; min-width: 60px;">0.1s</button>
+                            </div>
+                            <div style="font-size: 0.8rem; color: #718096; margin-top: 8px;">
+                                Each number shows for ${flashTime === 1000 ? '1.0 second' : flashTime === 500 ? '0.5 second' : flashTime === 300 ? '0.3 second' : '0.1 second'}
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 25px;">
+                        <div style="font-size: 1.1rem; font-weight: 600; color: #4a5568; margin-bottom: 15px;">Number of Numbers to Add:</div>
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 15px;">
+                            <button onclick="changeCountOnStart(-1)" style="background: #e2e8f0; color: #4a5568; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 1.1rem; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.background='#cbd5e0'" onmouseout="this.style.background='#e2e8f0'">−</button>
+                            <div style="font-size: 1.2rem; font-weight: 600; color: #4a5568; min-width: 100px; text-align: center;">Adding <span id="startNumberCount">${numberCount}</span> numbers</div>
+                            <button onclick="changeCountOnStart(1)" style="background: #e2e8f0; color: #4a5568; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 1.1rem; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.background='#cbd5e0'" onmouseout="this.style.background='#e2e8f0'">+</button>
+                        </div>
+                    </div>
+                    <button onclick="startSession()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 20px 40px; font-size: 1.3rem; font-weight: 600; border-radius: 15px; cursor: pointer; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                        🎯 Start Session
+                    </button>
+                </div>
+            `;
+            feedbackElement.className = 'feedback';
+            
+            // Hide timer and progress during start screen
+            document.getElementById('currentTimer').textContent = '0.0s';
+            document.getElementById('sessionProgress').textContent = '0';
+            document.getElementById('problem').textContent = 'Click "Start Session" to begin!';
+            document.getElementById('answerInput').style.display = 'none';
+            document.getElementById('exitButton').style.display = 'none';
+            document.getElementById('checkButton').style.display = 'none';
+            document.getElementById('newProblemButton').style.display = 'none';
+            document.getElementById('numberCountSection').style.display = 'none';
+        }
+        
+        function startSession() {
+            document.getElementById('answerInput').style.display = 'inline-block';
+            document.getElementById('exitButton').style.display = 'inline-block';
+            document.getElementById('checkButton').style.display = 'inline-block';
+            document.getElementById('newProblemButton').style.display = 'inline-block';
+            document.getElementById('numberCountSection').style.display = 'block';
+            generateNewProblem();
+        }
+        
+        function exitSession() {
+            // Stop timer
+            stopTimer();
+            
+            // Reset session data
+            stats = {
+                correct: 0,
+                total: 0,
+                totalTime: 0
+            };
+            sessionQuestions = 0;
+            mistakes = []; // Reset mistakes when exiting
+            updateStats();
+            
+            // Clear any ongoing flash
+            clearInterval(flashInterval);
+            isFlashing = false;
+            
+            // Return to start screen
+            showStartScreen();
+        }
+
+        function calculateRank(accuracy, averageTime) {
+            // Ranking system based on accuracy and speed
+            if (accuracy >= 95 && averageTime <= 3.0) {
+                return { rank: 'Math Genius', icon: '🏆', color: '#FFD700', description: 'Perfect accuracy with lightning speed!' };
+            } else if (accuracy >= 90 && averageTime <= 4.0) {
+                return { rank: 'Math Master', icon: '🥇', color: '#C0C0C0', description: 'Excellent accuracy and great speed!' };
+            } else if (accuracy >= 85 && averageTime <= 5.0) {
+                return { rank: 'Math Expert', icon: '🥈', color: '#CD7F32', description: 'Very good accuracy and solid speed!' };
+            } else if (accuracy >= 80 && averageTime <= 6.0) {
+                return { rank: 'Math Pro', icon: '🥉', color: '#4a5568', description: 'Good accuracy with decent speed!' };
+            } else if (accuracy >= 70 && averageTime <= 8.0) {
+                return { rank: 'Math Student', icon: '📚', color: '#667eea', description: 'Making good progress!' };
+            } else if (accuracy >= 60) {
+                return { rank: 'Math Learner', icon: '🎯', color: '#38a169', description: 'Keep practicing to improve!' };
+            } else {
+                return { rank: 'Math Beginner', icon: '🌱', color: '#d69e2e', description: 'Great start! Practice makes perfect!' };
+            }
+        }
+
+        function saveSessionToHistory(accuracy, averageTime) {
+            const now = new Date();
+            const rankData = calculateRank(accuracy, averageTime);
+            const sessionData = {
+                date: now.toLocaleDateString(),
+                time: now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                correct: stats.correct,
+                total: stats.total,
+                accuracy: accuracy,
+                averageTime: averageTime,
+                numberCount: numberCount,
+                mode: currentMode,
+                rank: rankData.rank,
+                rankIcon: rankData.icon,
+                rankColor: rankData.color
+            };
+            
+            sessionHistory.unshift(sessionData); // Add to beginning of array
+            
+            // Keep only last 10 sessions
+            if (sessionHistory.length > 10) {
+                sessionHistory = sessionHistory.slice(0, 10);
+            }
+            
+            updateHistoryDisplay();
+        }
+        
+        function updateHistoryDisplay() {
+            updateRecentSessions();
+            updateRankings();
+        }
+        
+        function updateRecentSessions() {
+            const historyList = document.getElementById('historyList');
+            
+            if (sessionHistory.length === 0) {
+                historyList.innerHTML = '<div style="text-align: center; color: #718096; font-style: italic; padding: 20px;">No sessions completed yet. Finish your first session to see history!</div>';
+                return;
+            }
+            
+            let historyHTML = '';
+            // Show only the 5 most recent sessions
+            const recentSessions = sessionHistory.slice(0, 5);
+            
+            recentSessions.forEach((session, index) => {
+                const accuracyColor = session.accuracy >= 80 ? '#38a169' : session.accuracy >= 60 ? '#d69e2e' : '#e53e3e';
+                const modeIcon = session.mode === 'flash' ? '⚡' : '📝';
+                const modeText = session.mode === 'flash' ? 'Flash' : 'Normal';
+                
+                // Handle sessions that might not have rank data (backward compatibility)
+                const rankIcon = session.rankIcon || '📊';
+                const rank = session.rank || 'Unranked';
+                const rankColor = session.rankColor || '#4a5568';
+                
+                historyHTML += `
+                    <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #667eea; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 600; color: #2d3748; font-size: 0.85rem;">${session.date} ${session.time}</div>
+                                <div style="font-size: 0.75rem; color: #718096; margin-top: 2px;">
+                                    ${modeIcon} ${modeText} • ${session.numberCount} numbers
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 0.8rem; color: ${accuracyColor}; font-weight: 600;">${session.accuracy}%</div>
+                                <div style="font-size: 0.75rem; color: #4a5568;">${session.averageTime}s</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            historyList.innerHTML = historyHTML;
+        }
+        
+        function updateRankings() {
+            const rankingsList = document.getElementById('rankingsList');
+            
+            if (sessionHistory.length === 0) {
+                rankingsList.innerHTML = '<div style="text-align: center; color: #718096; font-style: italic; padding: 20px;">Complete sessions to see your best performances!</div>';
+                return;
+            }
+            
+            // Calculate performance score for each session (higher is better)
+            const rankedSessions = sessionHistory.map(session => ({
+                ...session,
+                score: calculatePerformanceScore(session.accuracy, session.averageTime)
+            })).sort((a, b) => b.score - a.score).slice(0, 5);
+            
+            let rankingsHTML = '';
+            const podiumIcons = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
+            const podiumColors = ['#FFD700', '#C0C0C0', '#CD7F32', '#4a5568', '#718096'];
+            
+            rankedSessions.forEach((session, index) => {
+                const modeIcon = session.mode === 'flash' ? '⚡' : '📝';
+                const modeText = session.mode === 'flash' ? 'Flash' : 'Normal';
+                const rankIcon = session.rankIcon || '📊';
+                const rank = session.rank || 'Unranked';
+                const rankColor = session.rankColor || '#4a5568';
+                
+                rankingsHTML += `
+                    <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 2px solid ${podiumColors[index]}; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="font-size: 1.5rem;">${podiumIcons[index]}</div>
+                            <div style="flex: 1;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                    <div style="font-weight: 600; color: #2d3748; font-size: 0.9rem;">${session.date}</div>
+                                    <div style="font-size: 0.8rem; color: ${rankColor}; font-weight: 600;">
+                                        ${rankIcon} ${rank}
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 0.8rem; color: #718096;">
+                                        ${modeIcon} ${modeText} • ${session.numberCount} numbers
+                                    </div>
+                                    <div style="font-size: 0.8rem; color: #4a5568; font-weight: 600;">
+                                        ${session.accuracy}% • ${session.averageTime}s
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            rankingsList.innerHTML = rankingsHTML;
+        }
+        
+        function calculatePerformanceScore(accuracy, averageTime) {
+            // Performance score formula: prioritize accuracy but reward speed
+            // Score = accuracy^2 * (10 / averageTime) * 10
+            // This gives more weight to accuracy while still rewarding faster times
+            return Math.round(Math.pow(accuracy, 2) * (10 / Math.max(averageTime, 0.1)) * 10);
+        }
+        
+        function toggleHistory() {
+            const historySection = document.getElementById('historySection');
+            const toggleButton = document.querySelector('.toggle-history');
+            
+            historyVisible = !historyVisible;
+            
+            if (historyVisible) {
+                historySection.style.display = 'block';
+                toggleButton.textContent = '📊 Hide Session History';
+            } else {
+                historySection.style.display = 'none';
+                toggleButton.textContent = '📊 View Session History';
+            }
+        }
+
+        function setModeForNext(mode) {
+            currentMode = mode;
+            
+            // Update the next session mode buttons
+            const nextNormalButton = document.getElementById('nextNormalMode');
+            const nextFlashButton = document.getElementById('nextFlashMode');
+            const nextFlashSpeedSection = document.getElementById('nextFlashSpeedSection');
+            
+            if (nextNormalButton && nextFlashButton) {
+                if (mode === 'normal') {
+                    nextNormalButton.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    nextNormalButton.style.color = 'white';
+                    nextFlashButton.style.background = '#e2e8f0';
+                    nextFlashButton.style.color = '#4a5568';
+                    if (nextFlashSpeedSection) nextFlashSpeedSection.style.display = 'none';
+                } else {
+                    nextFlashButton.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    nextFlashButton.style.color = 'white';
+                    nextNormalButton.style.background = '#e2e8f0';
+                    nextNormalButton.style.color = '#4a5568';
+                    if (nextFlashSpeedSection) nextFlashSpeedSection.style.display = 'block';
+                }
+            }
+            
+            // Update the main mode buttons too
+            document.getElementById('normalMode').classList.toggle('active', mode === 'normal');
+            document.getElementById('flashMode').classList.toggle('active', mode === 'flash');
+            
+            // Update description
+            const description = mode === 'normal' ? 'See all numbers at once' : 'Numbers flash one by one for 1 second each';
+            document.getElementById('modeDescription').textContent = description;
+        }
+        
+        function setFlashTimeForNext(time) {
+            flashTime = time;
+            
+            // Update the next session flash time buttons
+            const nextFlash1s = document.getElementById('nextFlash1s');
+            const nextFlash05s = document.getElementById('nextFlash05s');
+            const nextFlash03s = document.getElementById('nextFlash03s');
+            const nextFlash01s = document.getElementById('nextFlash01s');
+            
+            if (nextFlash1s && nextFlash05s && nextFlash03s && nextFlash01s) {
+                // Reset all buttons
+                [nextFlash1s, nextFlash05s, nextFlash03s, nextFlash01s].forEach(btn => {
+                    btn.style.background = '#e2e8f0';
+                    btn.style.color = '#4a5568';
+                });
+                
+                // Highlight selected button
+                const selectedButton = time === 1000 ? nextFlash1s : 
+                                     time === 500 ? nextFlash05s : 
+                                     time === 300 ? nextFlash03s : nextFlash01s;
+                selectedButton.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                selectedButton.style.color = 'white';
+            }
+            
+            // Update the main flash time buttons too
+            document.getElementById('flash1s').classList.toggle('active', time === 1000);
+            document.getElementById('flash05s').classList.toggle('active', time === 500);
+            document.getElementById('flash03s').classList.toggle('active', time === 300);
+            document.getElementById('flash01s').classList.toggle('active', time === 100);
+            
+            // Update descriptions
+            const timeText = time === 1000 ? '1.0 second' : time === 500 ? '0.5 second' : time === 300 ? '0.3 second' : '0.1 second';
+            document.getElementById('flashTimeDescription').textContent = `Each number shows for ${timeText}`;
+            
+            if (currentMode === 'flash') {
+                document.getElementById('modeDescription').textContent = `Numbers flash one by one for ${timeText} each`;
+            }
+        }
+        
+        function changeCountForNext(delta) {
+            const newCount = numberCount + delta;
+            if (newCount >= 2 && newCount <= 10) {
+                numberCount = newCount;
+                const nextCountElement = document.getElementById('nextNumberCount');
+                if (nextCountElement) {
+                    nextCountElement.textContent = numberCount;
+                }
+                // Update the main count display too
+                document.getElementById('numberCount').textContent = numberCount;
+            }
+        }
+        
+        function setFlashTimeAndUpdateStart(time) {
+            flashTime = time;
+            
+            // Update the main flash time buttons
+            document.getElementById('flash1s').classList.toggle('active', time === 1000);
+            document.getElementById('flash05s').classList.toggle('active', time === 500);
+            document.getElementById('flash03s').classList.toggle('active', time === 300);
+            document.getElementById('flash01s').classList.toggle('active', time === 100);
+            
+            // Update descriptions
+            const timeText = time === 1000 ? '1.0 second' : time === 500 ? '0.5 second' : time === 300 ? '0.3 second' : '0.1 second';
+            document.getElementById('flashTimeDescription').textContent = `Each number shows for ${timeText}`;
+            
+            if (currentMode === 'flash') {
+                document.getElementById('modeDescription').textContent = `Numbers flash one by one for ${timeText} each`;
+            }
+            
+            // Refresh the start screen to show updated flash time selection
+            showStartScreen();
+        }
+
+        // Initialize the app with start screen
+        showStartScreen();
+    </script>
+</body>
+</html>

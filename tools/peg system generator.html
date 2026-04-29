@@ -1,0 +1,1172 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digit Grouper with Peg System</title>
+  <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        html {
+            height: 100%;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+        
+        .input-section {
+            margin-bottom: 30px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+            font-weight: 600;
+        }
+        
+        #digitInput {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            letter-spacing: 2px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        #digitInput:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .groups-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .group {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            min-width: 80px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+            text-align: center;
+            position: relative;
+        }
+        
+        .group:hover {
+            transform: translateY(-2px);
+        }
+        
+        .group-number {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .group-word {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-weight: normal;
+            font-style: italic;
+        }
+        
+        .copy-digit-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+        }
+        
+        .copy-digit-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        .copy-digit-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .empty-state {
+            color: #999;
+            font-style: italic;
+            margin-top: 20px;
+        }
+        
+        .clear-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .clear-btn:hover {
+            background: #ff5252;
+        }
+        
+        .peg-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .groups-container {
+                gap: 10px;
+            }
+            
+            .group {
+                font-size: 1rem;
+                padding: 12px 16px;
+            }
+            
+            .group-number {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="container">
+   <h1>🔢 Digit Grouper + Peg System</h1>
+   <div class="peg-info"><strong>Peg System:</strong> 0=S, 1=T/D, 2=N, 3=M, 4=R, 5=L, 6=SH/CH, 7=K, 8=F, 9=B/P
+   </div>
+   <div class="mode-selector" style="margin-bottom: 20px;">
+    <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 15px;"><button id="mode-2digit" onclick="setMode(2)" style="background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: background-color 0.3s ease;"> 2-Digit Groups </button> <button id="mode-4digit" onclick="setMode(4)" style="background: #e0e0e0; color: #666; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: background-color 0.3s ease;"> 4-Digit Groups </button>
+    </div>
+   </div>
+   <div class="input-section"><label for="digitInput" id="input-label">Enter 10 digits:</label> <input type="text" id="digitInput" maxlength="10" placeholder="1234567890" autocomplete="off"> <button class="clear-btn" onclick="clearInput()">Clear</button>
+   </div>
+   <div id="output">
+    <div class="empty-state">
+     Enter digits above to see them grouped with peg words
+    </div>
+   </div>
+   <div id="story-section" style="display: none;">
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #667eea;">
+     <h3 style="margin-top: 0; color: #333;">📖 Your Story</h3>
+     <div id="story-text" style="font-size: 1.1rem; line-height: 1.6; color: #444; font-style: italic;"></div>
+     <div style="margin-top: 10px; font-size: 0.9rem; color: #666; display: flex; justify-content: space-between; align-items: center;"><span><span id="word-count"></span> words</span> <button id="copy-story-btn" onclick="copyStory()" style="background: #28a745; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; transition: background-color 0.3s ease;"> 📖 Copy Story </button>
+     </div>
+     <div style="margin-top: 15px; padding: 10px; background: #fff; border: 1px solid #ddd; border-radius: 5px;">
+      <div style="font-size: 0.9rem; color: #666; margin-bottom: 5px;">
+       Copy your peg words:
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+       <div id="copyable-words" style="font-family: monospace; font-size: 1rem; color: #333; user-select: all; cursor: text; padding: 5px; background: #f8f9fa; border-radius: 3px; flex: 1;"></div><button id="copy-btn" onclick="copyWords()" style="background: #667eea; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; transition: background-color 0.3s ease;"> 📋 Copy </button>
+      </div>
+     </div>
+     <div id="illustration-section" style="margin-top: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+       <h4 style="color: #333; margin: 0;">🎨 Story Illustration</h4><button id="download-illustration-btn" onclick="downloadIllustration()" style="background: #17a2b8; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; transition: background-color 0.3s ease;"> 💾 Download </button>
+      </div>
+      <div id="story-illustration" style="background: linear-gradient(135deg, #e3f2fd, #f3e5f5); border-radius: 10px; padding: 20px; min-height: 120px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; border: 2px dashed #667eea;">
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+        // Peg system word dictionary based on the rules provided
+        const pegWords = {
+            '00': 'sauce', '01': 'suit', '02': 'sun', '03': 'seam', '04': 'sore',
+            '05': 'seal', '06': 'sash', '07': 'sock', '08': 'safe', '09': 'soap',
+            '10': 'toes', '11': 'tent', '12': 'tin', '13': 'tomb', '14': 'tire',
+            '15': 'tail', '16': 'dish', '17': 'tack', '18': 'taffy', '19': 'tub',
+            '20': 'nose', '21': 'net', '22': 'nun', '23': 'nemo', '24': 'nero',
+            '25': 'nail', '26': 'notch', '27': 'neck', '28': 'knife', '29': 'knob',
+            '30': 'mouse', '31': 'mat', '32': 'moon', '33': 'mum', '34': 'mower',
+            '35': 'mail', '36': 'match', '37': 'mug', '38': 'muff', '39': 'mop',
+            '40': 'rose', '41': 'rat', '42': 'rain', '43': 'ram', '44': 'rower',
+            '45': 'rail', '46': 'roach', '47': 'rock', '48': 'roof', '49': 'rope',
+            '50': 'lace', '51': 'lid', '52': 'lion', '53': 'lime', '54': 'lure',
+            '55': 'lily', '56': 'leash', '57': 'lock', '58': 'leaf', '59': 'lab',
+            '60': 'cheese', '61': 'sheet', '62': 'chain', '63': 'chimp', '64': 'chair',
+            '65': 'shell', '66': 'church', '67': 'chalk', '68': 'chef', '69': 'chip',
+            '70': 'case', '71': 'cat', '72': 'can', '73': 'comb', '74': 'car',
+            '75': 'coal', '76': 'cage', '77': 'cake', '78': 'calf', '79': 'cap',
+            '80': 'face', '81': 'foot', '82': 'fan', '83': 'foam', '84': 'fire',
+            '85': 'foil', '86': 'fish', '87': 'fork', '88': 'fife', '89': 'fob',
+            '90': 'bus', '91': 'bat', '92': 'bone', '93': 'bomb', '94': 'bear',
+            '95': 'ball', '96': 'beach', '97': 'book', '98': 'beef', '99': 'baby'
+        };
+
+        // 4-digit peg words - single words for 4-digit combinations
+        const pegWords4Digit = {
+            '0000': 'scissors', '0001': 'student', '0002': 'season', '0003': 'system', '0004': 'sister',
+            '0005': 'castle', '0006': 'sausage', '0007': 'socket', '0008': 'software', '0009': 'subway',
+            '0010': 'stadium', '0011': 'student', '0012': 'station', '0013': 'system', '0014': 'sister',
+            '0015': 'satellite', '0016': 'sandwich', '0017': 'sticker', '0018': 'software', '0019': 'subway',
+            '0020': 'sunset', '0021': 'student', '0022': 'season', '0023': 'system', '0024': 'sister',
+            '0025': 'snail', '0026': 'sandwich', '0027': 'snake', '0028': 'snowflake', '0029': 'subway',
+            '0030': 'summer', '0031': 'student', '0032': 'salmon', '0033': 'system', '0034': 'sister',
+            '0035': 'smile', '0036': 'smash', '0037': 'smoke', '0038': 'smooth', '0039': 'subway',
+            '0040': 'siren', '0041': 'student', '0042': 'siren', '0043': 'system', '0044': 'sister',
+            '0045': 'spiral', '0046': 'search', '0047': 'shark', '0048': 'sheriff', '0049': 'subway',
+            '0050': 'salad', '0051': 'student', '0052': 'salon', '0053': 'system', '0054': 'sister',
+            '0055': 'silly', '0056': 'slash', '0057': 'silk', '0058': 'shelf', '0059': 'subway',
+            '0060': 'sushi', '0061': 'student', '0062': 'shine', '0063': 'system', '0064': 'sister',
+            '0065': 'shell', '0066': 'shush', '0067': 'shock', '0068': 'shift', '0069': 'subway',
+            '0070': 'sky', '0071': 'student', '0072': 'skin', '0073': 'system', '0074': 'sister',
+            '0075': 'skill', '0076': 'sketch', '0077': 'skunk', '0078': 'skiff', '0079': 'subway',
+            '0080': 'safe', '0081': 'student', '0082': 'soften', '0083': 'system', '0084': 'sister',
+            '0085': 'sofa', '0086': 'soft', '0087': 'sock', '0088': 'stuff', '0089': 'subway',
+            '0090': 'soup', '0091': 'student', '0092': 'spine', '0093': 'system', '0094': 'sister',
+            '0095': 'spill', '0096': 'speech', '0097': 'speak', '0098': 'spoof', '0099': 'subway',
+            '1000': 'dinosaur', '1001': 'detective', '1002': 'dentist', '1003': 'diamond', '1004': 'doctor',
+            '1005': 'dolphin', '1006': 'dragon', '1007': 'dancer', '1008': 'driver', '1009': 'doorbell',
+            '1010': 'tornado', '1011': 'detective', '1012': 'dentist', '1013': 'diamond', '1014': 'doctor',
+            '1015': 'turtle', '1016': 'teacher', '1017': 'turkey', '1018': 'traffic', '1019': 'doorbell',
+            '1020': 'tennis', '1021': 'detective', '1022': 'dentist', '1023': 'diamond', '1024': 'doctor',
+            '1025': 'tunnel', '1026': 'touch', '1027': 'tank', '1028': 'tough', '1029': 'doorbell',
+            '1030': 'tomato', '1031': 'detective', '1032': 'dentist', '1033': 'diamond', '1034': 'doctor',
+            '1035': 'temple', '1036': 'thumb', '1037': 'truck', '1038': 'thief', '1039': 'doorbell',
+            '1040': 'tiger', '1041': 'detective', '1042': 'dentist', '1043': 'diamond', '1044': 'doctor',
+            '1045': 'trail', '1046': 'trash', '1047': 'track', '1048': 'traffic', '1049': 'doorbell',
+            '1050': 'table', '1051': 'detective', '1052': 'dentist', '1053': 'diamond', '1054': 'doctor',
+            '1055': 'tulip', '1056': 'telescope', '1057': 'talk', '1058': 'telephone', '1059': 'doorbell',
+            '1060': 'teacher', '1061': 'detective', '1062': 'dentist', '1063': 'diamond', '1064': 'doctor',
+            '1065': 'turtle', '1066': 'touch', '1067': 'truck', '1068': 'tough', '1069': 'doorbell',
+            '1070': 'ticket', '1071': 'detective', '1072': 'dentist', '1073': 'diamond', '1074': 'doctor',
+            '1075': 'tackle', '1076': 'technique', '1077': 'truck', '1078': 'traffic', '1079': 'doorbell',
+            '1080': 'taffy', '1081': 'detective', '1082': 'dentist', '1083': 'diamond', '1084': 'doctor',
+            '1085': 'tuffle', '1086': 'tough', '1087': 'truck', '1088': 'traffic', '1089': 'doorbell',
+            '1090': 'typewriter', '1091': 'detective', '1092': 'dentist', '1093': 'diamond', '1094': 'doctor',
+            '1095': 'topple', '1096': 'topography', '1097': 'topic', '1098': 'traffic', '1099': 'doorbell',
+            '2000': 'newspaper', '2001': 'notebook', '2002': 'noodle', '2003': 'number', '2004': 'nurse',
+            '2005': 'needle', '2006': 'nature', '2007': 'necklace', '2008': 'nephew', '2009': 'neighbor',
+            '2010': 'network', '2011': 'notebook', '2012': 'noodle', '2013': 'number', '2014': 'nurse',
+            '2015': 'needle', '2016': 'nature', '2017': 'necklace', '2018': 'nephew', '2019': 'neighbor',
+            '2020': 'nanny', '2021': 'notebook', '2022': 'noodle', '2023': 'number', '2024': 'nurse',
+            '2025': 'needle', '2026': 'nature', '2027': 'necklace', '2028': 'nephew', '2029': 'neighbor',
+            '2030': 'name', '2031': 'notebook', '2032': 'noodle', '2033': 'number', '2034': 'nurse',
+            '2035': 'needle', '2036': 'nature', '2037': 'necklace', '2038': 'nephew', '2039': 'neighbor',
+            '2040': 'narrow', '2041': 'notebook', '2042': 'noodle', '2043': 'number', '2044': 'nurse',
+            '2045': 'needle', '2046': 'nature', '2047': 'necklace', '2048': 'nephew', '2049': 'neighbor',
+            '2050': 'nail', '2051': 'notebook', '2052': 'noodle', '2053': 'number', '2054': 'nurse',
+            '2055': 'needle', '2056': 'nature', '2057': 'necklace', '2058': 'nephew', '2059': 'neighbor',
+            '2060': 'niche', '2061': 'notebook', '2062': 'noodle', '2063': 'number', '2064': 'nurse',
+            '2065': 'needle', '2066': 'nature', '2067': 'necklace', '2068': 'nephew', '2069': 'neighbor',
+            '2070': 'neck', '2071': 'notebook', '2072': 'noodle', '2073': 'number', '2074': 'nurse',
+            '2075': 'needle', '2076': 'nature', '2077': 'necklace', '2078': 'nephew', '2079': 'neighbor',
+            '2080': 'knife', '2081': 'notebook', '2082': 'noodle', '2083': 'number', '2084': 'nurse',
+            '2085': 'needle', '2086': 'nature', '2087': 'necklace', '2088': 'nephew', '2089': 'neighbor',
+            '2090': 'nap', '2091': 'notebook', '2092': 'noodle', '2093': 'number', '2094': 'nurse',
+            '2095': 'needle', '2096': 'nature', '2097': 'necklace', '2098': 'nephew', '2099': 'neighbor',
+            '3000': 'mushroom', '3001': 'musician', '3002': 'mansion', '3003': 'mammoth', '3004': 'mirror',
+            '3005': 'missile', '3006': 'machine', '3007': 'monkey', '3008': 'muffin', '3009': 'mailbox',
+            '3010': 'mountain', '3011': 'musician', '3012': 'mansion', '3013': 'mammoth', '3014': 'mirror',
+            '3015': 'missile', '3016': 'machine', '3017': 'monkey', '3018': 'muffin', '3019': 'mailbox',
+            '3020': 'moon', '3021': 'musician', '3022': 'mansion', '3023': 'mammoth', '3024': 'mirror',
+            '3025': 'missile', '3026': 'machine', '3027': 'monkey', '3028': 'muffin', '3029': 'mailbox',
+            '3030': 'mama', '3031': 'musician', '3032': 'mansion', '3033': 'mammoth', '3034': 'mirror',
+            '3035': 'missile', '3036': 'machine', '3037': 'monkey', '3038': 'muffin', '3039': 'mailbox',
+            '3040': 'mayor', '3041': 'musician', '3042': 'mansion', '3043': 'mammoth', '3044': 'mirror',
+            '3045': 'missile', '3046': 'machine', '3047': 'monkey', '3048': 'muffin', '3049': 'mailbox',
+            '3050': 'mall', '3051': 'musician', '3052': 'mansion', '3053': 'mammoth', '3054': 'mirror',
+            '3055': 'missile', '3056': 'machine', '3057': 'monkey', '3058': 'muffin', '3059': 'mailbox',
+            '3060': 'match', '3061': 'musician', '3062': 'mansion', '3063': 'mammoth', '3064': 'mirror',
+            '3065': 'missile', '3066': 'machine', '3067': 'monkey', '3068': 'muffin', '3069': 'mailbox',
+            '3070': 'magic', '3071': 'musician', '3072': 'mansion', '3073': 'mammoth', '3074': 'mirror',
+            '3075': 'missile', '3076': 'machine', '3077': 'monkey', '3078': 'muffin', '3079': 'mailbox',
+            '3080': 'movie', '3081': 'musician', '3082': 'mansion', '3083': 'mammoth', '3084': 'mirror',
+            '3085': 'missile', '3086': 'machine', '3087': 'monkey', '3088': 'muffin', '3089': 'mailbox',
+            '3090': 'map', '3091': 'musician', '3092': 'mansion', '3093': 'mammoth', '3094': 'mirror',
+            '3095': 'missile', '3096': 'machine', '3097': 'monkey', '3098': 'muffin', '3099': 'mailbox',
+            '4000': 'rainbow', '4001': 'robot', '4002': 'reason', '4003': 'rhythm', '4004': 'river',
+            '4005': 'rocket', '4006': 'rescue', '4007': 'racket', '4008': 'referee', '4009': 'rabbit',
+            '4010': 'radio', '4011': 'robot', '4012': 'reason', '4013': 'rhythm', '4014': 'river',
+            '4015': 'rocket', '4016': 'rescue', '4017': 'racket', '4018': 'referee', '4019': 'rabbit',
+            '4020': 'rain', '4021': 'robot', '4022': 'reason', '4023': 'rhythm', '4024': 'river',
+            '4025': 'rocket', '4026': 'rescue', '4027': 'racket', '4028': 'referee', '4029': 'rabbit',
+            '4030': 'room', '4031': 'robot', '4032': 'reason', '4033': 'rhythm', '4034': 'river',
+            '4035': 'rocket', '4036': 'rescue', '4037': 'racket', '4038': 'referee', '4039': 'rabbit',
+            '4040': 'roar', '4041': 'robot', '4042': 'reason', '4043': 'rhythm', '4044': 'river',
+            '4045': 'rocket', '4046': 'rescue', '4047': 'racket', '4048': 'referee', '4049': 'rabbit',
+            '4050': 'rail', '4051': 'robot', '4052': 'reason', '4053': 'rhythm', '4054': 'river',
+            '4055': 'rocket', '4056': 'rescue', '4057': 'racket', '4058': 'referee', '4059': 'rabbit',
+            '4060': 'reach', '4061': 'robot', '4062': 'reason', '4063': 'rhythm', '4064': 'river',
+            '4065': 'rocket', '4066': 'rescue', '4067': 'racket', '4068': 'referee', '4069': 'rabbit',
+            '4070': 'rock', '4071': 'robot', '4072': 'reason', '4073': 'rhythm', '4074': 'river',
+            '4075': 'rocket', '4076': 'rescue', '4077': 'racket', '4078': 'referee', '4079': 'rabbit',
+            '4080': 'roof', '4081': 'robot', '4082': 'reason', '4083': 'rhythm', '4084': 'river',
+            '4085': 'rocket', '4086': 'rescue', '4087': 'racket', '4088': 'referee', '4089': 'rabbit',
+            '4090': 'rope', '4091': 'robot', '4092': 'reason', '4093': 'rhythm', '4094': 'river',
+            '4095': 'rocket', '4096': 'rescue', '4097': 'racket', '4098': 'referee', '4099': 'rabbit',
+            '5000': 'lighthouse', '5001': 'laptop', '5002': 'lesson', '5003': 'lemon', '5004': 'laser',
+            '5005': 'llama', '5006': 'lunch', '5007': 'lucky', '5008': 'laugh', '5009': 'lobby',
+            '5010': 'ladder', '5011': 'laptop', '5012': 'lesson', '5013': 'lemon', '5014': 'laser',
+            '5015': 'llama', '5016': 'lunch', '5017': 'lucky', '5018': 'laugh', '5019': 'lobby',
+            '5020': 'lane', '5021': 'laptop', '5022': 'lesson', '5023': 'lemon', '5024': 'laser',
+            '5025': 'llama', '5026': 'lunch', '5027': 'lucky', '5028': 'laugh', '5029': 'lobby',
+            '5030': 'lamb', '5031': 'laptop', '5032': 'lesson', '5033': 'lemon', '5034': 'laser',
+            '5035': 'llama', '5036': 'lunch', '5037': 'lucky', '5038': 'laugh', '5039': 'lobby',
+            '5040': 'liar', '5041': 'laptop', '5042': 'lesson', '5043': 'lemon', '5044': 'laser',
+            '5045': 'llama', '5046': 'lunch', '5047': 'lucky', '5048': 'laugh', '5049': 'lobby',
+            '5050': 'lily', '5051': 'laptop', '5052': 'lesson', '5053': 'lemon', '5054': 'laser',
+            '5055': 'llama', '5056': 'lunch', '5057': 'lucky', '5058': 'laugh', '5059': 'lobby',
+            '5060': 'leash', '5061': 'laptop', '5062': 'lesson', '5063': 'lemon', '5064': 'laser',
+            '5065': 'llama', '5066': 'lunch', '5067': 'lucky', '5068': 'laugh', '5069': 'lobby',
+            '5070': 'lake', '5071': 'laptop', '5072': 'lesson', '5073': 'lemon', '5074': 'laser',
+            '5075': 'llama', '5076': 'lunch', '5077': 'lucky', '5078': 'laugh', '5079': 'lobby',
+            '5080': 'leaf', '5081': 'laptop', '5082': 'lesson', '5083': 'lemon', '5084': 'laser',
+            '5085': 'llama', '5086': 'lunch', '5087': 'lucky', '5088': 'laugh', '5089': 'lobby',
+            '5090': 'loop', '5091': 'laptop', '5092': 'lesson', '5093': 'lemon', '5094': 'laser',
+            '5095': 'llama', '5096': 'lunch', '5097': 'lucky', '5098': 'laugh', '5099': 'lobby',
+            '6000': 'chocolate', '6001': 'champion', '6002': 'chicken', '6003': 'chimney', '6004': 'chair',
+            '6005': 'challenge', '6006': 'church', '6007': 'check', '6008': 'chef', '6009': 'chop',
+            '6010': 'shadow', '6011': 'champion', '6012': 'chicken', '6013': 'chimney', '6014': 'chair',
+            '6015': 'challenge', '6016': 'church', '6017': 'check', '6018': 'chef', '6019': 'chop',
+            '6020': 'shine', '6021': 'champion', '6022': 'chicken', '6023': 'chimney', '6024': 'chair',
+            '6025': 'challenge', '6026': 'church', '6027': 'check', '6028': 'chef', '6029': 'chop',
+            '6030': 'shame', '6031': 'champion', '6032': 'chicken', '6033': 'chimney', '6034': 'chair',
+            '6035': 'challenge', '6036': 'church', '6037': 'check', '6038': 'chef', '6039': 'chop',
+            '6040': 'share', '6041': 'champion', '6042': 'chicken', '6043': 'chimney', '6044': 'chair',
+            '6045': 'challenge', '6046': 'church', '6047': 'check', '6048': 'chef', '6049': 'chop',
+            '6050': 'shell', '6051': 'champion', '6052': 'chicken', '6053': 'chimney', '6054': 'chair',
+            '6055': 'challenge', '6056': 'church', '6057': 'check', '6058': 'chef', '6059': 'chop',
+            '6060': 'shush', '6061': 'champion', '6062': 'chicken', '6063': 'chimney', '6064': 'chair',
+            '6065': 'challenge', '6066': 'church', '6067': 'check', '6068': 'chef', '6069': 'chop',
+            '6070': 'shock', '6071': 'champion', '6072': 'chicken', '6073': 'chimney', '6074': 'chair',
+            '6075': 'challenge', '6076': 'church', '6077': 'check', '6078': 'chef', '6079': 'chop',
+            '6080': 'shift', '6081': 'champion', '6082': 'chicken', '6083': 'chimney', '6084': 'chair',
+            '6085': 'challenge', '6086': 'church', '6087': 'check', '6088': 'chef', '6089': 'chop',
+            '6090': 'ship', '6091': 'champion', '6092': 'chicken', '6093': 'chimney', '6094': 'chair',
+            '6095': 'challenge', '6096': 'church', '6097': 'check', '6098': 'chef', '6099': 'chop',
+            '7000': 'kangaroo', '7001': 'keyboard', '7002': 'kitchen', '7003': 'kingdom', '7004': 'karate',
+            '7005': 'koala', '7006': 'ketchup', '7007': 'kick', '7008': 'knife', '7009': 'keep',
+            '7010': 'castle', '7011': 'keyboard', '7012': 'kitchen', '7013': 'kingdom', '7014': 'karate',
+            '7015': 'koala', '7016': 'ketchup', '7017': 'kick', '7018': 'knife', '7019': 'keep',
+            '7020': 'coin', '7021': 'keyboard', '7022': 'kitchen', '7023': 'kingdom', '7024': 'karate',
+            '7025': 'koala', '7026': 'ketchup', '7027': 'kick', '7028': 'knife', '7029': 'keep',
+            '7030': 'comb', '7031': 'keyboard', '7032': 'kitchen', '7033': 'kingdom', '7034': 'karate',
+            '7035': 'koala', '7036': 'ketchup', '7037': 'kick', '7038': 'knife', '7039': 'keep',
+            '7040': 'car', '7041': 'keyboard', '7042': 'kitchen', '7043': 'kingdom', '7044': 'karate',
+            '7045': 'koala', '7046': 'ketchup', '7047': 'kick', '7048': 'knife', '7049': 'keep',
+            '7050': 'call', '7051': 'keyboard', '7052': 'kitchen', '7053': 'kingdom', '7054': 'karate',
+            '7055': 'koala', '7056': 'ketchup', '7057': 'kick', '7058': 'knife', '7059': 'keep',
+            '7060': 'catch', '7061': 'keyboard', '7062': 'kitchen', '7063': 'kingdom', '7064': 'karate',
+            '7065': 'koala', '7066': 'ketchup', '7067': 'kick', '7068': 'knife', '7069': 'keep',
+            '7070': 'cake', '7071': 'keyboard', '7072': 'kitchen', '7073': 'kingdom', '7074': 'karate',
+            '7075': 'koala', '7076': 'ketchup', '7077': 'kick', '7078': 'knife', '7079': 'keep',
+            '7080': 'coffee', '7081': 'keyboard', '7082': 'kitchen', '7083': 'kingdom', '7084': 'karate',
+            '7085': 'koala', '7086': 'ketchup', '7087': 'kick', '7088': 'knife', '7089': 'keep',
+            '7090': 'cup', '7091': 'keyboard', '7092': 'kitchen', '7093': 'kingdom', '7094': 'karate',
+            '7095': 'koala', '7096': 'ketchup', '7097': 'kick', '7098': 'knife', '7099': 'keep',
+            '8000': 'football', '8001': 'factory', '8002': 'fashion', '8003': 'phantom', '8004': 'fire',
+            '8005': 'ffle', '8006': 'fish', '8007': 'fake', '8008': 'fife', '8009': 'fob',
+            '8010': 'photo', '8011': 'factory', '8012': 'fashion', '8013': 'phantom', '8014': 'fire',
+            '8015': 'ffle', '8016': 'fish', '8017': 'fake', '8018': 'fife', '8019': 'fob',
+            '8020': 'phone', '8021': 'factory', '8022': 'fashion', '8023': 'phantom', '8024': 'fire',
+            '8025': 'ffle', '8026': 'fish', '8027': 'fake', '8028': 'fife', '8029': 'fob',
+            '8030': 'foam', '8031': 'factory', '8032': 'fashion', '8033': 'phantom', '8034': 'fire',
+            '8035': 'ffle', '8036': 'fish', '8037': 'fake', '8038': 'fife', '8039': 'fob',
+            '8040': 'fair', '8041': 'factory', '8042': 'fashion', '8043': 'phantom', '8044': 'fire',
+            '8045': 'ffle', '8046': 'fish', '8047': 'fake', '8048': 'fife', '8049': 'fob',
+            '8050': 'fall', '8051': 'factory', '8052': 'fashion', '8053': 'phantom', '8054': 'fire',
+            '8055': 'ffle', '8056': 'fish', '8057': 'fake', '8058': 'fife', '8059': 'fob',
+            '8060': 'fish', '8061': 'factory', '8062': 'fashion', '8063': 'phantom', '8064': 'fire',
+            '8065': 'ffle', '8066': 'fish', '8067': 'fake', '8068': 'fife', '8069': 'fob',
+            '8070': 'fake', '8071': 'factory', '8072': 'fashion', '8073': 'phantom', '8074': 'fire',
+            '8075': 'ffle', '8076': 'fish', '8077': 'fake', '8078': 'fife', '8079': 'fob',
+            '8080': 'fife', '8081': 'factory', '8082': 'fashion', '8083': 'phantom', '8084': 'fire',
+            '8085': 'ffle', '8086': 'fish', '8087': 'fake', '8088': 'fife', '8089': 'fob',
+            '8090': 'fob', '8091': 'factory', '8092': 'fashion', '8093': 'phantom', '8094': 'fire',
+            '8095': 'ffle', '8096': 'fish', '8097': 'fake', '8098': 'fife', '8099': 'fob',
+            '9000': 'butterfly', '9001': 'basketball', '9002': 'business', '9003': 'bathroom', '9004': 'brother',
+            '9005': 'bottle', '9006': 'beach', '9007': 'book', '9008': 'beef', '9009': 'baby',
+            '9010': 'potato', '9011': 'basketball', '9012': 'business', '9013': 'bathroom', '9014': 'brother',
+            '9015': 'bottle', '9016': 'beach', '9017': 'book', '9018': 'beef', '9019': 'baby',
+            '9020': 'bone', '9021': 'basketball', '9022': 'business', '9023': 'bathroom', '9024': 'brother',
+            '9025': 'bottle', '9026': 'beach', '9027': 'book', '9028': 'beef', '9029': 'baby',
+            '9030': 'bomb', '9031': 'basketball', '9032': 'business', '9033': 'bathroom', '9034': 'brother',
+            '9035': 'bottle', '9036': 'beach', '9037': 'book', '9038': 'beef', '9039': 'baby',
+            '9040': 'bear', '9041': 'basketball', '9042': 'business', '9043': 'bathroom', '9044': 'brother',
+            '9045': 'bottle', '9046': 'beach', '9047': 'book', '9048': 'beef', '9049': 'baby',
+            '9050': 'ball', '9051': 'basketball', '9052': 'business', '9053': 'bathroom', '9054': 'brother',
+            '9055': 'bottle', '9056': 'beach', '9057': 'book', '9058': 'beef', '9059': 'baby',
+            '9060': 'beach', '9061': 'basketball', '9062': 'business', '9063': 'bathroom', '9064': 'brother',
+            '9065': 'bottle', '9066': 'beach', '9067': 'book', '9068': 'beef', '9069': 'baby',
+            '9070': 'book', '9071': 'basketball', '9072': 'business', '9073': 'bathroom', '9074': 'brother',
+            '9075': 'bottle', '9076': 'beach', '9077': 'book', '9078': 'beef', '9079': 'baby',
+            '9080': 'beef', '9081': 'basketball', '9082': 'business', '9083': 'bathroom', '9084': 'brother',
+            '9085': 'bottle', '9086': 'beach', '9087': 'book', '9088': 'beef', '9089': 'baby',
+            '9090': 'baby', '9091': 'basketball', '9092': 'business', '9093': 'bathroom', '9094': 'brother',
+            '9095': 'bottle', '9096': 'beach', '9097': 'book', '9098': 'beef', '9099': 'baby'
+        };
+        
+        const digitInput = document.getElementById('digitInput');
+        const output = document.getElementById('output');
+        let currentMode = 2; // Default to 2-digit groups
+        
+        digitInput.addEventListener('input', function(e) {
+            // Only allow digits
+            let value = e.target.value.replace(/\D/g, '');
+            e.target.value = value;
+            
+            updateGroups(value);
+        });
+        
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Update button styles
+            const btn2 = document.getElementById('mode-2digit');
+            const btn4 = document.getElementById('mode-4digit');
+            const inputLabel = document.getElementById('input-label');
+            
+            if (mode === 2) {
+                btn2.style.background = '#667eea';
+                btn2.style.color = 'white';
+                btn4.style.background = '#e0e0e0';
+                btn4.style.color = '#666';
+                
+                digitInput.maxLength = 10;
+                digitInput.placeholder = '1234567890';
+                inputLabel.textContent = 'Enter 10 digits:';
+            } else {
+                btn4.style.background = '#667eea';
+                btn4.style.color = 'white';
+                btn2.style.background = '#e0e0e0';
+                btn2.style.color = '#666';
+                
+                digitInput.maxLength = 20;
+                digitInput.placeholder = '12345678901234567890';
+                inputLabel.textContent = 'Enter 20 digits:';
+            }
+            
+            // Clear input and update
+            digitInput.value = '';
+            updateGroups('');
+        }
+        
+        function updateGroups(digits) {
+            if (digits.length === 0) {
+                output.innerHTML = '<div class="empty-state">Enter digits above to see them grouped with peg words</div>';
+                document.getElementById('story-section').style.display = 'none';
+                return;
+            }
+            
+            const actualGroups = [];
+            const words = [];
+            
+            if (currentMode === 2) {
+                // Create groups of 2
+                for (let i = 0; i < digits.length; i += 2) {
+                    const group = digits.substr(i, 2);
+                    actualGroups.push(group);
+                    
+                    // Pad single digit with 0 for word lookup
+                    const paddedGroup = group.length === 1 ? group + '0' : group;
+                    const word = pegWords[paddedGroup] || 'word';
+                    words.push(word);
+                }
+            } else {
+                // Create groups of 4 and convert to single words
+                for (let i = 0; i < digits.length; i += 4) {
+                    const group = digits.substr(i, 4);
+                    actualGroups.push(group);
+                    
+                    // Use 4-digit peg word dictionary for single words
+                    if (group.length === 4) {
+                        const word = pegWords4Digit[group] || 'object';
+                        words.push(word);
+                    } else if (group.length >= 1) {
+                        // Pad shorter groups with zeros
+                        const paddedGroup = group.padEnd(4, '0');
+                        const word = pegWords4Digit[paddedGroup] || 'object';
+                        words.push(word);
+                    }
+                }
+            }
+            
+            if (actualGroups.length === 0) {
+                output.innerHTML = '<div class="empty-state">Enter digits above to see them grouped with peg words</div>';
+                document.getElementById('story-section').style.display = 'none';
+                return;
+            }
+            
+            const groupsHtml = actualGroups.map((group, index) => {
+                let word;
+                if (currentMode === 2) {
+                    const paddedGroup = group.length === 1 ? group + '0' : group;
+                    word = pegWords[paddedGroup] || 'word';
+                } else {
+                    // For 4-digit groups, use single word from 4-digit dictionary
+                    if (group.length === 4) {
+                        word = pegWords4Digit[group] || 'object';
+                    } else if (group.length >= 1) {
+                        const paddedGroup = group.padEnd(4, '0');
+                        word = pegWords4Digit[paddedGroup] || 'object';
+                    }
+                }
+                
+                return `
+                    <div class="group">
+                        <div class="group-number">${group}</div>
+                        <div class="group-word">${word}</div>
+                        <button class="copy-digit-btn" onclick="copyDigitGroup('${group}')" title="Copy ${group}">
+                            📋
+                        </button>
+                    </div>
+                `;
+            }).join('');
+            
+            output.innerHTML = `
+                <div class="groups-container">
+                    ${groupsHtml}
+                </div>
+            `;
+            
+            // Generate story if we have at least 2 words
+            if (words.length >= 2) {
+                generateStory(words);
+                document.getElementById('story-section').style.display = 'block';
+            } else {
+                document.getElementById('story-section').style.display = 'none';
+            }
+        }
+        
+        function generateStory(words) {
+            // Dynamic story generation based on word properties
+            const wordProperties = {
+                // Animals
+                'cat': { type: 'animal', actions: ['pounced on', 'stalked', 'clawed at', 'meowed at'] },
+                'lion': { type: 'animal', actions: ['roared at', 'hunted', 'devoured', 'prowled around'] },
+                'bear': { type: 'animal', actions: ['mauled', 'hibernated with', 'growled at', 'wrestled'] },
+                'mouse': { type: 'animal', actions: ['scurried past', 'nibbled on', 'squeaked at', 'hid behind'] },
+                'rat': { type: 'animal', actions: ['gnawed through', 'scampered over', 'infested', 'tunneled under'] },
+                'bat': { type: 'animal', actions: ['swooped down on', 'echolocated', 'hung from', 'fluttered around'] },
+                'ram': { type: 'animal', actions: ['charged at', 'headbutted', 'bleated at', 'trampled'] },
+                'seal': { type: 'animal', actions: ['splashed onto', 'barked at', 'slithered across', 'balanced'] },
+                'chimp': { type: 'animal', actions: ['swung from', 'chattered at', 'threw', 'climbed over'] },
+                'calf': { type: 'animal', actions: ['mooed at', 'kicked', 'grazed near', 'frolicked with'] },
+                'fish': { type: 'animal', actions: ['swam through', 'splashed in', 'gulped down', 'schooled around'] },
+                'nemo': { type: 'animal', actions: ['swam through', 'explored', 'hid in', 'darted past'] },
+                
+                // People
+                'chef': { type: 'person', actions: ['cooked', 'seasoned', 'flambéed', 'chopped up'] },
+                'nun': { type: 'person', actions: ['blessed', 'prayed over', 'sanctified', 'meditated with'] },
+                'nero': { type: 'person', actions: ['commanded', 'conquered', 'burned down', 'ruled over'] },
+                'mum': { type: 'person', actions: ['hugged', 'scolded', 'tucked in', 'kissed'] },
+                'rower': { type: 'person', actions: ['paddled through', 'rowed across', 'splashed', 'navigated'] },
+                'baby': { type: 'person', actions: ['crawled to', 'giggled at', 'drooled on', 'babbled to'] },
+                
+                // Vehicles/Transport
+                'car': { type: 'vehicle', actions: ['crashed into', 'sped past', 'honked at', 'ran over'] },
+                'bus': { type: 'vehicle', actions: ['rumbled past', 'picked up', 'dropped off', 'squeaked to a halt near'] },
+                'rail': { type: 'vehicle', actions: ['thundered past', 'derailed near', 'whistled at', 'transported'] },
+                
+                // Tools/Weapons
+                'knife': { type: 'weapon', actions: ['sliced through', 'stabbed', 'carved', 'cut open'] },
+                'fork': { type: 'tool', actions: ['pierced', 'stabbed', 'scooped up', 'poked'] },
+                'bomb': { type: 'weapon', actions: ['exploded near', 'demolished', 'blasted', 'incinerated'] },
+                'rope': { type: 'tool', actions: ['lassoed', 'tied up', 'strangled', 'swung from'] },
+                'chain': { type: 'tool', actions: ['rattled against', 'bound', 'dragged', 'clinked on'] },
+                'lock': { type: 'tool', actions: ['secured', 'clicked shut on', 'trapped', 'protected'] },
+                'cage': { type: 'tool', actions: ['imprisoned', 'rattled around', 'confined', 'trapped'] },
+                
+                // Fire/Heat
+                'fire': { type: 'element', actions: ['blazed through', 'scorched', 'ignited', 'consumed'] },
+                'sun': { type: 'element', actions: ['blazed down on', 'melted', 'illuminated', 'scorched'] },
+                'match': { type: 'fire', actions: ['ignited', 'sparked', 'lit up', 'flared against'] },
+                
+                // Water/Liquid
+                'rain': { type: 'element', actions: ['drenched', 'poured onto', 'flooded', 'soaked'] },
+                'foam': { type: 'liquid', actions: ['bubbled over', 'frothed on', 'dissolved', 'engulfed'] },
+                'sauce': { type: 'liquid', actions: ['splattered on', 'dripped onto', 'stained', 'oozed over'] },
+                'soap': { type: 'liquid', actions: ['lathered up', 'slipped on', 'bubbled around', 'cleaned'] },
+                
+                // Food
+                'cake': { type: 'food', actions: ['crumbled onto', 'sweetened', 'decorated', 'melted on'] },
+                'cheese': { type: 'food', actions: ['melted over', 'stunk up', 'molded on', 'attracted'] },
+                'beef': { type: 'food', actions: ['sizzled in', 'marinated with', 'grilled over', 'seasoned'] },
+                'taffy': { type: 'food', actions: ['stuck to', 'stretched over', 'sweetened', 'chewed on'] },
+                'lime': { type: 'food', actions: ['squeezed onto', 'zested over', 'soured', 'pickled'] },
+                
+                // Default for other objects
+                'default': { type: 'object', actions: ['collided with', 'toppled over', 'shattered against', 'bounced off'] }
+            };
+            
+            function getWordProperty(word) {
+                return wordProperties[word] || wordProperties['default'];
+            }
+            
+            function generateDynamicStory(words) {
+                if (words.length < 2) return "Not enough words for a story.";
+                
+                let story = "";
+                
+                // Process first word
+                const firstWord = words[0];
+                const firstProp = getWordProperty(firstWord);
+                
+                // Start with the first word
+                story = `The ${firstWord}`;
+                
+                // Add actions between words
+                for (let i = 1; i < words.length; i++) {
+                    const currentWord = words[i];
+                    const prevWord = words[i-1];
+                    
+                    // Use the previous word for property lookup
+                    const prevProp = getWordProperty(prevWord);
+                    
+                    // Choose an action based on the previous word's properties
+                    const actions = prevProp.actions;
+                    const action = actions[Math.floor(Math.random() * actions.length)];
+                    
+                    if (i === 1) {
+                        story += ` ${action} the ${currentWord}`;
+                    } else {
+                        story += `, which ${action} the ${currentWord}`;
+                    }
+                }
+                
+                // Add dramatic endings
+                const endings = [
+                    ", creating chaos everywhere!",
+                    ", and the world was never the same.",
+                    ", causing an epic chain reaction!",
+                    ", leaving everyone speechless.",
+                    ", and legends were born that day.",
+                    ", sparking an unforgettable adventure!",
+                    ", and magic filled the air.",
+                    ", creating the most bizarre spectacle ever seen!"
+                ];
+                
+                story += endings[Math.floor(Math.random() * endings.length)];
+                return story;
+            }
+            
+            const story = generateDynamicStory(words);
+            
+            // Count words in the story
+            const storyWordCount = story.split(' ').length;
+            
+            document.getElementById('story-text').textContent = story;
+            document.getElementById('word-count').textContent = storyWordCount;
+            
+            // Update copyable words list
+            document.getElementById('copyable-words').textContent = words.join(', ');
+            
+            // Generate illustration
+            generateIllustration(words);
+        }
+        
+        function generateIllustration(words) {
+            const illustrationContainer = document.getElementById('story-illustration');
+            
+            // Create simple visual representations using emojis and shapes
+            const visualIcons = {
+                'sauce': '🍅',
+                'suit': '👔',
+                'sun': '☀️',
+                'seam': '🧵',
+                'sore': '🩹',
+                'seal': '🦭',
+                'sash': '🎀',
+                'sock': '🧦',
+                'safe': '🔒',
+                'soap': '🧼',
+                'toes': '🦶',
+                'tent': '⛺',
+                'tin': '🥫',
+                'tomb': '⚰️',
+                'tire': '🛞',
+                'tail': '🐕',
+                'dish': '🍽️',
+                'tack': '📌',
+                'taffy': '🍬',
+                'tub': '🛁',
+                'nose': '👃',
+                'net': '🥅',
+                'nun': '👩‍🦲',
+                'nemo': '🐠',
+                'nero': '👑',
+                'nail': '💅',
+                'notch': '🔧',
+                'neck': '🦒',
+                'knife': '🔪',
+                'knob': '🔘',
+                'mouse': '🐭',
+                'mat': '🧘',
+                'moon': '🌙',
+                'mum': '👩',
+                'mower': '🚜',
+                'mail': '📬',
+                'match': '🔥',
+                'mug': '☕',
+                'muff': '🧤',
+                'mop': '🧽',
+                'rose': '🌹',
+                'rat': '🐀',
+                'rain': '🌧️',
+                'ram': '🐏',
+                'rower': '🚣',
+                'rail': '🚂',
+                'roach': '🪳',
+                'rock': '🪨',
+                'roof': '🏠',
+                'rope': '🪢',
+                'lace': '🪡',
+                'lid': '🍯',
+                'lion': '🦁',
+                'lime': '🍋',
+                'lure': '🎣',
+                'lily': '🌸',
+                'leash': '🐕‍🦺',
+                'lock': '🔐',
+                'leaf': '🍃',
+                'lab': '🧪',
+                'cheese': '🧀',
+                'sheet': '🛏️',
+                'chain': '⛓️',
+                'chimp': '🐵',
+                'chair': '🪑',
+                'shell': '🐚',
+                'church': '⛪',
+                'chalk': '✏️',
+                'chef': '👨‍🍳',
+                'chip': '🍟',
+                'case': '💼',
+                'cat': '🐱',
+                'can': '🥫',
+                'comb': '🪮',
+                'car': '🚗',
+                'coal': '⚫',
+                'cage': '🗂️',
+                'cake': '🎂',
+                'calf': '🐄',
+                'cap': '🧢',
+                'face': '😊',
+                'foot': '🦶',
+                'fan': '🪭',
+                'foam': '🫧',
+                'fire': '🔥',
+                'foil': '📄',
+                'fish': '🐟',
+                'fork': '🍴',
+                'fife': '🎵',
+                'fob': '🔑',
+                'bus': '🚌',
+                'bat': '🦇',
+                'bone': '🦴',
+                'bomb': '💣',
+                'bear': '🐻',
+                'ball': '⚽',
+                'beach': '🏖️',
+                'book': '📚',
+                'beef': '🥩',
+                'baby': '👶'
+            };
+            
+            // Create illustration with emojis and connecting arrows
+            let illustrationHTML = '';
+            words.forEach((word, index) => {
+                const emoji = visualIcons[word] || '📦';
+                
+                illustrationHTML += `
+                    <div style="display: flex; flex-direction: column; align-items: center; margin: 5px;">
+                        <div style="font-size: 3rem; margin-bottom: 5px;">${emoji}</div>
+                        <div style="font-size: 0.9rem; color: #666; font-weight: bold; text-align: center;">${word}</div>
+                    </div>
+                `;
+                if (index < words.length - 1) {
+                    illustrationHTML += '<div style="font-size: 2rem; color: #667eea; align-self: center; margin: 0 5px;">→</div>';
+                }
+            });
+            
+            illustrationContainer.innerHTML = illustrationHTML;
+        }
+        
+        function copyWords() {
+            const wordsText = document.getElementById('copyable-words').textContent;
+            const copyBtn = document.getElementById('copy-btn');
+            
+            navigator.clipboard.writeText(wordsText).then(() => {
+                // Show success feedback
+                copyBtn.innerHTML = '✅ Copied!';
+                copyBtn.style.background = '#28a745';
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    copyBtn.innerHTML = '📋 Copy';
+                    copyBtn.style.background = '#667eea';
+                }, 2000);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = wordsText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                // Show success feedback
+                copyBtn.innerHTML = '✅ Copied!';
+                copyBtn.style.background = '#28a745';
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    copyBtn.innerHTML = '📋 Copy';
+                    copyBtn.style.background = '#667eea';
+                }, 2000);
+            });
+        }
+        
+        function copyStory() {
+            const storyText = document.getElementById('story-text').textContent;
+            const copyStoryBtn = document.getElementById('copy-story-btn');
+            
+            navigator.clipboard.writeText(storyText).then(() => {
+                // Show success feedback
+                copyStoryBtn.innerHTML = '✅ Copied!';
+                copyStoryBtn.style.background = '#198754';
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    copyStoryBtn.innerHTML = '📖 Copy Story';
+                    copyStoryBtn.style.background = '#28a745';
+                }, 2000);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = storyText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                // Show success feedback
+                copyStoryBtn.innerHTML = '✅ Copied!';
+                copyStoryBtn.style.background = '#198754';
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    copyStoryBtn.innerHTML = '📖 Copy Story';
+                    copyStoryBtn.style.background = '#28a745';
+                }, 2000);
+            });
+        }
+        
+        function downloadIllustration() {
+            const illustrationDiv = document.getElementById('story-illustration');
+            const downloadBtn = document.getElementById('download-illustration-btn');
+            
+            // Create a canvas to render the illustration
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = 800;
+            canvas.height = 400;
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#e3f2fd');
+            gradient.addColorStop(1, '#f3e5f5');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Add border
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 4;
+            ctx.setLineDash([10, 5]);
+            ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
+            ctx.setLineDash([]);
+            
+            // Get the story text and words for the illustration
+            const storyText = document.getElementById('story-text').textContent;
+            const wordsText = document.getElementById('copyable-words').textContent;
+            const words = wordsText.split(', ');
+            
+            // Set up text styling
+            ctx.fillStyle = '#333';
+            ctx.textAlign = 'center';
+            
+            // Add title
+            ctx.font = 'bold 24px Arial';
+            ctx.fillText('📖 Story Illustration', canvas.width / 2, 40);
+            
+            // Add the story text (wrapped)
+            ctx.font = '16px Arial';
+            ctx.fillStyle = '#444';
+            const maxWidth = canvas.width - 60;
+            const lineHeight = 24;
+            let y = 80;
+            
+            // Simple text wrapping
+            const storyWords = storyText.split(' ');
+            let line = '';
+            for (let i = 0; i < storyWords.length; i++) {
+                const testLine = line + storyWords[i] + ' ';
+                const metrics = ctx.measureText(testLine);
+                if (metrics.width > maxWidth && i > 0) {
+                    ctx.fillText(line, canvas.width / 2, y);
+                    line = storyWords[i] + ' ';
+                    y += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            ctx.fillText(line, canvas.width / 2, y);
+            
+            // Add peg words at the bottom
+            y += 40;
+            ctx.font = 'bold 18px Arial';
+            ctx.fillStyle = '#667eea';
+            ctx.fillText('Peg Words: ' + wordsText, canvas.width / 2, y);
+            
+            // Add emoji representations
+            y += 40;
+            ctx.font = '48px Arial';
+            const emojiSpacing = Math.min(120, (canvas.width - 100) / words.length);
+            const startX = (canvas.width - (words.length - 1) * emojiSpacing) / 2;
+            
+            const visualIcons = {
+                'sauce': '🍅', 'suit': '👔', 'sun': '☀️', 'seam': '🧵', 'sore': '🩹',
+                'seal': '🦭', 'sash': '🎀', 'sock': '🧦', 'safe': '🔒', 'soap': '🧼',
+                'toes': '🦶', 'tent': '⛺', 'tin': '🥫', 'tomb': '⚰️', 'tire': '🛞',
+                'tail': '🐕', 'dish': '🍽️', 'tack': '📌', 'taffy': '🍬', 'tub': '🛁',
+                'nose': '👃', 'net': '🥅', 'nun': '👩‍🦲', 'nemo': '🐠', 'nero': '👑',
+                'nail': '💅', 'notch': '🔧', 'neck': '🦒', 'knife': '🔪', 'knob': '🔘',
+                'mouse': '🐭', 'mat': '🧘', 'moon': '🌙', 'mum': '👩', 'mower': '🚜',
+                'mail': '📬', 'match': '🔥', 'mug': '☕', 'muff': '🧤', 'mop': '🧽',
+                'rose': '🌹', 'rat': '🐀', 'rain': '🌧️', 'ram': '🐏', 'rower': '🚣',
+                'rail': '🚂', 'roach': '🪳', 'rock': '🪨', 'roof': '🏠', 'rope': '🪢',
+                'lace': '🪡', 'lid': '🍯', 'lion': '🦁', 'lime': '🍋', 'lure': '🎣',
+                'lily': '🌸', 'leash': '🐕‍🦺', 'lock': '🔐', 'leaf': '🍃', 'lab': '🧪',
+                'cheese': '🧀', 'sheet': '🛏️', 'chain': '⛓️', 'chimp': '🐵', 'chair': '🪑',
+                'shell': '🐚', 'church': '⛪', 'chalk': '✏️', 'chef': '👨‍🍳', 'chip': '🍟',
+                'case': '💼', 'cat': '🐱', 'can': '🥫', 'comb': '🪮', 'car': '🚗',
+                'coal': '⚫', 'cage': '🗂️', 'cake': '🎂', 'calf': '🐄', 'cap': '🧢',
+                'face': '😊', 'foot': '🦶', 'fan': '🪭', 'foam': '🫧', 'fire': '🔥',
+                'foil': '📄', 'fish': '🐟', 'fork': '🍴', 'fife': '🎵', 'fob': '🔑',
+                'bus': '🚌', 'bat': '🦇', 'bone': '🦴', 'bomb': '💣', 'bear': '🐻',
+                'ball': '⚽', 'beach': '🏖️', 'book': '📚', 'beef': '🥩', 'baby': '👶',
+                
+                // 4-digit word emojis
+                'scissors': '✂️', 'student': '🎓', 'season': '🍂', 'system': '💻', 'sister': '👩‍🦰',
+                'castle': '🏰', 'sausage': '🌭', 'socket': '🔌', 'software': '💿', 'subway': '🚇',
+                'stadium': '🏟️', 'station': '🚉', 'satellite': '🛰️', 'sandwich': '🥪', 'sticker': '🏷️',
+                'sunset': '🌅', 'snail': '🐌', 'snake': '🐍', 'snowflake': '❄️', 'summer': '☀️',
+                'salmon': '🐟', 'smile': '😊', 'smash': '💥', 'smoke': '💨', 'smooth': '✨',
+                'siren': '🚨', 'spiral': '🌀', 'search': '🔍', 'shark': '🦈', 'sheriff': '👮',
+                'salad': '🥗', 'salon': '💇', 'silly': '🤪', 'slash': '⚔️', 'silk': '🧵',
+                'shelf': '📚', 'sushi': '🍣', 'shine': '✨', 'shell': '🐚', 'shush': '🤫',
+                'shock': '⚡', 'shift': '⚙️', 'sky': '☁️', 'skin': '👤', 'skill': '🎯',
+                'sketch': '✏️', 'skunk': '🦨', 'skiff': '⛵', 'sofa': '🛋️', 'soft': '🧸',
+                'stuff': '📦', 'soup': '🍲', 'spine': '🦴', 'spill': '💧', 'speech': '💬',
+                'speak': '🗣️', 'spoof': '🎭',
+                
+                'dinosaur': '🦕', 'detective': '🕵️', 'dentist': '🦷', 'diamond': '💎', 'doctor': '👨‍⚕️',
+                'dolphin': '🐬', 'dragon': '🐉', 'dancer': '💃', 'driver': '🚗', 'doorbell': '🔔',
+                'tornado': '🌪️', 'turtle': '🐢', 'teacher': '👩‍🏫', 'turkey': '🦃', 'traffic': '🚦',
+                'tennis': '🎾', 'tunnel': '🚇', 'touch': '👆', 'tank': '🚛', 'tough': '💪',
+                'tomato': '🍅', 'temple': '🏛️', 'thumb': '👍', 'truck': '🚚', 'thief': '🥷',
+                'tiger': '🐅', 'trail': '🥾', 'trash': '🗑️', 'track': '🛤️', 'table': '🪑',
+                'tulip': '🌷', 'telescope': '🔭', 'talk': '💬', 'telephone': '☎️', 'ticket': '🎫',
+                'tackle': '🏈', 'technique': '🎯', 'taffy': '🍬', 'tuffle': '🍄', 'typewriter': '⌨️',
+                'topple': '📉', 'topography': '🗺️', 'topic': '📝',
+                
+                'newspaper': '📰', 'notebook': '📓', 'noodle': '🍜', 'number': '🔢', 'nurse': '👩‍⚕️',
+                'needle': '🪡', 'nature': '🌿', 'necklace': '📿', 'nephew': '👦', 'neighbor': '🏠',
+                'network': '🌐', 'nanny': '👵', 'name': '📛', 'narrow': '↔️', 'nail': '💅',
+                'niche': '🏠', 'neck': '🦒', 'knife': '🔪', 'nap': '😴',
+                
+                'mushroom': '🍄', 'musician': '🎵', 'mansion': '🏰', 'mammoth': '🦣', 'mirror': '🪞',
+                'missile': '🚀', 'machine': '⚙️', 'monkey': '🐵', 'muffin': '🧁', 'mailbox': '📬',
+                'mountain': '⛰️', 'moon': '🌙', 'mama': '👩', 'mayor': '👨‍💼', 'mall': '🏬',
+                'match': '🔥', 'magic': '✨', 'movie': '🎬', 'map': '🗺️',
+                
+                'rainbow': '🌈', 'robot': '🤖', 'reason': '🤔', 'rhythm': '🎵', 'river': '🏞️',
+                'rocket': '🚀', 'rescue': '🚑', 'racket': '🎾', 'referee': '👨‍⚖️', 'rabbit': '🐰',
+                'radio': '📻', 'rain': '🌧️', 'room': '🏠', 'roar': '🦁', 'rail': '🚂',
+                'reach': '🤲', 'rock': '🪨', 'roof': '🏠', 'rope': '🪢',
+                
+                'lighthouse': '🗼', 'laptop': '💻', 'lesson': '📚', 'lemon': '🍋', 'laser': '🔴',
+                'llama': '🦙', 'lunch': '🍽️', 'lucky': '🍀', 'laugh': '😂', 'lobby': '🏢',
+                'ladder': '🪜', 'lane': '🛣️', 'lamb': '🐑', 'liar': '🤥', 'lily': '🌸',
+                'leash': '🐕‍🦺', 'lake': '🏞️', 'leaf': '🍃', 'loop': '🔄',
+                
+                'chocolate': '🍫', 'champion': '🏆', 'chicken': '🐔', 'chimney': '🏠', 'chair': '🪑',
+                'challenge': '🎯', 'church': '⛪', 'check': '✅', 'chef': '👨‍🍳', 'chop': '🪓',
+                'shadow': '👤', 'shine': '✨', 'shame': '😳', 'share': '🤝', 'shell': '🐚',
+                'shush': '🤫', 'shock': '⚡', 'shift': '⚙️', 'ship': '🚢',
+                
+                'kangaroo': '🦘', 'keyboard': '⌨️', 'kitchen': '🍳', 'kingdom': '👑', 'karate': '🥋',
+                'koala': '🐨', 'ketchup': '🍅', 'kick': '⚽', 'knife': '🔪', 'keep': '🔒',
+                'castle': '🏰', 'coin': '🪙', 'comb': '🪮', 'car': '🚗', 'call': '📞',
+                'catch': '🤲', 'cake': '🎂', 'coffee': '☕', 'cup': '☕',
+                
+                'football': '🏈', 'factory': '🏭', 'fashion': '👗', 'phantom': '👻', 'fire': '🔥',
+                'photo': '📷', 'phone': '📱', 'foam': '🫧', 'fair': '🎡', 'fall': '🍂',
+                'fish': '🐟', 'fake': '🎭', 'fife': '🎵', 'fob': '🔑',
+                
+                'butterfly': '🦋', 'basketball': '🏀', 'business': '💼', 'bathroom': '🚿', 'brother': '👨',
+                'bottle': '🍼', 'beach': '🏖️', 'book': '📚', 'beef': '🥩', 'baby': '👶',
+                'potato': '🥔', 'bone': '🦴', 'bomb': '💣', 'bear': '🐻', 'ball': '⚽'
+            };
+            
+            words.forEach((word, index) => {
+                const emoji = visualIcons[word] || '📦';
+                
+                const x = startX + index * emojiSpacing;
+                ctx.fillText(emoji, x, y);
+                
+                // Add arrow between emojis
+                if (index < words.length - 1) {
+                    ctx.font = '32px Arial';
+                    ctx.fillStyle = '#667eea';
+                    ctx.fillText('→', x + emojiSpacing / 2, y);
+                    ctx.font = '48px Arial';
+                }
+            });
+            
+            // Add word labels below emojis
+            ctx.font = 'bold 14px Arial';
+            ctx.fillStyle = '#666';
+            words.forEach((word, index) => {
+                const x = startX + index * emojiSpacing;
+                ctx.fillText(word, x, y + 30);
+            });
+            
+            // Convert canvas to blob and download
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'story-illustration.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                // Show success feedback
+                downloadBtn.innerHTML = '✅ Downloaded!';
+                downloadBtn.style.background = '#138496';
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    downloadBtn.innerHTML = '💾 Download';
+                    downloadBtn.style.background = '#17a2b8';
+                }, 2000);
+            }, 'image/png');
+        }
+        
+        function copyDigitGroup(digits) {
+            navigator.clipboard.writeText(digits).then(() => {
+                // Find the button that was clicked and show feedback
+                const buttons = document.querySelectorAll('.copy-digit-btn');
+                buttons.forEach(btn => {
+                    if (btn.getAttribute('onclick').includes(digits)) {
+                        const originalContent = btn.innerHTML;
+                        btn.innerHTML = '✅';
+                        btn.style.background = 'rgba(40, 167, 69, 0.8)';
+                        
+                        // Reset after 1.5 seconds
+                        setTimeout(() => {
+                            btn.innerHTML = originalContent;
+                            btn.style.background = 'rgba(255, 255, 255, 0.2)';
+                        }, 1500);
+                    }
+                });
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = digits;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                // Show feedback
+                const buttons = document.querySelectorAll('.copy-digit-btn');
+                buttons.forEach(btn => {
+                    if (btn.getAttribute('onclick').includes(digits)) {
+                        const originalContent = btn.innerHTML;
+                        btn.innerHTML = '✅';
+                        btn.style.background = 'rgba(40, 167, 69, 0.8)';
+                        
+                        // Reset after 1.5 seconds
+                        setTimeout(() => {
+                            btn.innerHTML = originalContent;
+                            btn.style.background = 'rgba(255, 255, 255, 0.2)';
+                        }, 1500);
+                    }
+                });
+            });
+        }
+        
+        function clearInput() {
+            digitInput.value = '';
+            output.innerHTML = '<div class="empty-state">Enter digits above to see them grouped with peg words</div>';
+            document.getElementById('story-section').style.display = 'none';
+            digitInput.focus();
+        }
+        
+        // Focus input on page load
+        digitInput.focus();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99597c622760658d',t:'MTc2MTY0NDU3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

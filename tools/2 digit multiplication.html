@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2-Digit Multiplication Master</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            min-height: 100%;
+            color: #333;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa502 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mode-selector {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 4px;
+            border: 2px solid #e9ecef;
+        }
+
+        .mode-btn {
+            padding: 12px 24px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn.active {
+            background: #ff6b6b;
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .difficulty-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .unified-category-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .category-controls {
+            display: flex;
+            gap: 8px;
+            margin-left: 10px;
+        }
+
+        .category-control-btn {
+            padding: 8px 12px;
+            border: 2px solid #ff6b6b;
+            background: white;
+            color: #ff6b6b;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .category-control-btn:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .category-item {
+            position: relative;
+            padding: 10px 16px;
+            border: 2px solid #ff6b6b;
+            background: white;
+            color: #ff6b6b;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .category-item:hover {
+            background: #ff6b6b;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .category-item.selected {
+            background: #ff6b6b;
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .category-item.selected:hover {
+            background: #e53e3e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(229, 62, 62, 0.4);
+        }
+
+        .category-item:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 6px rgba(255, 107, 107, 0.2);
+        }
+
+        .category-item input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .difficulty-btn {
+            padding: 10px 16px;
+            border: 2px solid #ff6b6b;
+            background: white;
+            color: #ff6b6b;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .difficulty-btn.active {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .difficulty-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .game-area {
+            text-align: center;
+            margin: 40px 0;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            border: 2px solid #e9ecef;
+        }
+
+        .problem {
+            font-size: 4em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-family: 'Courier New', monospace;
+            min-height: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-area {
+            margin: 30px 0;
+        }
+
+        .answer-input {
+            font-size: 2em;
+            padding: 15px 25px;
+            border: 3px solid #ddd;
+            border-radius: 12px;
+            text-align: center;
+            width: 200px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa502 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-left: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .feedback {
+            margin: 20px 0;
+            font-size: 1.3em;
+            font-weight: 600;
+            min-height: 30px;
+        }
+
+        .correct {
+            color: #27ae60;
+        }
+
+        .incorrect {
+            color: #e74c3c;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: 700;
+            color: #ff6b6b;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .new-problem-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .new-problem-btn:hover {
+            background: #219a52;
+            transform: translateY(-2px);
+        }
+
+        .rankings {
+            margin-top: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            border: 2px solid #e9ecef;
+        }
+
+        .rankings h3 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .ranking-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .ranking-medal {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .mode-selector, .difficulty-selector {
+                justify-content: center;
+            }
+            
+            .problem {
+                font-size: 2.5em;
+            }
+            
+            .answer-input {
+                width: 150px;
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✖️ 2-Digit Multiplication Master</h1>
+            <p>Master multiplication of 2-digit numbers (00-99)!</p>
+        </div>
+        
+        <div class="content">
+            <div class="controls">
+                <div class="mode-selector">
+                    <button class="mode-btn active" onclick="setMode('normal')">Normal Mode</button>
+                    <button class="mode-btn" onclick="setMode('flash')">Flash Mode</button>
+                </div>
+                
+                <div class="mode-selector">
+                    <button class="mode-btn active" onclick="showTab('game')" id="gameTab">Game</button>
+                    <button class="mode-btn" onclick="showTab('history')" id="historyTab">History</button>
+                </div>
+                
+                <div class="difficulty-selector" id="flashTimeSelector" style="display: none;">
+                    <span style="font-weight: 600; margin-right: 10px;">Flash Time:</span>
+                    <button class="difficulty-btn" onclick="setFlashTime(0.1)">0.1s</button>
+                    <button class="difficulty-btn" onclick="setFlashTime(0.3)">0.3s</button>
+                    <button class="difficulty-btn active" onclick="setFlashTime(0.5)">0.5s</button>
+                    <button class="difficulty-btn" onclick="setFlashTime(1)">1s</button>
+                    <button class="difficulty-btn" onclick="setFlashTime(2)">2s</button>
+                </div>
+                
+                <div class="unified-category-selector">
+                    <span style="font-weight: 600; margin-right: 10px;">Categories:</span>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
+                        <div class="category-item selected" onclick="toggleCategory('all')">
+                            <input type="checkbox" id="cat_all" value="all" checked>
+                            <label for="cat_all">All Numbers</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('allZero')">
+                            <input type="checkbox" id="cat_allZero" value="allZero">
+                            <label for="cat_allZero">All Zero</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('oneZero')">
+                            <input type="checkbox" id="cat_oneZero" value="oneZero">
+                            <label for="cat_oneZero">One Zero</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('allFive')">
+                            <input type="checkbox" id="cat_allFive" value="allFive">
+                            <label for="cat_allFive">All Five</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('oneFive')">
+                            <input type="checkbox" id="cat_oneFive" value="oneFive">
+                            <label for="cat_oneFive">One Five</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('elevenOnly')">
+                            <input type="checkbox" id="cat_elevenOnly" value="elevenOnly">
+                            <label for="cat_elevenOnly">11 Only</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('twentyTwoOnly')">
+                            <input type="checkbox" id="cat_twentyTwoOnly" value="twentyTwoOnly">
+                            <label for="cat_twentyTwoOnly">22 Only</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('twelveOnly')">
+                            <input type="checkbox" id="cat_twelveOnly" value="twelveOnly">
+                            <label for="cat_twelveOnly">12 Only</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('fifteenTwentyFiveFiftySeventyFive')">
+                            <input type="checkbox" id="cat_fifteenTwentyFiveFiftySeventyFive" value="fifteenTwentyFiveFiftySeventyFive">
+                            <label for="cat_fifteenTwentyFiveFiftySeventyFive">15, 25, 50, 75</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('nearHundred')">
+                            <input type="checkbox" id="cat_nearHundred" value="nearHundred">
+                            <label for="cat_nearHundred">Near 100</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('teens')">
+                            <input type="checkbox" id="cat_teens" value="teens">
+                            <label for="cat_teens">Teens (10-19)</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('fortiesFifties')">
+                            <input type="checkbox" id="cat_fortiesFifties" value="fortiesFifties">
+                            <label for="cat_fortiesFifties">40s-50s</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('tensSameUnitsAdd10')">
+                            <input type="checkbox" id="cat_tensSameUnitsAdd10" value="tensSameUnitsAdd10">
+                            <label for="cat_tensSameUnitsAdd10">Tens Same, Units Add to 10</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('unitsSameTensAdd10')">
+                            <input type="checkbox" id="cat_unitsSameTensAdd10" value="unitsSameTensAdd10">
+                            <label for="cat_unitsSameTensAdd10">Units Same, Tens Add to 10</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('differenceOfSquares')">
+                            <input type="checkbox" id="cat_differenceOfSquares" value="differenceOfSquares">
+                            <label for="cat_differenceOfSquares">Difference of Squares</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('nearBase20s')">
+                            <input type="checkbox" id="cat_nearBase20s" value="nearBase20s">
+                            <label for="cat_nearBase20s">Near Base 20s-40s</label>
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('nearBase60s')">
+                            <input type="checkbox" id="cat_nearBase60s" value="nearBase60s">
+                            <label for="cat_nearBase60s">Near Base 60s-80s</label>
+                        </div>
+                    </div>
+                    <div class="category-controls">
+                        <button class="category-control-btn" onclick="selectAllCategories()">Select All</button>
+                        <button class="category-control-btn" onclick="selectNoCategories()">Select None</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="gameContent">
+            <div class="game-area">
+                <div class="session-info" id="sessionInfo" style="margin-bottom: 20px; font-size: 1.2em; font-weight: 600; color: #ff6b6b;">
+                    Session Progress: 0/20
+                </div>
+                <div class="problem" id="problem">Click "Start Session" to begin!</div>
+                <div class="input-area" id="inputArea" style="display: none;">
+                    <input type="number" class="answer-input" id="answerInput" placeholder="Your answer" disabled>
+                    <button class="submit-btn" onclick="checkAnswer()" id="submitBtn" disabled>Submit</button>
+                </div>
+                <div class="feedback" id="feedback"></div>
+                <button class="new-problem-btn" onclick="startNewSession()" id="sessionBtn">Start Session</button>
+                <button class="new-problem-btn" onclick="exitSession()" id="exitBtn" style="display: none; background: #e74c3c; margin-left: 10px;">Exit Session</button>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="correctCount">0</div>
+                    <div class="stat-label">Correct</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalCount">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="accuracy">0%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avgTime">0s</div>
+                    <div class="stat-label">Avg Time</div>
+                </div>
+            </div>
+
+            <div class="rankings">
+                <h3>🏆 Session Rankings</h3>
+                <div id="rankingsList">
+                    <div style="text-align: center; color: #666; padding: 20px;">
+                        Complete some problems to see your rankings!
+                    </div>
+                </div>
+            </div>
+            </div>
+            
+            <div id="historyContent" style="display: none;">
+                <div class="rankings">
+                    <h3>📊 Daily Performance History</h3>
+                    
+                    <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                        <div style="font-weight: 600; margin-bottom: 10px; color: #2c3e50;">Filter by Categories:</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+                            <div class="category-item selected" onclick="toggleHistoryCategory('all')">
+                                <input type="checkbox" id="history_cat_all" value="all" checked>
+                                <label for="history_cat_all">All Numbers</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('allZero')">
+                                <input type="checkbox" id="history_cat_allZero" value="allZero">
+                                <label for="history_cat_allZero">All Zero</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('oneZero')">
+                                <input type="checkbox" id="history_cat_oneZero" value="oneZero">
+                                <label for="history_cat_oneZero">One Zero</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('allFive')">
+                                <input type="checkbox" id="history_cat_allFive" value="allFive">
+                                <label for="history_cat_allFive">All Five</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('oneFive')">
+                                <input type="checkbox" id="history_cat_oneFive" value="oneFive">
+                                <label for="history_cat_oneFive">One Five</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('elevenOnly')">
+                                <input type="checkbox" id="history_cat_elevenOnly" value="elevenOnly">
+                                <label for="history_cat_elevenOnly">11 Only</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('twentyTwoOnly')">
+                                <input type="checkbox" id="history_cat_twentyTwoOnly" value="twentyTwoOnly">
+                                <label for="history_cat_twentyTwoOnly">22 Only</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('twelveOnly')">
+                                <input type="checkbox" id="history_cat_twelveOnly" value="twelveOnly">
+                                <label for="history_cat_twelveOnly">12 Only</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('fifteenTwentyFiveFiftySeventyFive')">
+                                <input type="checkbox" id="history_cat_fifteenTwentyFiveFiftySeventyFive" value="fifteenTwentyFiveFiftySeventyFive">
+                                <label for="history_cat_fifteenTwentyFiveFiftySeventyFive">15, 25, 50, 75</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('nearHundred')">
+                                <input type="checkbox" id="history_cat_nearHundred" value="nearHundred">
+                                <label for="history_cat_nearHundred">Near 100</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('teens')">
+                                <input type="checkbox" id="history_cat_teens" value="teens">
+                                <label for="history_cat_teens">Teens (10-19)</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('fortiesFifties')">
+                                <input type="checkbox" id="history_cat_fortiesFifties" value="fortiesFifties">
+                                <label for="history_cat_fortiesFifties">40s-50s</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('tensSameUnitsAdd10')">
+                                <input type="checkbox" id="history_cat_tensSameUnitsAdd10" value="tensSameUnitsAdd10">
+                                <label for="history_cat_tensSameUnitsAdd10">Tens Same, Units Add to 10</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('unitsSameTensAdd10')">
+                                <input type="checkbox" id="history_cat_unitsSameTensAdd10" value="unitsSameTensAdd10">
+                                <label for="history_cat_unitsSameTensAdd10">Units Same, Tens Add to 10</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('differenceOfSquares')">
+                                <input type="checkbox" id="history_cat_differenceOfSquares" value="differenceOfSquares">
+                                <label for="history_cat_differenceOfSquares">Difference of Squares</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('nearBase20s')">
+                                <input type="checkbox" id="history_cat_nearBase20s" value="nearBase20s">
+                                <label for="history_cat_nearBase20s">Near Base 20s</label>
+                            </div>
+                            <div class="category-item" onclick="toggleHistoryCategory('nearBase60s')">
+                                <input type="checkbox" id="history_cat_nearBase60s" value="nearBase60s">
+                                <label for="history_cat_nearBase60s">Near Base 60s</label>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="category-control-btn" onclick="selectAllHistoryCategories()">Select All</button>
+                            <button class="category-control-btn" onclick="selectNoHistoryCategories()">Select None</button>
+                        </div>
+                    </div>
+                    
+                    <div id="dailyHistoryList">
+                        <div style="text-align: center; color: #666; padding: 20px;">
+                            Complete some sessions to see your daily history!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentMode = 'normal';
+        let currentFlashTime = 0.5;
+        let currentCategory = 'all';
+        let currentProblem = null;
+        let startTime = null;
+        
+        // Category selection variables
+        let selectedCategories = new Set(['all']); // Default to 'all' category
+        
+        // Session management
+        let currentSession = {
+            active: false,
+            questionNumber: 0,
+            totalQuestions: 20,
+            correct: 0,
+            problems: []
+        };
+        
+        // Overall statistics
+        let overallStats = {
+            sessionsCompleted: 0,
+            totalCorrect: 0,
+            totalQuestions: 0,
+            allTimes: [],
+            bestSessions: []
+        };
+        
+        // Category-specific history tracking
+        let categoryHistory = {
+            'all': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'allZero': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'oneZero': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'allFive': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'oneFive': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'elevenOnly': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'twentyTwoOnly': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'twelveOnly': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'fifteenTwentyFiveFiftySeventyFive': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'nearHundred': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'teens': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'fortiesFifties': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'tensSameUnitsAdd10': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'unitsSameTensAdd10': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'differenceOfSquares': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'nearBase20s': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null },
+            'nearBase60s': { correct: 0, total: 0, times: [], bestAccuracy: 0, bestTime: null }
+        };
+        
+        // Daily performance tracking
+        let dailyHistory = [];
+        
+        // History category filtering
+        let selectedHistoryCategories = new Set(['all']); // Default to 'all' category
+        
+        // Mistake tracking
+        let mistakes = [];
+        
+        // Tab switching functionality
+        function showTab(tabName) {
+            // Update tab buttons
+            document.getElementById('gameTab').classList.remove('active');
+            document.getElementById('historyTab').classList.remove('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            // Show/hide content
+            document.getElementById('gameContent').style.display = tabName === 'game' ? 'block' : 'none';
+            document.getElementById('historyContent').style.display = tabName === 'history' ? 'block' : 'none';
+            
+            // Update history display when switching to history tab
+            if (tabName === 'history') {
+                updateDailyHistory();
+            }
+        }
+        
+        // Function to update category history
+        function updateCategoryHistory(problems) {
+            // Group problems by category
+            const categoryStats = {};
+            
+            problems.forEach(problem => {
+                const category = problem.category;
+                if (!categoryStats[category]) {
+                    categoryStats[category] = { correct: 0, total: 0, times: [] };
+                }
+                categoryStats[category].total++;
+                if (problem.correct) {
+                    categoryStats[category].correct++;
+                }
+                categoryStats[category].times.push(problem.time);
+            });
+            
+            // Update category history
+            Object.keys(categoryStats).forEach(category => {
+                const stats = categoryStats[category];
+                const history = categoryHistory[category];
+                
+                history.correct += stats.correct;
+                history.total += stats.total;
+                history.times.push(...stats.times);
+                
+                // Update best accuracy
+                const accuracy = (stats.correct / stats.total) * 100;
+                if (accuracy > history.bestAccuracy) {
+                    history.bestAccuracy = accuracy;
+                }
+                
+                // Update best time (fastest average for this category)
+                const avgTime = stats.times.reduce((a, b) => a + b, 0) / stats.times.length;
+                if (history.bestTime === null || avgTime < history.bestTime) {
+                    history.bestTime = avgTime;
+                }
+            });
+        }
+        
+        // History category filtering functions
+        function toggleHistoryCategory(category) {
+            if (selectedHistoryCategories.has(category)) {
+                selectedHistoryCategories.delete(category);
+            } else {
+                selectedHistoryCategories.add(category);
+            }
+            
+            // Immediate visual feedback
+            const item = event.target.closest('.category-item');
+            if (selectedHistoryCategories.has(category)) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+            
+            // Update all items to ensure consistency
+            updateHistoryCategoryDisplay();
+            
+            // Refresh the history display
+            updateDailyHistory();
+        }
+
+        function selectAllHistoryCategories() {
+            const allCategories = ['all', 'allZero', 'oneZero', 'allFive', 'oneFive', 'elevenOnly', 'twentyTwoOnly', 'twelveOnly', 'fifteenTwentyFiveFiftySeventyFive', 'nearHundred', 'teens', 'fortiesFifties', 'tensSameUnitsAdd10', 'unitsSameTensAdd10', 'differenceOfSquares', 'nearBase20s', 'nearBase60s'];
+            selectedHistoryCategories.clear();
+            allCategories.forEach(cat => selectedHistoryCategories.add(cat));
+            updateHistoryCategoryDisplay();
+            updateDailyHistory();
+        }
+
+        function selectNoHistoryCategories() {
+            selectedHistoryCategories.clear();
+            // When no categories are selected, show all sessions
+            updateHistoryCategoryDisplay();
+            updateDailyHistory();
+        }
+
+        function updateHistoryCategoryDisplay() {
+            const items = document.querySelectorAll('#historyContent .category-item');
+            
+            items.forEach(item => {
+                const checkbox = item.querySelector('input[type="checkbox"]');
+                const category = checkbox.value;
+                checkbox.checked = selectedHistoryCategories.has(category);
+                
+                if (selectedHistoryCategories.has(category)) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+        }
+
+        // Function to update daily history
+        function updateDailyHistory() {
+            const dailyHistoryList = document.getElementById('dailyHistoryList');
+            
+            if (dailyHistory.length === 0) {
+                dailyHistoryList.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">Complete some sessions to see your daily history!</div>';
+                return;
+            }
+            
+            // Filter sessions based on selected categories
+            let filteredHistory = dailyHistory;
+            
+            // If "all" is selected or no categories are selected, show all sessions
+            if (selectedHistoryCategories.has('all') || selectedHistoryCategories.size === 0) {
+                filteredHistory = dailyHistory;
+            } else {
+                // Filter by selected categories
+                filteredHistory = dailyHistory.filter(session => {
+                    // Check if any of the session's selected categories match the history filter
+                    return session.selectedCategories && session.selectedCategories.some(cat => selectedHistoryCategories.has(cat));
+                });
+            }
+            
+            if (filteredHistory.length === 0) {
+                dailyHistoryList.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">No sessions found for the selected categories!</div>';
+                return;
+            }
+            
+            // Sort by date (most recent first)
+            const sortedHistory = [...filteredHistory].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            let html = '';
+            
+            // Group by date
+            const groupedByDate = {};
+            sortedHistory.forEach(day => {
+                const dateKey = day.date;
+                if (!groupedByDate[dateKey]) {
+                    groupedByDate[dateKey] = [];
+                }
+                groupedByDate[dateKey].push(day);
+            });
+            
+            // Display each day
+            Object.keys(groupedByDate).forEach(dateKey => {
+                const daySessions = groupedByDate[dateKey];
+                const bestSession = daySessions.reduce((best, current) => {
+                    const currentAccuracy = (current.correct / current.total) * 100;
+                    const bestAccuracy = (best.correct / best.total) * 100;
+                    return currentAccuracy > bestAccuracy ? current : best;
+                });
+                
+                const totalCorrect = daySessions.reduce((sum, session) => sum + session.correct, 0);
+                const totalQuestions = daySessions.reduce((sum, session) => sum + session.total, 0);
+                const dayAccuracy = Math.round((totalCorrect / totalQuestions) * 100);
+                
+                // Format date
+                const date = new Date(dateKey);
+                const formattedDate = date.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                
+                html += `
+                    <div style="background: #f8f9fa; border-radius: 12px; margin: 15px 0; padding: 20px; border: 2px solid #e9ecef;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h4 style="margin: 0; color: #2c3e50;">📅 ${formattedDate}</h4>
+                            <div style="font-size: 1.2em; font-weight: 600; color: #ff6b6b;">
+                                ${daySessions.length} session${daySessions.length > 1 ? 's' : ''}
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                            <div style="background: white; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #ddd;">
+                                <div style="font-size: 1.5em; font-weight: 700; color: #27ae60;">${totalCorrect}/${totalQuestions}</div>
+                                <div style="color: #666; font-size: 0.9em;">Total Correct</div>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #ddd;">
+                                <div style="font-size: 1.5em; font-weight: 700; color: #3498db;">${dayAccuracy}%</div>
+                                <div style="color: #666; font-size: 0.9em;">Day Accuracy</div>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #ddd;">
+                                <div style="font-size: 1.5em; font-weight: 700; color: #e67e22;">${Math.round((bestSession.correct / bestSession.total) * 100)}%</div>
+                                <div style="color: #666; font-size: 0.9em;">Best Session</div>
+                            </div>
+                        </div>
+                        
+                        <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #ddd;">
+                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 10px;">🏆 Best Session Details:</div>
+                            <div style="font-size: 0.9em; color: #666;">
+                                <div>Score: ${bestSession.correct}/${bestSession.total} (${Math.round((bestSession.correct / bestSession.total) * 100)}%)</div>
+                                <div>Mode: ${bestSession.mode === 'flash' ? `Flash (${bestSession.flashTime}s)` : 'Normal'}</div>
+                                <div>Categories: ${bestSession.category}</div>
+                                <div>Average Time: ${bestSession.avgTime.toFixed(1)}s</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            dailyHistoryList.innerHTML = html;
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Show/hide flash time selector
+            const flashTimeSelector = document.getElementById('flashTimeSelector');
+            if (mode === 'flash') {
+                flashTimeSelector.style.display = 'flex';
+            } else {
+                flashTimeSelector.style.display = 'none';
+            }
+        }
+
+        function setFlashTime(seconds) {
+            currentFlashTime = seconds;
+            const flashTimeSelector = document.getElementById('flashTimeSelector');
+            flashTimeSelector.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function toggleCategory(category) {
+            if (selectedCategories.has(category)) {
+                selectedCategories.delete(category);
+            } else {
+                selectedCategories.add(category);
+            }
+            
+            // Immediate visual feedback
+            const item = event.target.closest('.category-item');
+            if (selectedCategories.has(category)) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+            
+            // Update all items to ensure consistency
+            updateCategoryDisplay();
+        }
+
+        function selectAllCategories() {
+            const allCategories = ['all', 'allZero', 'oneZero', 'allFive', 'oneFive', 'elevenOnly', 'twentyTwoOnly', 'twelveOnly', 'fifteenTwentyFiveFiftySeventyFive', 'nearHundred', 'teens', 'fortiesFifties', 'tensSameUnitsAdd10', 'unitsSameTensAdd10', 'differenceOfSquares', 'nearBase20s', 'nearBase60s'];
+            selectedCategories.clear();
+            allCategories.forEach(cat => selectedCategories.add(cat));
+            updateCategoryDisplay();
+        }
+
+        function selectNoCategories() {
+            selectedCategories.clear();
+            updateCategoryDisplay();
+        }
+
+        function updateCategoryDisplay() {
+            const items = document.querySelectorAll('.category-item');
+            
+            items.forEach(item => {
+                const checkbox = item.querySelector('input[type="checkbox"]');
+                const category = checkbox.value;
+                checkbox.checked = selectedCategories.has(category);
+                
+                if (selectedCategories.has(category)) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+        }
+
+        function getRandomCategory() {
+            if (selectedCategories.size === 0) {
+                return 'all'; // Fallback to all if no categories selected
+            }
+            const categories = Array.from(selectedCategories);
+            return categories[Math.floor(Math.random() * categories.length)];
+        }
+
+        function generateProblem() {
+            let num1, num2;
+            
+            // Always use random category selection from selected categories
+            const categoryToUse = getRandomCategory();
+            
+            switch (categoryToUse) {
+                case 'allZero':
+                    // Both numbers end with 0 (10, 20, 30, ..., 90)
+                    num1 = (Math.floor(Math.random() * 9) + 1) * 10;
+                    num2 = (Math.floor(Math.random() * 9) + 1) * 10;
+                    break;
+                    
+                case 'oneZero':
+                    // One number ends with 0, the other doesn't
+                    const zeroNum = (Math.floor(Math.random() * 9) + 1) * 10;
+                    let nonZeroNum;
+                    do {
+                        nonZeroNum = Math.floor(Math.random() * 100);
+                    } while (nonZeroNum % 10 === 0 || nonZeroNum === 0);
+                    
+                    // Randomly assign which is which
+                    if (Math.random() < 0.5) {
+                        num1 = zeroNum;
+                        num2 = nonZeroNum;
+                    } else {
+                        num1 = nonZeroNum;
+                        num2 = zeroNum;
+                    }
+                    break;
+                    
+                case 'allFive':
+                    // Both numbers end with 5 (05, 15, 25, ..., 95)
+                    num1 = Math.floor(Math.random() * 10) * 10 + 5;
+                    num2 = Math.floor(Math.random() * 10) * 10 + 5;
+                    break;
+                    
+                case 'oneFive':
+                    // One number ends with 5, the other doesn't
+                    const fiveNum = Math.floor(Math.random() * 10) * 10 + 5;
+                    let nonFiveNum;
+                    do {
+                        nonFiveNum = Math.floor(Math.random() * 100);
+                    } while (nonFiveNum % 10 === 5);
+                    
+                    // Randomly assign which is which
+                    if (Math.random() < 0.5) {
+                        num1 = fiveNum;
+                        num2 = nonFiveNum;
+                    } else {
+                        num1 = nonFiveNum;
+                        num2 = fiveNum;
+                    }
+                    break;
+                    
+                case 'elevenOnly':
+                    // One of the multipliers is 11
+                    const otherNum11 = Math.floor(Math.random() * 100);
+                    
+                    if (Math.random() < 0.5) {
+                        num1 = 11;
+                        num2 = otherNum11;
+                    } else {
+                        num1 = otherNum11;
+                        num2 = 11;
+                    }
+                    break;
+                    
+                case 'twentyTwoOnly':
+                    // One of the multipliers is 22
+                    const otherNum22 = Math.floor(Math.random() * 100);
+                    
+                    if (Math.random() < 0.5) {
+                        num1 = 22;
+                        num2 = otherNum22;
+                    } else {
+                        num1 = otherNum22;
+                        num2 = 22;
+                    }
+                    break;
+                    
+                case 'twelveOnly':
+                    // One of the multipliers is 12
+                    const otherNum12 = Math.floor(Math.random() * 100);
+                    
+                    if (Math.random() < 0.5) {
+                        num1 = 12;
+                        num2 = otherNum12;
+                    } else {
+                        num1 = otherNum12;
+                        num2 = 12;
+                    }
+                    break;
+                    
+                case 'fifteenTwentyFiveFiftySeventyFive':
+                    // One of the multipliers is 15, 25, 50, or 75
+                    const specialNums = [15, 25, 50, 75];
+                    const specialNum = specialNums[Math.floor(Math.random() * specialNums.length)];
+                    const otherNum = Math.floor(Math.random() * 100);
+                    
+                    if (Math.random() < 0.5) {
+                        num1 = specialNum;
+                        num2 = otherNum;
+                    } else {
+                        num1 = otherNum;
+                        num2 = specialNum;
+                    }
+                    break;
+                    
+                case 'nearHundred':
+                    // Both numbers are near 100 (90-99)
+                    num1 = Math.floor(Math.random() * 10) + 90; // 90-99
+                    num2 = Math.floor(Math.random() * 10) + 90; // 90-99
+                    break;
+                    
+                case 'teens':
+                    // Both numbers are from 10-19
+                    num1 = Math.floor(Math.random() * 10) + 10; // 10-19
+                    num2 = Math.floor(Math.random() * 10) + 10; // 10-19
+                    break;
+                    
+                case 'fortiesFifties':
+                    // Both numbers are from 40-59
+                    num1 = Math.floor(Math.random() * 20) + 40; // 40-59
+                    num2 = Math.floor(Math.random() * 20) + 40; // 40-59
+                    break;
+                    
+                case 'tensSameUnitsAdd10':
+                    // Tens digits are the same, unit digits add to 10
+                    const tensDigit = Math.floor(Math.random() * 9) + 1; // 1-9
+                    const units1 = Math.floor(Math.random() * 9) + 1; // 1-9
+                    const units2 = 10 - units1; // So units1 + units2 = 10
+                    
+                    num1 = tensDigit * 10 + units1;
+                    num2 = tensDigit * 10 + units2;
+                    break;
+                    
+                case 'unitsSameTensAdd10':
+                    // Unit digits are the same, tens digits add to 10
+                    const unitsDigit = Math.floor(Math.random() * 10); // 0-9
+                    const tens1 = Math.floor(Math.random() * 9) + 1; // 1-9
+                    const tens2 = 10 - tens1; // So tens1 + tens2 = 10
+                    
+                    num1 = tens1 * 10 + unitsDigit;
+                    num2 = tens2 * 10 + unitsDigit;
+                    break;
+                    
+                case 'differenceOfSquares':
+                    // Both numbers are equidistant from a base number (difference of squares pattern)
+                    // Choose a base number (10, 20, 30, 40, 50, 60, 70, 80, 90)
+                    const base = (Math.floor(Math.random() * 9) + 1) * 10; // 10, 20, 30, ..., 90
+                    // Choose a difference (1-9, but ensure both numbers stay in 2-digit range)
+                    const maxDiff = Math.min(9, base - 10, 99 - base);
+                    const diff = Math.floor(Math.random() * maxDiff) + 1; // 1 to maxDiff
+                    
+                    num1 = base + diff;
+                    num2 = base - diff;
+                    break;
+                    
+                case 'nearBase20s':
+                    // Both numbers are near base 20, 30, or 40 (within ±7 of the base)
+                    const bases20s = [20, 30, 40];
+                    const selectedBase = bases20s[Math.floor(Math.random() * bases20s.length)];
+                    const offset1 = Math.floor(Math.random() * 15) - 7; // -7 to +7
+                    const offset2 = Math.floor(Math.random() * 15) - 7; // -7 to +7
+                    
+                    num1 = Math.max(10, Math.min(99, selectedBase + offset1));
+                    num2 = Math.max(10, Math.min(99, selectedBase + offset2));
+                    break;
+                    
+                case 'nearBase60s':
+                    // Both numbers are near base 60, 70, or 80 (within ±7 of the base)
+                    const bases60s = [60, 70, 80];
+                    const selectedBase60s = bases60s[Math.floor(Math.random() * bases60s.length)];
+                    const offset1_60s = Math.floor(Math.random() * 15) - 7; // -7 to +7
+                    const offset2_60s = Math.floor(Math.random() * 15) - 7; // -7 to +7
+                    
+                    num1 = Math.max(10, Math.min(99, selectedBase60s + offset1_60s));
+                    num2 = Math.max(10, Math.min(99, selectedBase60s + offset2_60s));
+                    break;
+                    
+                default: // 'all'
+                    // Generate any two 2-digit numbers (00-99)
+                    num1 = Math.floor(Math.random() * 100);
+                    num2 = Math.floor(Math.random() * 100);
+                    break;
+            }
+            
+            // Format numbers to always show 2 digits
+            const formattedNum1 = num1.toString().padStart(2, '0');
+            const formattedNum2 = num2.toString().padStart(2, '0');
+            
+            const answer = num1 * num2;
+            
+            return {
+                num1: formattedNum1,
+                num2: formattedNum2,
+                answer: answer,
+                category: categoryToUse
+            };
+        }
+
+        function startNewSession() {
+            currentSession = {
+                active: true,
+                questionNumber: 0,
+                totalQuestions: 20,
+                correct: 0,
+                problems: []
+            };
+            
+            mistakes = []; // Reset mistakes for new session
+            
+            // Make sure all elements are visible again
+            document.getElementById('problem').style.display = 'block';
+            document.getElementById('inputArea').style.display = 'block';
+            
+            document.getElementById('sessionBtn').textContent = 'Next Problem';
+            document.getElementById('sessionBtn').onclick = nextProblem;
+            document.getElementById('exitBtn').style.display = 'inline-block';
+            updateSessionInfo();
+            nextProblem();
+        }
+
+        function exitSession() {
+            if (!currentSession.active) return;
+            
+            mistakes = []; // Reset mistakes when exiting
+            
+            // Show partial session results if any problems were completed
+            if (currentSession.problems.length > 0) {
+                const accuracy = Math.round((currentSession.correct / currentSession.problems.length) * 100);
+                const avgTime = (currentSession.problems.reduce((sum, p) => sum + p.time, 0) / currentSession.problems.length).toFixed(1);
+                
+                document.getElementById('feedback').innerHTML = `
+                    <div style="background: #fff3cd; padding: 20px; border-radius: 12px; margin: 20px 0; border: 2px solid #ffeaa7;">
+                        <h3 style="margin: 0 0 10px 0; color: #e17055;">📊 Session Ended Early</h3>
+                        <p style="margin: 5px 0; font-size: 1.1em;">Completed: ${currentSession.problems.length}/${currentSession.totalQuestions} problems</p>
+                        <p style="margin: 5px 0; font-size: 1.1em;">Score: ${currentSession.correct}/${currentSession.problems.length} (${accuracy}%)</p>
+                        <p style="margin: 5px 0; font-size: 1.1em;">Average Time: ${avgTime}s</p>
+                    </div>
+                `;
+                
+                // Add partial session to overall stats
+                overallStats.totalCorrect += currentSession.correct;
+                overallStats.totalQuestions += currentSession.problems.length;
+                overallStats.allTimes.push(...currentSession.problems.map(p => p.time));
+                
+                // Update category history for partial session
+                updateCategoryHistory(currentSession.problems);
+                
+                // Add partial session to daily history
+                const partialSessionResult = {
+                    correct: currentSession.correct,
+                    total: currentSession.problems.length,
+                    accuracy: Math.round((currentSession.correct / currentSession.problems.length) * 100),
+                    avgTime: currentSession.problems.reduce((sum, p) => sum + p.time, 0) / currentSession.problems.length,
+                    mode: currentMode,
+                    flashTime: currentFlashTime,
+                    category: Array.from(selectedCategories).join(', '),
+                    selectedCategories: Array.from(selectedCategories),
+                    date: new Date().toISOString().split('T')[0] // YYYY-MM-DD format
+                };
+                dailyHistory.push(partialSessionResult);
+                
+                updateStats();
+                updateRankings();
+            } else {
+                document.getElementById('feedback').textContent = '';
+            }
+            
+            // Reset session
+            currentSession.active = false;
+            document.getElementById('problem').textContent = 'Click "Start Session" to begin!';
+            document.getElementById('inputArea').style.display = 'none';
+            document.getElementById('sessionBtn').textContent = 'Start Session';
+            document.getElementById('sessionBtn').onclick = startNewSession;
+            document.getElementById('exitBtn').style.display = 'none';
+            updateSessionInfo();
+        }
+
+        function nextProblem() {
+            if (!currentSession.active) return;
+            
+            currentSession.questionNumber++;
+            updateSessionInfo();
+            
+            // Show input area when session starts
+            document.getElementById('inputArea').style.display = 'block';
+            
+            currentProblem = generateProblem();
+            const problemText = `${currentProblem.num1} × ${currentProblem.num2} = ?`;
+            document.getElementById('problem').textContent = problemText;
+            document.getElementById('answerInput').value = '';
+            document.getElementById('answerInput').disabled = false;
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('answerInput').focus();
+            
+            startTime = Date.now();
+            
+            if (currentMode === 'flash') {
+                startFlashMode();
+            }
+        }
+
+        function updateSessionInfo() {
+            const sessionInfo = document.getElementById('sessionInfo');
+            if (currentSession.active) {
+                sessionInfo.textContent = `Session Progress: ${currentSession.questionNumber}/${currentSession.totalQuestions} | Correct: ${currentSession.correct}`;
+            } else {
+                sessionInfo.textContent = 'Session Progress: 0/20';
+            }
+        }
+
+        function startFlashMode() {
+            const problemElement = document.getElementById('problem');
+            
+            // Clear any existing content first
+            problemElement.textContent = '';
+            
+            // Show first number
+            setTimeout(() => {
+                problemElement.textContent = currentProblem.num1;
+                
+                setTimeout(() => {
+                    // Hide first number
+                    problemElement.textContent = '';
+                    
+                    setTimeout(() => {
+                        // Show second number
+                        problemElement.textContent = currentProblem.num2;
+                        
+                        setTimeout(() => {
+                            // Hide everything
+                            problemElement.textContent = '';
+                        }, currentFlashTime * 1000);
+                        
+                    }, 200); // 200ms gap
+                    
+                }, currentFlashTime * 1000);
+            }, 100); // Small delay to ensure clear
+        }
+
+        function checkAnswer() {
+            if (!currentProblem || !currentSession.active) return;
+            
+            const userAnswer = parseInt(document.getElementById('answerInput').value);
+            const timeTaken = (Date.now() - startTime) / 1000;
+            
+            // Show the original problem with answer
+            const problemElement = document.getElementById('problem');
+            problemElement.textContent = `${currentProblem.num1} × ${currentProblem.num2} = ${currentProblem.answer}`;
+            problemElement.style.color = '#2c3e50';
+            
+            let feedback = '';
+            let isCorrect = false;
+            
+            if (userAnswer === currentProblem.answer) {
+                currentSession.correct++;
+                isCorrect = true;
+                feedback = `🎉 Correct! (${timeTaken.toFixed(1)}s)`;
+                document.getElementById('feedback').className = 'feedback correct';
+                document.getElementById('feedback').textContent = feedback;
+            } else {
+                const userAnswerText = isNaN(userAnswer) ? 'No answer' : userAnswer;
+                
+                // Track the mistake
+                console.log('Adding mistake:', {
+                    problem: `${currentProblem.num1} × ${currentProblem.num2} = ?`,
+                    userAnswer: userAnswerText,
+                    correctAnswer: currentProblem.answer,
+                    questionNumber: currentSession.questionNumber
+                });
+                mistakes.push({
+                    problem: `${currentProblem.num1} × ${currentProblem.num2} = ?`,
+                    userAnswer: userAnswerText,
+                    correctAnswer: currentProblem.answer,
+                    questionNumber: currentSession.questionNumber
+                });
+                console.log('Mistakes array after adding:', mistakes);
+                
+                // Show the wrong and correct answers prominently below the problem
+                document.getElementById('feedback').innerHTML = `
+                    <div style="background: #ffe6e6; padding: 20px; border-radius: 12px; margin: 20px 0; border: 2px solid #ff9999;">
+                        <div style="color: #e74c3c; font-size: 1.4em; font-weight: 700; margin-bottom: 10px;">❌ WRONG!</div>
+                        <div style="color: #666; font-size: 1.2em; margin-bottom: 8px;">Your answer: <span style="color: #e74c3c; font-weight: 700;">${userAnswerText}</span></div>
+                        <div style="color: #666; font-size: 1.2em;">Correct answer: <span style="color: #27ae60; font-weight: 700; font-size: 1.3em;">${currentProblem.answer}</span></div>
+                        <div style="color: #999; font-size: 1em; margin-top: 10px;">Time: ${timeTaken.toFixed(1)}s | Press Enter to continue</div>
+                    </div>
+                `;
+            }
+            document.getElementById('answerInput').disabled = true;
+            document.getElementById('submitBtn').disabled = true;
+            
+            // Store problem in current session
+            currentSession.problems.push({
+                problem: `${currentProblem.num1} × ${currentProblem.num2}`,
+                answer: currentProblem.answer,
+                userAnswer: userAnswer,
+                time: timeTaken,
+                correct: isCorrect,
+                category: currentProblem.category
+            });
+            
+            updateSessionInfo();
+            
+            // For correct answers, show next problem button immediately
+            // For wrong answers, hide the button until Enter is pressed
+            if (isCorrect) {
+                // Check if session is complete
+                if (currentSession.questionNumber >= currentSession.totalQuestions) {
+                    completeSession();
+                } else {
+                    // Show next problem button - user must manually click to continue
+                    document.getElementById('sessionBtn').style.display = 'inline-block';
+                }
+            } else {
+                // Hide next problem button for wrong answers - will be shown when Enter is pressed
+                document.getElementById('sessionBtn').style.display = 'none';
+            }
+            
+            updateStats();
+            updateRankings();
+        }
+
+        function completeSession() {
+            currentSession.active = false;
+            
+            // Add to overall stats
+            overallStats.sessionsCompleted++;
+            overallStats.totalCorrect += currentSession.correct;
+            overallStats.totalQuestions += currentSession.totalQuestions;
+            overallStats.allTimes.push(...currentSession.problems.map(p => p.time));
+            
+            // Update category history
+            updateCategoryHistory(currentSession.problems);
+            
+            // Store session results
+            const sessionResult = {
+                correct: currentSession.correct,
+                total: currentSession.totalQuestions,
+                accuracy: Math.round((currentSession.correct / currentSession.totalQuestions) * 100),
+                avgTime: currentSession.problems.reduce((sum, p) => sum + p.time, 0) / currentSession.problems.length,
+                mode: currentMode,
+                flashTime: currentFlashTime,
+                category: Array.from(selectedCategories).join(', '),
+                selectedCategories: Array.from(selectedCategories),
+                date: new Date().toISOString().split('T')[0] // YYYY-MM-DD format
+            };
+            
+            // Add to daily history
+            dailyHistory.push(sessionResult);
+            
+            overallStats.bestSessions.push(sessionResult);
+            overallStats.bestSessions.sort((a, b) => b.accuracy - a.accuracy || a.avgTime - b.avgTime);
+            overallStats.bestSessions = overallStats.bestSessions.slice(0, 10); // Keep top 10
+            
+            // Show session complete message
+            const accuracy = Math.round((currentSession.correct / currentSession.totalQuestions) * 100);
+            const avgTime = (currentSession.problems.reduce((sum, p) => sum + p.time, 0) / currentSession.problems.length).toFixed(1);
+            
+            // Generate mistake details using the mistakes array
+            let mistakeDetails = '';
+            console.log('Mistakes array length:', mistakes.length);
+            console.log('Current session correct:', currentSession.correct);
+            console.log('Current session total:', currentSession.totalQuestions);
+            console.log('Mistakes array:', mistakes);
+            if (mistakes.length > 0) {
+                mistakeDetails = `
+                    <div style="background: #fef2f2; padding: 15px; border-radius: 10px; margin: 15px 0; border: 2px solid #fecaca;">
+                        <div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin-bottom: 10px;">
+                            ❌ Problems You Got Wrong (${mistakes.length} out of ${currentSession.totalQuestions})
+                        </div>
+                        <div style="max-height: 200px; overflow-y: auto;">
+                            ${mistakes.map(mistake => `
+                                <div style="background: white; padding: 8px; margin: 5px 0; border-radius: 6px; border-left: 3px solid #dc2626; font-size: 0.9rem;">
+                                    <strong>Q${mistake.questionNumber}:</strong> ${mistake.problem}<br>
+                                    <span style="color: #dc2626;">Your answer: ${mistake.userAnswer}</span> | 
+                                    <span style="color: #16a34a;">Correct: ${mistake.correctAnswer}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                mistakeDetails = `
+                    <div style="background: #f0fdf4; padding: 15px; border-radius: 10px; margin: 15px 0; border: 2px solid #bbf7d0;">
+                        <div style="font-size: 1.3rem; font-weight: 600; color: #16a34a; text-align: center;">
+                            🎉 Perfect Score!
+                        </div>
+                        <div style="font-size: 1rem; color: #166534; text-align: center; margin-top: 5px;">
+                            Outstanding performance! You're a multiplication master! 🌟
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Always show the complete feedback with mistake details
+            const feedbackHTML = `
+                <div style="background: #e8f5e8; padding: 20px; border-radius: 12px; margin: 20px 0;">
+                    <h3 style="margin: 0 0 10px 0; color: #27ae60;">🎉 Session Complete!</h3>
+                    <p style="margin: 5px 0; font-size: 1.1em;">Score: ${currentSession.correct}/${currentSession.totalQuestions} (${accuracy}%)</p>
+                    <p style="margin: 5px 0; font-size: 1.1em;">Average Time: ${avgTime}s</p>
+                </div>
+                ${mistakeDetails}
+            `;
+            
+            console.log('About to set feedback HTML:', feedbackHTML);
+            console.log('Mistake details:', mistakeDetails);
+            document.getElementById('feedback').innerHTML = feedbackHTML;
+            
+            // Add a delay to check if the content gets overwritten
+            setTimeout(() => {
+                console.log('Feedback content after 1 second:', document.getElementById('feedback').innerHTML);
+                // If the perfect score message got overwritten, restore it
+                if (mistakes.length === 0 && !document.getElementById('feedback').innerHTML.includes('Perfect Score')) {
+                    console.log('Perfect score message was overwritten, restoring...');
+                    document.getElementById('feedback').innerHTML = feedbackHTML;
+                }
+            }, 1000);
+            
+            // Hide buttons until user manually starts new session
+            document.getElementById('sessionBtn').textContent = 'New Session';
+            document.getElementById('sessionBtn').onclick = startNewSession;
+            document.getElementById('sessionBtn').style.display = 'inline-block';
+            
+            // Hide unnecessary elements for perfect score
+            if (mistakes.length === 0) {
+                // Perfect score - hide more elements
+                document.getElementById('exitBtn').style.display = 'none';
+                document.getElementById('inputArea').style.display = 'none';
+                document.getElementById('problem').style.display = 'none';
+            } else {
+                // Has mistakes - show normal completion
+                document.getElementById('exitBtn').style.display = 'none';
+                document.getElementById('inputArea').style.display = 'none';
+                document.getElementById('problem').textContent = 'Session Complete! Click "New Session" to continue.';
+            }
+            
+            updateSessionInfo();
+            updateStats();
+            updateRankings();
+        }
+
+        function updateStats() {
+            // Show overall statistics across all sessions
+            document.getElementById('correctCount').textContent = overallStats.totalCorrect;
+            document.getElementById('totalCount').textContent = overallStats.totalQuestions;
+            
+            const accuracy = overallStats.totalQuestions > 0 ? 
+                Math.round((overallStats.totalCorrect / overallStats.totalQuestions) * 100) : 0;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+            
+            const avgTime = overallStats.allTimes.length > 0 ? 
+                (overallStats.allTimes.reduce((a, b) => a + b, 0) / overallStats.allTimes.length).toFixed(1) : 0;
+            document.getElementById('avgTime').textContent = avgTime + 's';
+        }
+
+        function updateRankings() {
+            const rankingsList = document.getElementById('rankingsList');
+            
+            let html = '';
+            
+            // Show best sessions
+            if (overallStats.bestSessions.length > 0) {
+                html += '<h4 style="margin: 0 0 15px 0; color: #27ae60;">🏆 Best Sessions</h4>';
+                overallStats.bestSessions.slice(0, 5).forEach((session, index) => {
+                    const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅';
+                    const modeText = session.mode === 'flash' ? `Flash (${session.flashTime}s)` : 'Normal';
+                    
+                    // Get category display name
+                    const categoryNames = {
+                        'all': 'All Numbers',
+                        'allZero': 'All Zero',
+                        'oneZero': 'One Zero',
+                        'allFive': 'All Five',
+                        'oneFive': 'One Five',
+                        'elevenOnly': '11 Only',
+                        'twentyTwoOnly': '22 Only',
+                        'twelveOnly': '12 Only',
+                        'fifteenTwentyFiveFiftySeventyFive': '15, 25, 50, 75',
+                        'nearHundred': 'Near 100',
+                        'teens': 'Teens (10-19)',
+                        'fortiesFifties': '40s-50s',
+                        'tensSameUnitsAdd10': 'Tens Same, Units Add to 10',
+                        'unitsSameTensAdd10': 'Units Same, Tens Add to 10',
+                        'differenceOfSquares': 'Difference of Squares',
+                        'nearBase20s': 'Near Base 20s',
+                        'nearBase60s': 'Near Base 60s'
+                    };
+                    let categoryText;
+                    if (session.selectedCategories && session.selectedCategories.length > 0) {
+                        // Show selected categories
+                        const categoryDisplayNames = session.selectedCategories.map(cat => categoryNames[cat] || cat);
+                        categoryText = categoryDisplayNames.join(', ');
+                    } else {
+                        // Fallback
+                        categoryText = 'All Numbers';
+                    }
+                    
+                    html += `
+                        <div class="ranking-item">
+                            <div>
+                                <span class="ranking-medal">${medal}</span>
+                                ${session.correct}/${session.total} (${session.accuracy}%) - ${modeText} - ${categoryText}
+                            </div>
+                            <div style="font-weight: 600; color: #27ae60;">${session.avgTime.toFixed(1)}s avg</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            // Show current session progress - correct and wrong answers
+            if (currentSession.active && currentSession.problems.length > 0) {
+                const correctProblems = currentSession.problems.filter(problem => problem.correct);
+                const wrongProblems = currentSession.problems.filter(problem => !problem.correct);
+                
+                if (correctProblems.length > 0) {
+                    html += '<h4 style="margin: 20px 0 15px 0; color: #27ae60;">✅ Current Session - Recent Correct</h4>';
+                    correctProblems.slice(-3).reverse().forEach(problem => {
+                        html += `
+                            <div class="ranking-item">
+                                <div>
+                                    <span style="color: #27ae60; margin-right: 10px;">✅</span>
+                                    ${problem.problem} = ${problem.answer}
+                                </div>
+                                <div style="font-weight: 600;">${problem.time.toFixed(1)}s</div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                if (wrongProblems.length > 0) {
+                    html += '<h4 style="margin: 20px 0 15px 0; color: #e74c3c;">❌ Current Session - Wrong Answers</h4>';
+                    wrongProblems.slice(-5).reverse().forEach(problem => {
+                        const userAnswerText = isNaN(problem.userAnswer) ? 'No answer' : problem.userAnswer;
+                        html += `
+                            <div class="ranking-item" style="background: #ffe6e6; border-color: #ff9999;">
+                                <div>
+                                    <span style="color: #e74c3c; margin-right: 10px;">❌</span>
+                                    ${problem.problem} = ${problem.answer} <span style="color: #999; font-size: 0.9em;">(You: ${userAnswerText})</span>
+                                </div>
+                                <div style="font-weight: 600;">${problem.time.toFixed(1)}s</div>
+                            </div>
+                        `;
+                    });
+                }
+            }
+            
+            // Show category history
+            const categoriesWithData = Object.keys(categoryHistory).filter(cat => categoryHistory[cat].total > 0);
+            if (categoriesWithData.length > 0) {
+                html += '<h4 style="margin: 20px 0 15px 0; color: #8e44ad;">📊 Category Performance History</h4>';
+                
+                // Sort categories by total problems (most practiced first)
+                categoriesWithData.sort((a, b) => categoryHistory[b].total - categoryHistory[a].total);
+                
+                categoriesWithData.forEach(category => {
+                    const history = categoryHistory[category];
+                    const accuracy = Math.round((history.correct / history.total) * 100);
+                    const avgTime = history.times.length > 0 ? 
+                        (history.times.reduce((a, b) => a + b, 0) / history.times.length).toFixed(1) : 0;
+                    
+                    // Get category display name
+                    const categoryNames = {
+                        'all': 'All Numbers',
+                        'allZero': 'All Zero',
+                        'oneZero': 'One Zero',
+                        'allFive': 'All Five',
+                        'oneFive': 'One Five',
+                        'elevenOnly': '11 Only',
+                        'twentyTwoOnly': '22 Only',
+                        'twelveOnly': '12 Only',
+                        'fifteenTwentyFiveFiftySeventyFive': '15, 25, 50, 75',
+                        'nearHundred': 'Near 100',
+                        'teens': 'Teens (10-19)',
+                        'fortiesFifties': '40s-50s',
+                        'tensSameUnitsAdd10': 'Tens Same, Units Add to 10',
+                        'unitsSameTensAdd10': 'Units Same, Tens Add to 10',
+                        'differenceOfSquares': 'Difference of Squares',
+                        'nearBase20s': 'Near Base 20s',
+                        'nearBase60s': 'Near Base 60s'
+                    };
+                    
+                    const displayName = categoryNames[category] || category;
+                    
+                    html += `
+                        <div class="ranking-item" style="background: #f8f9fa; border-left: 4px solid #8e44ad;">
+                            <div>
+                                <div style="font-weight: 600; color: #8e44ad; margin-bottom: 5px;">${displayName}</div>
+                                <div style="font-size: 0.9em; color: #666;">
+                                    ${history.correct}/${history.total} correct (${accuracy}%) | 
+                                    Best: ${history.bestAccuracy.toFixed(0)}% | 
+                                    Avg Time: ${avgTime}s
+                                    ${history.bestTime ? ` | Best Time: ${history.bestTime.toFixed(1)}s` : ''}
+                                </div>
+                            </div>
+                            <div style="font-weight: 600; color: #8e44ad;">
+                                ${history.total} problems
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            // Show overall stats
+            if (overallStats.sessionsCompleted > 0) {
+                html += `<h4 style="margin: 20px 0 15px 0; color: #ee5a24;">📈 Overall Stats</h4>
+                        <div class="ranking-item">
+                            <div>Sessions Completed</div>
+                            <div style="font-weight: 600;">${overallStats.sessionsCompleted}</div>
+                        </div>`;
+            }
+            
+            rankingsList.innerHTML = html || '<div style="text-align: center; color: #666; padding: 20px;">Complete a session to see your rankings!</div>';
+        }
+
+        // Enter key support
+        document.getElementById('answerInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !this.disabled) {
+                checkAnswer();
+            }
+        });
+
+        // Global Enter key support for next problem
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const sessionBtn = document.getElementById('sessionBtn');
+                const answerInput = document.getElementById('answerInput');
+                
+                // If answer input is focused and enabled, submit answer
+                if (document.activeElement === answerInput && !answerInput.disabled) {
+                    checkAnswer();
+                }
+                // If answer input is disabled and session button is visible, go to next problem
+                else if (answerInput.disabled && sessionBtn.style.display !== 'none' && currentSession.active) {
+                    nextProblem();
+                }
+                // If answer input is disabled and session button is hidden (wrong answer case), show button and allow continue
+                else if (answerInput.disabled && sessionBtn.style.display === 'none' && currentSession.active) {
+                    // Check if session is complete
+                    if (currentSession.questionNumber >= currentSession.totalQuestions) {
+                        completeSession();
+                    } else {
+                        // Show next problem button and go to next problem
+                        sessionBtn.style.display = 'inline-block';
+                        nextProblem();
+                    }
+                }
+                // If no session is active, start new session
+                else if (!currentSession.active && sessionBtn.textContent === 'Start New Session') {
+                    startNewSession();
+                }
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+            // Initialize category display
+            // Clear any existing selected classes and update display
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            updateCategoryDisplay();
+            
+            // Initialize history category display
+            updateHistoryCategoryDisplay();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ce337a12324028',t:'MTc2MDE4NDA2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

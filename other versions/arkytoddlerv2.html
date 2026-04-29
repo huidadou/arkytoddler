@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arkytoddler — The Creative × The Brainy</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@400;700&family=Figtree:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0A0A0A;
+    --paper: #F2EFE8;
+    --electric: #C8FF00;       /* brainy: acid yellow-green */
+    --flame: #FF2D00;          /* creative: raw red-orange */
+    --cobalt: #1A1AFF;         /* deep blue accent */
+    --off: #1C1C1C;
+    --mid: #6B6B6B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  ::selection { background: var(--electric); color: var(--ink); }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Figtree', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Split background — brainy left, creative right */
+  .hero-split {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-split-left {
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-split-right {
+    background: var(--flame);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Grid lines on left */
+  .hero-split-left::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--electric) 1px, transparent 1px),
+      linear-gradient(90deg, var(--electric) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.06;
+  }
+
+  /* Hatching on right */
+  .hero-split-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 20px,
+      rgba(0,0,0,0.08) 20px,
+      rgba(0,0,0,0.08) 21px
+    );
+  }
+
+  .hero-top-bar {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 2rem 3rem;
+    align-self: start;
+  }
+
+  .hero-top-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+
+  .hero-top-label.right {
+    text-align: right;
+    color: rgba(0,0,0,0.4);
+  }
+
+  /* The BIG name — straddles the split */
+  .hero-center {
+    position: relative;
+    z-index: 10;
+    align-self: center;
+    text-align: center;
+    padding: 0 2rem;
+  }
+
+  .hero-pre {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: rgba(242,239,232,0.35);
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 16vw, 14rem);
+    line-height: 0.88;
+    letter-spacing: 0.04em;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    opacity: 0;
+    animation: riseIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  }
+
+  /* "ARKY" half gets electric treatment */
+  .name-arky {
+    display: inline-block;
+    color: var(--paper);
+    position: relative;
+  }
+
+  /* "TODDLER" half gets flame/dark treatment */
+  .name-toddler {
+    display: inline-block;
+    color: var(--ink);
+    -webkit-text-stroke: 2px var(--ink);
+    background: var(--electric);
+    padding: 0 0.1em;
+  }
+
+  .hero-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    color: rgba(242,239,232,0.5);
+    margin-top: 2rem;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.9s forwards;
+  }
+
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+
+  .hero-divider-line {
+    height: 1px;
+    width: 80px;
+    background: linear-gradient(90deg, transparent, var(--electric));
+  }
+
+  .hero-divider-line.right {
+    background: linear-gradient(90deg, var(--flame), transparent);
+  }
+
+  .hero-divider-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    border: 1px solid rgba(242,239,232,0.2);
+    padding: 0.45rem 1rem;
+    color: rgba(242,239,232,0.6);
+  }
+
+  .hero-bottom {
+    position: relative;
+    z-index: 10;
+    align-self: end;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.5s forwards;
+  }
+
+  .hero-scroll-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .hero-scroll-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+
+  .hero-scroll-bar {
+    width: 2px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--electric), var(--flame));
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ─── DUAL IDENTITY STRIP ─── */
+  .identity-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 3px solid var(--paper);
+  }
+
+  .identity-half {
+    padding: 1.2rem 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .identity-half.brainy {
+    background: var(--electric);
+    color: var(--ink);
+  }
+
+  .identity-half.creative {
+    background: var(--flame);
+    color: var(--paper);
+    justify-content: flex-end;
+  }
+
+  .identity-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .identity-symbol {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    opacity: 0.4;
+  }
+
+  /* ─── SECTIONS ─── */
+  .sections {
+    padding-bottom: 0;
+  }
+
+  .section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 85vh;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+    border-top: 1px solid rgba(242,239,232,0.08);
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Veritas — brainy */
+  .section.veritas { background: var(--ink); }
+  /* Sapientia — creative */
+  .section.sapientia { background: #120E0E; }
+  /* Hismod — lived */
+  .section.hismod { background: var(--off); }
+
+  .section-content {
+    padding: 6rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .section-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+
+  .section-pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: 0;
+    font-weight: 700;
+  }
+
+  .veritas .section-pill { background: var(--electric); color: var(--ink); }
+  .sapientia .section-pill { background: var(--flame); color: var(--paper); }
+  .hismod .section-pill { background: var(--cobalt); color: var(--paper); }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    color: var(--paper);
+  }
+
+  .section-latin {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+  }
+
+  .veritas .section-latin { color: var(--electric); }
+  .sapientia .section-latin { color: var(--flame); }
+  .hismod .section-latin { color: #7B8CFF; }
+
+  .section-desc {
+    font-family: 'Figtree', sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.85;
+    color: rgba(242,239,232,0.55);
+    max-width: 400px;
+    margin-bottom: 3rem;
+  }
+
+  .section-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--paper);
+    text-decoration: none;
+    width: fit-content;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid rgba(242,239,232,0.2);
+    transition: all 0.3s ease;
+  }
+
+  .veritas .section-link:hover { color: var(--electric); border-color: var(--electric); }
+  .sapientia .section-link:hover { color: var(--flame); border-color: var(--flame); }
+  .hismod .section-link:hover { color: #7B8CFF; border-color: #7B8CFF; }
+
+  .section-link-arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+
+  .section-link:hover .section-link-arrow {
+    transform: translateX(6px);
+  }
+
+  /* Visual panels */
+  .section-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Veritas visual — circuit/grid aesthetic */
+  .veritas .section-visual {
+    background: #0D1117;
+  }
+
+  .veritas .section-visual::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--electric) 1px, transparent 1px),
+      linear-gradient(90deg, var(--electric) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.07;
+  }
+
+  .v-graphic {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 240px;
+    height: 240px;
+  }
+
+  .v-letter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18rem;
+    line-height: 1;
+    color: var(--electric);
+    opacity: 0.12;
+    position: absolute;
+    user-select: none;
+  }
+
+  .v-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid var(--electric);
+  }
+
+  .v-ring-1 { width: 180px; height: 180px; opacity: 0.15; }
+  .v-ring-2 { width: 120px; height: 120px; opacity: 0.25; animation: spin 20s linear infinite; }
+  .v-ring-2::after {
+    content: '';
+    position: absolute;
+    top: -3px; left: 50%;
+    transform: translateX(-50%);
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--electric);
+  }
+  .v-ring-3 { width: 60px; height: 60px; background: var(--electric); opacity: 0.08; }
+
+  .v-cross-h {
+    position: absolute;
+    width: 180px; height: 1px;
+    background: var(--electric);
+    opacity: 0.15;
+  }
+  .v-cross-v {
+    position: absolute;
+    width: 1px; height: 180px;
+    background: var(--electric);
+    opacity: 0.15;
+  }
+
+  /* Sapientia visual — expressive/painterly */
+  .sapientia .section-visual {
+    background: #1A0800;
+  }
+
+  .s-graphic {
+    position: relative;
+    z-index: 2;
+    width: 280px;
+    height: 280px;
+  }
+
+  .s-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 16rem;
+    font-weight: 900;
+    font-style: italic;
+    line-height: 1;
+    color: var(--flame);
+    opacity: 0.18;
+    position: absolute;
+    user-select: none;
+  }
+
+  .s-blob {
+    position: absolute;
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    background: var(--flame);
+    animation: morph 8s ease-in-out infinite;
+  }
+
+  .s-blob-1 {
+    width: 160px; height: 160px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.12;
+  }
+
+  .s-blob-2 {
+    width: 80px; height: 80px;
+    top: 20%; left: 60%;
+    opacity: 0.2;
+    animation-delay: -3s;
+    animation-duration: 6s;
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+
+  .s-stroke {
+    position: absolute;
+    bottom: 20%;
+    left: 10%;
+    width: 80%;
+    height: 3px;
+    background: var(--flame);
+    opacity: 0.35;
+    transform: rotate(-2deg);
+  }
+
+  .s-stroke-2 {
+    position: absolute;
+    bottom: 25%;
+    left: 15%;
+    width: 55%;
+    height: 2px;
+    background: var(--flame);
+    opacity: 0.2;
+    transform: rotate(-1deg);
+  }
+
+  /* Hismod visual — challenge/kinetic */
+  .hismod .section-visual {
+    background: #090914;
+  }
+
+  .h-graphic {
+    position: relative;
+    z-index: 2;
+    width: 260px;
+    height: 260px;
+  }
+
+  .h-letter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 17rem;
+    line-height: 1;
+    color: var(--cobalt);
+    opacity: 0.15;
+    position: absolute;
+    user-select: none;
+  }
+
+  .h-bar {
+    position: absolute;
+    height: 3px;
+    background: linear-gradient(90deg, var(--cobalt), var(--electric));
+    border-radius: 2px;
+  }
+
+  .h-bar-1 { width: 180px; top: 35%; left: 10%; opacity: 0.6; animation: barSlide 3s ease-in-out infinite; }
+  .h-bar-2 { width: 120px; top: 50%; left: 25%; opacity: 0.4; animation: barSlide 3s ease-in-out infinite 0.5s; }
+  .h-bar-3 { width: 150px; top: 65%; left: 15%; opacity: 0.5; animation: barSlide 3s ease-in-out infinite 1s; }
+
+  .h-dot {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--electric);
+  }
+
+  .h-dot-1 { top: 35%; left: calc(10% + 180px); margin-top: -2px; animation: dotBlink 3s ease-in-out infinite; }
+  .h-dot-2 { top: 50%; left: calc(25% + 120px); margin-top: -2px; animation: dotBlink 3s ease-in-out infinite 0.5s; }
+  .h-dot-3 { top: 65%; left: calc(15% + 150px); margin-top: -2px; animation: dotBlink 3s ease-in-out infinite 1s; }
+
+  /* ─── X INTERSTITIAL ─── */
+  .x-break {
+    background: var(--paper);
+    color: var(--ink);
+    text-align: center;
+    padding: 5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .x-break::before {
+    content: '×';
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.04;
+    color: var(--ink);
+    user-select: none;
+  }
+
+  .x-break-inner {
+    position: relative;
+    z-index: 2;
+  }
+
+  .x-break-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 1.2rem;
+  }
+
+  .x-break-statement {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    line-height: 1.2;
+    color: var(--ink);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .x-break-statement em {
+    color: var(--flame);
+    font-style: italic;
+  }
+
+  .x-break-statement span {
+    color: var(--cobalt);
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    background: var(--ink);
+    border-top: 3px solid var(--paper);
+    padding: 4rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--paper);
+    letter-spacing: 0.08em;
+    line-height: 1;
+  }
+
+  .footer-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+
+  .footer-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .footer-x {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--electric), var(--flame));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .footer-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.8rem;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-link:hover { color: var(--electric); }
+
+  .footer-copy {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.55rem;
+    color: rgba(242,239,232,0.2);
+    letter-spacing: 0.1em;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes riseIn {
+    from { opacity: 0; transform: translateY(40px) skewY(1deg); }
+    to { opacity: 1; transform: translateY(0) skewY(0deg); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(0.8); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes morph {
+    0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+    50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  }
+
+  @keyframes barSlide {
+    0%, 100% { transform: scaleX(1); opacity: 0.6; }
+    50% { transform: scaleX(1.1); opacity: 1; }
+  }
+
+  @keyframes dotBlink {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.4); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 860px) {
+    .section {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .section-visual {
+      min-height: 260px;
+    }
+
+    .section-content {
+      padding: 4rem 2rem;
+    }
+
+    .hero-top-bar {
+      padding: 1.5rem 1.5rem;
+    }
+
+    .identity-half {
+      padding: 1rem 1.5rem;
+    }
+
+    .footer {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 1.5rem;
+    }
+
+    .footer-right { align-items: center; }
+    .footer-center { order: -1; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-split">
+      <div class="hero-split-left"></div>
+      <div class="hero-split-right"></div>
+    </div>
+
+    <div class="hero-top-bar">
+      <span class="hero-top-label">Est. in curiosity</span>
+      <span class="hero-top-label right">The Creative × The Brainy</span>
+    </div>
+
+    <div class="hero-center">
+      <p class="hero-pre">Arkytoddler</p>
+      <h1 class="hero-name">
+        <span class="name-arky">ARKY</span><span class="name-toddler">TODDLER</span>
+      </h1>
+      <p class="hero-tagline">I toddle, therefore I am...</p>
+      <div class="hero-divider">
+        <div class="hero-divider-line"></div>
+        <div class="hero-divider-badge">The Creative &times; The Brainy</div>
+        <div class="hero-divider-line right"></div>
+      </div>
+    </div>
+
+    <div class="hero-bottom">
+      <div class="hero-scroll-wrap">
+        <span class="hero-scroll-label">Explore</span>
+        <div class="hero-scroll-bar"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IDENTITY STRIP -->
+  <div class="identity-strip">
+    <div class="identity-half brainy">
+      <span class="identity-label">The Brainy</span>
+      <span class="identity-symbol">∑</span>
+    </div>
+    <div class="identity-half creative">
+      <span class="identity-symbol">◉</span>
+      <span class="identity-label">The Creative</span>
+    </div>
+  </div>
+
+  <!-- SECTIONS -->
+  <div class="sections">
+
+    <!-- VERITAS -->
+    <div class="section veritas" id="veritas">
+      <div class="section-content">
+        <div class="section-tag">
+          <span class="section-num">01</span>
+          <span class="section-pill">The Brainy</span>
+        </div>
+        <h2 class="section-title">Toddle towards<br>Veritas</h2>
+        <p class="section-latin">Truth</p>
+        <p class="section-desc">Learning science, mathematics, cognition. The pursuit of what is fundamentally true about how minds work — and how to make them work better.</p>
+        <a href="#" class="section-link">
+          Enter <span class="section-link-arrow">→</span>
+        </a>
+      </div>
+      <div class="section-visual">
+        <div class="v-graphic">
+          <div class="v-letter">V</div>
+          <div class="v-ring v-ring-1"></div>
+          <div class="v-ring v-ring-2"></div>
+          <div class="v-ring v-ring-3"></div>
+          <div class="v-cross-h"></div>
+          <div class="v-cross-v"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- X BREAK -->
+    <div class="x-break">
+      <div class="x-break-inner">
+        <p class="x-break-label">The intersection</p>
+        <p class="x-break-statement">Where <em>feeling</em> meets <span>thinking</span> —<br>and something new emerges.</p>
+      </div>
+    </div>
+
+    <!-- SAPIENTIA -->
+    <div class="section sapientia" id="sapientia">
+      <div class="section-content">
+        <div class="section-tag">
+          <span class="section-num">02</span>
+          <span class="section-pill">The Creative</span>
+        </div>
+        <h2 class="section-title">Toddle towards<br>Sapientia</h2>
+        <p class="section-latin">Wisdom</p>
+        <p class="section-desc">Film, poetry, fiction, art. The things that can only be understood by living through them — where knowledge becomes something the body remembers.</p>
+        <a href="#" class="section-link">
+          Enter <span class="section-link-arrow">→</span>
+        </a>
+      </div>
+      <div class="section-visual">
+        <div class="s-graphic">
+          <div class="s-letter">S</div>
+          <div class="s-blob s-blob-1"></div>
+          <div class="s-blob s-blob-2"></div>
+          <div class="s-stroke"></div>
+          <div class="s-stroke-2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISMOD -->
+    <div class="section hismod" id="hismod">
+      <div class="section-content">
+        <div class="section-tag">
+          <span class="section-num">03</span>
+          <span class="section-pill">The Lived</span>
+        </div>
+        <h2 class="section-title">Toddle towards<br>Hismod</h2>
+        <p class="section-latin">Challenges &amp; experiences</p>
+        <p class="section-desc">Blindfold solving. Memory feats. World records attempted and lessons learned. The place where theory meets skin — where you find out what you're actually made of.</p>
+        <a href="#" class="section-link">
+          Enter <span class="section-link-arrow">→</span>
+        </a>
+      </div>
+      <div class="section-visual">
+        <div class="h-graphic">
+          <div class="h-letter">H</div>
+          <div class="h-bar h-bar-1"></div>
+          <div class="h-dot h-dot-1"></div>
+          <div class="h-bar h-bar-2"></div>
+          <div class="h-dot h-dot-2"></div>
+          <div class="h-bar h-bar-3"></div>
+          <div class="h-dot h-dot-3"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-left">
+      <div class="footer-name">Arkytoddler</div>
+      <div class="footer-sub">The Creative × The Brainy</div>
+    </div>
+    <div class="footer-center">
+      <div class="footer-x">×</div>
+    </div>
+    <div class="footer-right">
+      <div class="footer-links">
+        <a href="#" class="footer-link">Substack</a>
+        <a href="#" class="footer-link">X</a>
+        <a href="#" class="footer-link">GitHub</a>
+      </div>
+      <div class="footer-copy">&copy; 2026 Arkytoddler. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const sections = document.querySelectorAll('.section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>
