@@ -393,6 +393,356 @@
     line-height: 1;
   }
 
+  /* ========== IN PROGRESS BLOCK ========== */
+  .workshop {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem 8rem;
+  }
+
+  .workshop-inner {
+    border-top: 1px solid rgba(176, 173, 166, 0.2);
+    padding-top: 5rem;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .workshop-inner.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .workshop-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .workshop-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--coral);
+  }
+
+  .workshop-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .workshop-title em {
+    font-style: italic;
+    color: var(--coral);
+  }
+
+  .workshop-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  /* Card base */
+  .wcard {
+    border: 1px solid rgba(176, 173, 166, 0.2);
+    border-radius: 4px;
+    padding: 2rem 2.2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .wcard:hover {
+    border-color: rgba(255, 79, 59, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .wcard::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--coral);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .wcard:hover::before {
+    transform: scaleX(1);
+  }
+
+  /* Technical card — full width */
+  .wcard-technical {
+    grid-column: 1 / -1;
+    background: var(--bg-dark);
+    border-color: rgba(176, 173, 166, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .wcard-technical:hover {
+    border-color: rgba(255, 79, 59, 0.25);
+  }
+
+  .wcard-technical .wcard-icon {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border: 1px solid rgba(255, 79, 59, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .wcard-technical .wcard-icon::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--coral);
+    border-radius: 50%;
+    animation: blink 1.6s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.6); }
+  }
+
+  .wcard-technical .wcard-body {
+    flex: 1;
+  }
+
+  .wcard-technical .wcard-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 0.5rem;
+  }
+
+  .wcard-technical .wcard-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1.35rem;
+    color: var(--text-light);
+    margin-bottom: 0.4rem;
+  }
+
+  .wcard-technical .wcard-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: rgba(176, 173, 166, 0.7);
+    line-height: 1.6;
+  }
+
+  .wcard-technical .wcard-status {
+    flex-shrink: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--coral);
+    background: rgba(255, 79, 59, 0.08);
+    border: 1px solid rgba(255, 79, 59, 0.2);
+    padding: 0.4rem 0.9rem;
+    border-radius: 2px;
+  }
+
+  /* Content schedule cards */
+  .wcard-content {
+    background: var(--bg);
+  }
+
+  .wcard-content .wcard-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .wcard-content .wcard-tag-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--coral);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .wcard-content .wcard-section {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--coral);
+    margin-bottom: 0.3rem;
+  }
+
+  .wcard-content .wcard-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 1.4rem;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .wcard-content .wcard-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 1.4rem;
+  }
+
+  .wcard-content .wcard-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+    background: var(--coral-dim);
+    border: 1px solid rgba(255, 79, 59, 0.15);
+    padding: 0.35rem 0.8rem;
+    border-radius: 2px;
+  }
+
+  .wcard-content .wcard-date-icon {
+    width: 5px;
+    height: 5px;
+    border: 1px solid var(--coral);
+    border-radius: 50%;
+  }
+
+  /* Hismod card — spans full width on its own row */
+  .wcard-hismod {
+    grid-column: 1 / -1;
+    background: var(--bg);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.8rem 2.2rem;
+  }
+
+  .wcard-hismod .wcard-section {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--coral);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+  }
+
+  .wcard-hismod .wcard-body {
+    border-left: 1px solid rgba(176, 173, 166, 0.2);
+    padding-left: 2rem;
+  }
+
+  .wcard-hismod .wcard-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .wcard-hismod .wcard-tag-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--coral);
+    border-radius: 50%;
+  }
+
+  .wcard-hismod .wcard-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 1.4rem;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
+  }
+
+  .wcard-hismod .wcard-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .wcard-hismod .wcard-date {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+    background: var(--coral-dim);
+    border: 1px solid rgba(255, 79, 59, 0.15);
+    padding: 0.35rem 0.8rem;
+    border-radius: 2px;
+  }
+
+  .wcard-hismod .wcard-date-icon {
+    width: 5px;
+    height: 5px;
+    border: 1px solid var(--coral);
+    border-radius: 50%;
+  }
+
+  @media (max-width: 768px) {
+    .workshop-grid {
+      grid-template-columns: 1fr;
+    }
+    .wcard-technical {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.2rem;
+    }
+    .wcard-hismod {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .wcard-hismod .wcard-section {
+      writing-mode: horizontal-tb;
+      transform: none;
+    }
+    .wcard-hismod .wcard-body {
+      border-left: none;
+      border-top: 1px solid rgba(176, 173, 166, 0.2);
+      padding-left: 0;
+      padding-top: 1rem;
+    }
+  }
+
   /* ========== FOOTER ========== */
   .footer {
     background: var(--bg-dark);
@@ -581,6 +931,61 @@
 
   </div>
 
+  <!-- IN PROGRESS & COMING SOON -->
+  <div class="workshop">
+    <div class="workshop-inner" id="workshop-block">
+
+      <div class="workshop-header">
+        <span class="workshop-eyebrow">Studio</span>
+        <h2 class="workshop-title">Currently in the <em>workshop</em></h2>
+      </div>
+
+      <div class="workshop-grid">
+
+        <!-- Technical -->
+        <div class="wcard wcard-technical">
+          <div class="wcard-icon"></div>
+          <div class="wcard-body">
+            <div class="wcard-tag">In Progress · Technical</div>
+            <div class="wcard-name">Solving the photo rendering problem</div>
+            <div class="wcard-desc">Images are referenced but not yet displaying on the live site — working on a fix so every article renders its photos correctly.</div>
+          </div>
+          <div class="wcard-status">⬤ Active</div>
+        </div>
+
+        <!-- Veritas -->
+        <div class="wcard wcard-content">
+          <div class="wcard-tag"><span class="wcard-tag-dot"></span> In Progress · Content</div>
+          <div class="wcard-section">Veritas</div>
+          <div class="wcard-name">Emerging Consciousness in Progress</div>
+          <div class="wcard-subtitle">Two — the second chapter of an unfolding inquiry into mind, awareness, and what it means to be conscious.</div>
+          <div class="wcard-date"><span class="wcard-date-icon"></span> 6 May 2025</div>
+        </div>
+
+        <!-- Sapientia -->
+        <div class="wcard wcard-content">
+          <div class="wcard-tag"><span class="wcard-tag-dot"></span> Scheduled · Content</div>
+          <div class="wcard-section">Sapientia</div>
+          <div class="wcard-name">The Library of Babel</div>
+          <div class="wcard-subtitle">Architecture and Art — a meditation on Borges, infinite space, and the architecture of meaning.</div>
+          <div class="wcard-date"><span class="wcard-date-icon"></span> 10 May 2025</div>
+        </div>
+
+        <!-- Hismod -->
+        <div class="wcard wcard-hismod">
+          <div class="wcard-section">Hismod</div>
+          <div class="wcard-body">
+            <div class="wcard-tag"><span class="wcard-tag-dot"></span> Scheduled · Content</div>
+            <div class="wcard-name">The Blindfolded Challenges</div>
+            <div class="wcard-subtitle">Blindfolded Cubing, Pi Recitation, and Blindfolded Mental Calculation — three feats of memory, sensation, and nerve.</div>
+          </div>
+          <div class="wcard-date"><span class="wcard-date-icon"></span> 2 May 2025</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-name">Arkytoddler</div>
@@ -604,6 +1009,14 @@
       });
     }, { threshold: 0.15 });
     sections.forEach(s => observer.observe(s));
+
+    const workshopBlock = document.getElementById('workshop-block');
+    const workshopObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+    if (workshopBlock) workshopObserver.observe(workshopBlock);
   </script>
 
 </body>
