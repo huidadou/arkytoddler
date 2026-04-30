@@ -270,6 +270,12 @@
     margin-bottom: 0;
   }
 
+  /* First word highlight */
+  .poem-first-word {
+    color: var(--coral);
+    font-weight: 600;
+  }
+
   .article-heading {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 500;
@@ -329,74 +335,6 @@
     margin-top: 0.7rem;
   }
 
-  .article-table-wrap {
-    margin-top: 2rem;
-    overflow-x: auto;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .article-table-wrap.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .article-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 680px;
-  }
-
-  .article-table th,
-  .article-table td {
-    border: 1px solid rgba(176, 173, 166, 0.35);
-    padding: 0.85rem;
-    vertical-align: top;
-    text-align: left;
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-
-  .article-table th {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .article-table ul {
-    margin-left: 1.1rem;
-  }
-
-  .article-questions {
-    margin: 2.5rem 0;
-    padding-left: 1.8rem;
-    border-left: 2px solid var(--coral);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .article-questions.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .article-question {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 400;
-    font-size: 1.05rem;
-    line-height: 1.8;
-    color: var(--text);
-    margin-bottom: 1rem;
-  }
-
-  .article-question:last-child {
-    margin-bottom: 0;
-  }
-
   .article-blockquote {
     margin: 2.5rem 0;
     padding: 2rem 2rem 2rem 2.2rem;
@@ -427,29 +365,6 @@
     margin-bottom: 0;
   }
 
-  .article-prompt {
-    margin: 2.5rem 0;
-    padding: 2rem;
-    background: var(--bg-dark);
-    border-radius: 4px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .article-prompt.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .article-prompt p {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.85rem;
-    line-height: 1.8;
-    color: var(--text-light);
-    opacity: 0.85;
-  }
-
   .article-emphasis {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 400;
@@ -471,71 +386,6 @@
   .article-emphasis.visible {
     opacity: 1;
     transform: translateY(0);
-  }
-
-  /* Footnotes */
-  .article-footnotes {
-    margin-top: 4rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(176, 173, 166, 0.2);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .article-footnotes.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .footnotes-title {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--coral);
-    margin-bottom: 1.5rem;
-  }
-
-  .footnote {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    line-height: 1.7;
-    color: var(--muted);
-    margin-bottom: 0.8rem;
-    padding-left: 1.5rem;
-    position: relative;
-  }
-
-  .footnote::before {
-    content: attr(data-num);
-    position: absolute;
-    left: 0;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--coral);
-    top: 0.15rem;
-  }
-
-  .footnote a {
-    color: var(--muted);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(176, 173, 166, 0.3);
-    transition: all 0.3s ease;
-    word-break: break-all;
-  }
-
-  .footnote a:hover {
-    color: var(--coral);
-    border-bottom-color: var(--coral);
-  }
-
-  sup {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--coral);
-    cursor: default;
-    margin-left: 1px;
   }
 
   /* ========== FOOTER ========== */
@@ -614,10 +464,6 @@
       padding: 2rem 1.2rem 5rem;
     }
 
-    .article-prompt p {
-      font-size: 0.78rem;
-    }
-
     .article-blockquote {
       padding: 1.5rem 1.5rem 1.5rem 1.8rem;
     }
@@ -661,27 +507,137 @@
   <!-- ARTICLE BODY -->
   <article class="article-content">
 
+    <!-- POEM FIRST -->
     <div class="article-poem anim">
-      <p class="article-poem-line">The town afar, Covadonga, where fifty-five reside</p>
-      <p class="article-poem-line">Statue of Maria, her radiance, a timeless guide</p>
-      <p class="article-poem-line">Here I stayed, seven days, my spirit held inside</p>
-      <p class="article-poem-line">Told of Pelayo, who fought the Moors, with furious pride</p>
-      <p class="article-poem-line">Victory won, a nobleman, crowned king upon the tide</p>
-      <p class="article-poem-line">Of Iberian kingdoms, their banners, flung out wide</p>
-      <p class="article-poem-line">Spain, Portugal, to the borders where the French abide</p>
-      <p class="article-poem-line">Lineage traced to Pelayo, the royal bloodline's stride</p>
+      <p class="article-poem-line"><span class="poem-first-word">The</span> town afar, Covadonga, where fifty-five reside</p>
+      <p class="article-poem-line"><span class="poem-first-word">Statue</span> of Maria, her radiance, a timeless guide</p>
+      <p class="article-poem-line"><span class="poem-first-word">Here</span> I stayed, seven days, my spirit held inside</p>
+      <p class="article-poem-line"><span class="poem-first-word">Told</span> of Pelayo, who fought the Moors, with furious pride</p>
+      <p class="article-poem-line"><span class="poem-first-word">Victory</span> won, a nobleman, crowned king upon the tide</p>
+      <p class="article-poem-line"><span class="poem-first-word">Of</span> Iberian kingdoms, their banners, flung out wide</p>
+      <p class="article-poem-line"><span class="poem-first-word">Spain,</span> Portugal, to the borders where the French abide</p>
+      <p class="article-poem-line"><span class="poem-first-word">Lineage</span> traced to Pelayo, the royal bloodline's stride</p>
     </div>
 
     <div class="article-poem anim">
-      <p class="article-poem-line">Power confirmed, the King's mission blessed in this sacred space</p>
-      <p class="article-poem-line">Perpetuation of rule, bound to Holy Mother's embrace</p>
-      <p class="article-poem-line">Through crusade against the heretic, aid from God none could replace</p>
-      <p class="article-poem-line">Unification by the Cross, hung high in hallowed grace</p>
-      <p class="article-poem-line">Of miracles and holy relics, forged for the ruler's mace</p>
-      <p class="article-poem-line">Divine authority and faith, surging through the cave's dark face</p>
-      <p class="article-poem-line">And so I write to you, that we might together trace</p>
-      <p class="article-poem-line">Monarch and mystery, what shaped their eternal interlace?</p>
+      <p class="article-poem-line"><span class="poem-first-word">Power</span> confirmed, the King's mission blessed in this sacred space</p>
+      <p class="article-poem-line"><span class="poem-first-word">Perpetuation</span> of rule, bound to Holy Mother's embrace</p>
+      <p class="article-poem-line"><span class="poem-first-word">Through</span> crusade against the heretic, aid from God none could replace</p>
+      <p class="article-poem-line"><span class="poem-first-word">Unification</span> by the Cross, hung high in hallowed grace</p>
+      <p class="article-poem-line"><span class="poem-first-word">Of</span> miracles and holy relics, forged for the ruler's mace</p>
+      <p class="article-poem-line"><span class="poem-first-word">Divine</span> authority and faith, surging through the cave's dark face</p>
+      <p class="article-poem-line"><span class="poem-first-word">And</span> so I write to you, that we might together trace</p>
+      <p class="article-poem-line"><span class="poem-first-word">Monarch</span> and mystery, what shaped their eternal interlace?</p>
     </div>
+
+    <!-- Fig 1 -->
+    <figure class="article-figure anim">
+      <img src="Fig-1-church-sword-and-cross.jpg" alt="The shadow of the cross inside the Basilica of Santa María la Real, resembling a sword">
+      <figcaption>The shadow of the cross inside the Basilica — Covadonga, March 2025</figcaption>
+    </figure>
+
+    <!-- The Shadow of Faith -->
+    <h2 class="article-heading anim">The Shadow of Faith</h2>
+
+    <p class="article-para anim">In March 2025, I found myself in the mist-heavy mountains of Asturias.</p>
+
+    <p class="article-para anim">The moment I stepped inside the <strong>Basilica of Santa María la Real</strong>, I witnessed something striking: against the curved stone, the shadow of the cross began to stretch. It sharpened into a silhouette that <strong>resembled</strong> the blade of a sword.</p>
+
+    <p class="article-para anim"><strong>It</strong> felt less like a coincidence and more like a statement. This single image defined my impression of the place: Covadonga is a <strong>sanctuary</strong> where the divine and the monarch fused; where power is both verified and disguised by faith.</p>
+
+    <!-- Fig 2 -->
+    <figure class="article-figure anim">
+      <img src="Fig-2-covadonga-from-hill.jpg" alt="Covadonga village viewed from the hill above">
+      <figcaption>Covadonga nestled in the Picos de Europa, viewed from the hillside</figcaption>
+    </figure>
+
+    <!-- The Cradle of Kings -->
+    <h2 class="article-heading anim">The Cradle of Kings</h2>
+
+    <p class="article-para anim">I hiked up a nearby mountain and paused halfway to look back at Covadonga. The village, nestled within the Picos de Europa mountains of northern Spain, is remarkably small, with only fifty-five permanent residents. Yet, despite its size, it remains a renowned destination for tourists and pilgrims alike. It is the birthplace of the Spanish kingdoms.</p>
+
+    <!-- Fig 5 -->
+    <figure class="article-figure anim">
+      <img src="Fig-5-church-in-mountains.jpg" alt="The church built into the mountain cliffs at Covadonga">
+      <figcaption>The Santa Cueva chapel carved into the mountain cliff face</figcaption>
+    </figure>
+
+    <!-- The Rose of the Mountains -->
+    <h2 class="article-heading anim">The Rose of the Mountains</h2>
+
+    <p class="article-para anim">On the day I reached the village, I stepped off the bus and immediately looked upward. There, presiding over the valley from its hilltop perch, stood the <strong>Basilica of Santa María la Real</strong>.</p>
+
+    <p class="article-para anim">Architecturally striking in its Neo-Romanesque style, the cathedral is constructed from local pink limestone. The stone's unique hue gives the massive structure a soft, ethereal quality, making its presence feel surprisingly gentle and embracing against the rugged, green backdrop of the Asturian peaks.</p>
+
+    <!-- Fig 3 -->
+    <figure class="article-figure anim">
+      <img src="Fig-3-the-church.jpg" alt="Interior of the Basilica of Santa María la Real showing the altar and apse">
+      <figcaption>Interior of the Basilica — altar, apse, and the Madonna of Covadonga to the right</figcaption>
+    </figure>
+
+    <!-- A Sanctuary Reborn from the Ashes -->
+    <h2 class="article-heading anim">A Sanctuary Reborn from the Ashes</h2>
+
+    <p class="article-para anim">As I climbed the stone stairs toward the <strong>Basilica of Santa María la Real</strong>, I realized the history beneath my feet was more layered than I had first imagined. The site felt ancient, yet the grand structure before me was younger than I had expected, rising from the earth between 1877 and 1901.</p>
+
+    <p class="article-para anim">Its existence is a testament to resilience. In 1777, a devastating fire swept through the old temple that once stood adjacent to the <strong>Holy Cave</strong>. In the wake of the smoke, a vision was born to raise a monumental sanctuary that would honor "La Santina" on a grander scale. It wasn't an easy path; the local council initially resisted, hoping instead to rebuild the simpler temple within the cave or to finally complete a massive, unfinished design by Ventura Rodríguez.</p>
+
+    <p class="article-para anim">But the spirit of the new sanctuary prevailed, fueled by donations that poured in from every corner of Spain. As I stood before its pink walls, I realized I wasn't just looking at a building—I was looking at a collective act of devotion, a mountain of stone built to replace what the flames had taken.</p>
+
+    <!-- Fig 7 -->
+    <figure class="article-figure anim">
+      <img src="Fig-7-santuary-of-covadonga.jpg" alt="The Sanctuary of Covadonga seen from the mountainside">
+      <figcaption>The Sanctuary of Covadonga rising against the Asturian peaks</figcaption>
+    </figure>
+
+    <!-- The Secret Path to the Shrine -->
+    <h2 class="article-heading anim">The Secret Path to the Shrine</h2>
+
+    <p class="article-para anim">Walking through a tunnel carved directly into the mountain, I reached the heart of Covadonga — the <strong>Santa Cueva</strong>, the Holy Cave, where the statue of Our Lady of Covadonga rests.</p>
+
+    <p class="article-para anim">This cave was the original site of the church, the very place where the first battle of the <em>Reconquista</em> began in 718. Tucked within the cliffs of Cangas de Onís, it remains the true soul of the Picos de Europa.</p>
+
+    <!-- Fig 8 -->
+    <figure class="article-figure anim">
+      <img src="Fig-8-the-battle.png" alt="Painting depicting the Battle of Covadonga">
+      <figcaption>A recent painting depicting the Battle of Covadonga, 718–722 AD</figcaption>
+    </figure>
+
+    <!-- The painted history of the first battle -->
+    <h2 class="article-heading anim">The Painted History of the First Battle</h2>
+
+    <p class="article-para anim">Inside the Covadonga museum, I found myself standing before a recent painting that brought the valley's history to life. It was a vivid illustration of the Battle of Covadonga, fought sometime between 718 and 722. In the frame, the Visigothic nobleman Pelayo led his men to a victory against the Muslim army, a moment often cited as the first successful resistance of Christian forces against Islamic expansion on the peninsula.</p>
+
+    <p class="article-para anim">Modern historians might describe this event as a relatively small-scale engagement, but looking at the canvas, it felt like so much more. Over the centuries, this clash in the valley has been transformed from a mere skirmish into a sacred symbol of revival. It wasn't just a battle; it was the birth of a legend that would shape the identity of a nation.</p>
+
+    <!-- Fig 9 -->
+    <figure class="article-figure anim">
+      <img src="Fig-9-pelayo.png" alt="Statue of Pelayo at Covadonga holding a cross aloft">
+      <figcaption>Statue of Pelayo, first King of Asturias — Covadonga</figcaption>
+    </figure>
+
+    <!-- The Architecture of Authority -->
+    <h2 class="article-heading anim">The Architecture of Authority</h2>
+
+    <p class="article-para anim">Standing before the statue of Pelayo, I found it easy to see how the man became the monument. After the battle, he was crowned the first monarch of the Kingdom of Asturias, positioned as a direct continuation of the fallen Visigothic Kingdom and the foundation for the future powers of León and Castile.</p>
+
+    <p class="article-para anim">The narrative of his victory was meticulously shaped by early chroniclers, such as those of the <em>Codex Albeldense</em> (also known as the <em>Codex Vigilanus</em>). They framed the event as "divine intervention," a perspective that endowed Pelayo's rule with a sacred quality. In this version of history, the Virgin Mary herself appeared to protect the forces at Covadonga, turning a military success into a miraculous one.</p>
+
+    <p class="article-para anim">As I explored the history further, the pattern of "divine mandate" became clear. The Asturian monarchs reinforced their authority through elaborate coronation ceremonies and ecclesiastical support, effectively inheriting the spiritual legitimacy of their Visigothic predecessors.</p>
+
+    <!-- Fig 6 -->
+    <figure class="article-figure anim">
+      <img src="Fig-6-Statue.jpg" alt="The Basilica of Santa María la Real seen from the valley below">
+      <figcaption>The Basilica of Santa María la Real rising from the valley — Covadonga</figcaption>
+    </figure>
+
+    <!-- Fig 4 -->
+    <figure class="article-figure anim">
+      <img src="Fig-4-covadonga-village.jpg" alt="Panoramic view of Covadonga village and surrounding valley">
+      <figcaption>Panoramic view of the Covadonga valley — Asturias, Spain</figcaption>
+    </figure>
+
+    <p class="article-para anim">Our Lady of Covadonga, also named "La Santina", is a title of the Blessed Virgin Mary and the name of a Marian shrine devoted to her at Covadonga, Asturias.</p>
 
   </article>
 
