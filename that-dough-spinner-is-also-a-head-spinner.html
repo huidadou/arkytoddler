@@ -604,6 +604,47 @@
       display: none;
     }
   }
+
+     /* ========== COMMENTS ========== */
+  .comments-section {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 4rem 1.2rem 6rem;
+    border-top: 1px solid rgba(176, 173, 166, 0.2);
+  }
+ 
+  .comments-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.2rem;
+    margin-bottom: 2.5rem;
+  }
+ 
+  .comments-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--coral);
+  }
+ 
+  .comments-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+ 
+  .giscus {
+    margin-top: 1rem;
+  }
+ 
+  .giscus-frame {
+    border-radius: 4px;
+    border: 1px solid rgba(176, 173, 166, 0.2) !important;
+  }
+  
 </style>
 </head>
 <body>
@@ -777,6 +818,29 @@
     </div>
 
   </article>
+
+    <!-- COMMENTS -->
+  <div class="comments-section">
+    <div class="comments-header">
+      <span class="comments-eyebrow">Discussion</span>
+      <h2 class="comments-title">Leave a comment</h2>
+    </div>
+    <script src="https://giscus.app/client.js"
+            data-repo="huidadou/arkytoddler"
+            data-repo-id="R_kgDOP4wkfw"
+            data-category="Announcements"
+            data-category-id="DIC_kwDOP4wkf84C8Jmt"
+            data-mapping="pathname"
+            data-strict="0"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="bottom"
+            data-theme="transparent_dark"
+            data-lang="en"
+            crossorigin="anonymous"
+            async>
+    </script>
+  </div>
 
   <!-- FOOTER -->
   <footer class="footer">
