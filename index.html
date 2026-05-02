@@ -134,6 +134,39 @@
     animation: pulse 2s ease-in-out infinite;
   }
 
+  /* ========== SUBSTACK EMBED ========== */
+  .hero-subscribe {
+    margin-top: 2.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.7s forwards;
+  }
+ 
+  .hero-subscribe-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+ 
+  .hero-subscribe iframe {
+    border: none !important;
+    background: transparent !important;
+    width: 320px;
+    height: 52px;
+  }
+ 
+  @media (max-width: 768px) {
+    .hero-subscribe iframe {
+      width: 280px;
+    }
+  }
+ 
+
   /* ========== SECTIONS ========== */
   .sections {
     max-width: 1200px;
