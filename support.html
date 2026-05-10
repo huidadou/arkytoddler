@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="canonical" href="https://www.arkytoddler.com/support.html">
+<title>Support — Arkytoddler</title>
+<meta name="description" content="If Arkytoddler has been worth something to you, you can throw a few dollars in the jar. No paywall, no tiers, just a small economy of mutual goodwill.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F2ED;
+    --bg-dark: #0D0D0D;
+    --text: #2A2A28;
+    --text-light: #F5F2ED;
+    --muted: #B0ADA6;
+    --coral: #CC3F2E;
+    --coral-dim: rgba(204, 63, 46, 0.08);
+    --deep: #1F3A33;
+    --deep-soft: rgba(31, 58, 51, 0.5);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  ::selection {
+    background: var(--coral);
+    color: var(--text-light);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ========== NAV ========== */
+  .nav {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    z-index: 10;
+  }
+
+  .nav-back {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: color 0.3s ease;
+  }
+
+  .nav-back:hover { color: var(--coral); }
+
+  .nav-back-arrow {
+    width: 24px;
+    height: 1px;
+    background: currentColor;
+    position: relative;
+  }
+
+  .nav-back-arrow::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -3px;
+    width: 7px;
+    height: 1px;
+    background: currentColor;
+    transform: rotate(-35deg);
+    transform-origin: left center;
+  }
+
+  .nav-back-arrow::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 3px;
+    width: 7px;
+    height: 1px;
+    background: currentColor;
+    transform: rotate(35deg);
+    transform-origin: left center;
+  }
+
+  /* ========== HEADER ========== */
+  .support-header {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+  }
+
+  .support-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 1.8rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.2s forwards;
+  }
+
+  .support-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(3rem, 8vw, 6rem);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    opacity: 0;
+    animation: riseIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  }
+
+  .support-title em {
+    color: var(--coral);
+    font-weight: 300;
+  }
+
+  .support-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+    color: var(--muted);
+    margin-top: 1.5rem;
+    max-width: 540px;
+    line-height: 1.5;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.7s forwards;
+  }
+
+  .support-divider {
+    width: 1px;
+    height: 60px;
+    background: var(--coral);
+    margin-top: 3rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 1s forwards;
+  }
+
+  /* ========== BODY ========== */
+  .support-body {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 4rem 2rem 2rem;
+  }
+
+  .support-prose {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--text);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .support-prose.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .support-prose p { margin-bottom: 1.4rem; }
+
+  .support-prose p:last-child { margin-bottom: 0; }
+
+  .support-prose em {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15em;
+    color: var(--coral);
+  }
+
+  /* ========== JAR ========== */
+  .jar-wrap {
+    max-width: 720px;
+    margin: 4rem auto 0;
+    padding: 0 2rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .jar-wrap.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .jar-block {
+    background: #FFFFFF;
+    border: 1px solid rgba(176, 173, 166, 0.25);
+    padding: 3rem 2.5rem;
+    position: relative;
+  }
+
+  .jar-corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--coral);
+  }
+
+  .jar-corner.tr,
+  .jar-corner.bl {
+    border-color: var(--deep);
+    opacity: 0.85;
+  }
+
+  .jar-corner.tl { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+  .jar-corner.tr { top: -1px; right: -1px; border-left: none; border-bottom: none; }
+  .jar-corner.bl { bottom: -1px; left: -1px; border-right: none; border-top: none; }
+  .jar-corner.br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+  .jar-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+  }
+
+  .jar-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1.8rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.4rem;
+  }
+
+  .jar-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+
+  .jar-amounts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .jar-amount {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    padding: 0.9rem 0.5rem;
+    text-align: center;
+    border: 1px solid rgba(176, 173, 166, 0.4);
+    background: var(--bg);
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .jar-amount:hover {
+    background: var(--coral);
+    color: var(--text-light);
+    border-color: var(--coral);
+  }
+
+  .jar-amount-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.3rem;
+    transition: color 0.3s ease;
+  }
+
+  .jar-amount:hover .jar-amount-label {
+    color: rgba(245, 242, 237, 0.7);
+  }
+
+  .jar-amount-value {
+    font-weight: 700;
+  }
+
+  .jar-primary {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    background: var(--coral);
+    color: var(--text-light);
+    padding: 1rem 1.5rem;
+    border: none;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    margin-bottom: 0.7rem;
+  }
+
+  .jar-primary:hover { background: #B0341F; }
+
+  .jar-secondary {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--text);
+    padding: 0.95rem 1.5rem;
+    border: 1px solid rgba(176, 173, 166, 0.5);
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .jar-secondary:hover {
+    border-color: var(--text);
+  }
+
+  .jar-note {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 1.4rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .jar-note a {
+    color: var(--coral);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(204, 63, 46, 0.3);
+  }
+
+  /* ========== POSTSCRIPT ========== */
+  .postscript {
+    max-width: 640px;
+    margin: 5rem auto 0;
+    padding: 0 2rem;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .postscript.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .postscript-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--coral);
+    margin-bottom: 1rem;
+  }
+
+  .postscript-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .postscript-sig {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-top: 1.5rem;
+  }
+
+  /* ========== FOOTER ========== */
+  .footer {
+    background: var(--bg-dark);
+    padding: 4rem 2rem;
+    text-align: center;
+    margin-top: 8rem;
+  }
+
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.8rem;
+    color: var(--text-light);
+    letter-spacing: -0.01em;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-link:hover { color: var(--coral); }
+
+  .footer-link:nth-child(even):hover {
+    color: #4A6B62;
+  }
+
+  .footer-line {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 2rem auto 0;
+  }
+
+  .footer-line::before,
+  .footer-line::after {
+    content: '';
+    width: 24px;
+    height: 1px;
+  }
+
+  .footer-line::before {
+    background: var(--coral);
+    opacity: 0.6;
+  }
+
+  .footer-line::after {
+    background: var(--deep);
+    opacity: 0.7;
+  }
+
+  .footer-copy {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    color: rgba(176, 173, 166, 0.4);
+    margin-top: 1.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ========== ANIMATIONS ========== */
+  @keyframes riseIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 640px) {
+    .nav { top: 1.5rem; left: 1.5rem; }
+    .jar-block { padding: 2.2rem 1.5rem; }
+    .jar-amounts {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .support-header { padding: 5rem 1.5rem 3rem; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html" class="nav-back">
+      <span class="nav-back-arrow"></span>
+      Back
+    </a>
+  </nav>
+
+  <!-- HEADER -->
+  <section class="support-header">
+    <span class="support-eyebrow">A small economy of goodwill</span>
+    <h1 class="support-title">Throw something<br>in the <em>jar</em></h1>
+    <p class="support-tagline">No paywall, no tiers, no plan to scale. Just an invitation, if reading has been worth something to you.</p>
+    <div class="support-divider"></div>
+  </section>
+
+  <!-- BODY -->
+  <div class="support-body">
+    <div class="support-prose" id="prose">
+      <p>Arkytoddler is a one-person operation, written in the <em>cracks of a working life</em>. There's no paywall, no membership funnel, no plan to "scale." It exists because I find the writing more interesting than not writing it — and because a few of you keep reading, which is the part that surprises me most.</p>
+
+      <p>If something here has been useful, or odd in a way you liked, or worth a quiet <em>huh</em> on the train home — you can throw a few dollars in the jar. It mostly covers hosting, the occasional book I buy to think with, and the general project of keeping this thing free and ad-free.</p>
+
+      <p>Reading and occasionally telling a friend is also a form of support, and an easier one. No obligation either way.</p>
+    </div>
+  </div>
+
+  <!-- JAR -->
+  <div class="jar-wrap" id="jar">
+    <div class="jar-block">
+      <div class="jar-corner tl"></div>
+      <div class="jar-corner tr"></div>
+      <div class="jar-corner bl"></div>
+      <div class="jar-corner br"></div>
+
+      <div class="jar-eyebrow">The Jar</div>
+      <h2 class="jar-title">Pick an amount</h2>
+      <p class="jar-sub">or any amount that feels right</p>
+
+      <div class="jar-amounts">
+        <a href="https://ko-fi.com/arkytoddler/?hidefeed=true&widget=true&embed=true&preview=true" target="_blank" rel="noopener" class="jar-amount">
+          <span class="jar-amount-label">Small</span>
+          <span class="jar-amount-value">S$3</span>
+        </a>
+        <a href="https://ko-fi.com/arkytoddler/?hidefeed=true&widget=true&embed=true&preview=true" target="_blank" rel="noopener" class="jar-amount">
+          <span class="jar-amount-label">Usual</span>
+          <span class="jar-amount-value">S$8</span>
+        </a>
+        <a href="https://ko-fi.com/arkytoddler/?hidefeed=true&widget=true&embed=true&preview=true" target="_blank" rel="noopener" class="jar-amount">
+          <span class="jar-amount-label">Generous</span>
+          <span class="jar-amount-value">S$20</span>
+        </a>
+        <a href="https://ko-fi.com/arkytoddler/?hidefeed=true&widget=true&embed=true&preview=true" target="_blank" rel="noopener" class="jar-amount">
+          <span class="jar-amount-label">Other</span>
+          <span class="jar-amount-value">$ —</span>
+        </a>
+      </div>
+
+      <a href="https://ko-fi.com/arkytoddler" target="_blank" rel="noopener" class="jar-primary">Support via Ko-fi</a>
+      <a href="https://www.paypal.com/paypalme/arkytoddler" target="_blank" rel="noopener" class="jar-secondary">or PayPal</a>
+
+      <p class="jar-note">Not tax-deductible. No rewards, no gated tier, no obligation.<br>If you'd rather send a note instead, <a href="mailto:hello@arkytoddler.com">that also counts</a>.</p>
+    </div>
+  </div>
+
+  <!-- POSTSCRIPT -->
+  <div class="postscript" id="postscript">
+    <div class="postscript-mark">&mdash;</div>
+    <p class="postscript-text">Thank you, sincerely, for being the kind of reader who scrolled this far.</p>
+    <p class="postscript-sig">Paula</p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-name">Arkytoddler</div>
+    <div class="footer-links">
+      <a href="index.html" class="footer-link">Home</a>
+      <a href="https://substack.com/@paulazheng" class="footer-link">Substack</a>
+      <a href="https://x.com/@arkytoddler" class="footer-link">X</a>
+      <a href="https://github.com/huidadou" class="footer-link">GitHub</a>
+      <a href="https://instagram.com/arkytoddler" class="footer-link">Instagram</a>
+    </div>
+    <div class="footer-line"></div>
+    <p class="footer-copy">&copy; 2026 Arkytoddler. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const targets = document.querySelectorAll('#prose, #jar, #postscript');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.15 });
+    targets.forEach(t => observer.observe(t));
+  </script>
+
+</body>
+</html>

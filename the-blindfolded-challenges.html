@@ -12,8 +12,10 @@
     --text: #2A2A28;
     --text-light: #F5F2ED;
     --muted: #B0ADA6;
-    --coral: #FF4F3B;
-    --coral-dim: rgba(255, 79, 59, 0.08);
+    --coral: #CC3F2E;
+    --coral-dim: rgba(204, 63, 46, 0.08);
+    --deep: #1F3A33;
+    --deep-soft: rgba(31, 58, 51, 0.5);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -422,12 +424,32 @@
 
   .footer-link:hover { color: var(--coral); }
 
+  .footer-link:nth-child(even):hover {
+    color: #4A6B62;
+  }
+
   .footer-line {
-    width: 40px;
-    height: 1px;
-    background: var(--coral);
+    display: flex;
+    justify-content: center;
+    gap: 6px;
     margin: 2rem auto 0;
-    opacity: 0.5;
+  }
+
+  .footer-line::before,
+  .footer-line::after {
+    content: '';
+    width: 24px;
+    height: 1px;
+  }
+
+  .footer-line::before {
+    background: var(--coral);
+    opacity: 0.6;
+  }
+
+  .footer-line::after {
+    background: var(--deep);
+    opacity: 0.7;
   }
 
   .footer-copy {
@@ -617,6 +639,18 @@
 
     <div class="article-emphasis anim">Never be complacent, never be self-abased, and keep pushing. Even when the hardware is clunky and the judges are wrong, your process will see you through.</div>
 
+  
+    <!-- POSTSCRIPT -->
+    <div class="article-postscript anim" style="margin-top:5rem;padding-top:3rem;border-top:1px solid rgba(176,173,166,0.2);text-align:center;">
+      <div style="display:flex;justify-content:center;gap:6px;margin-bottom:2rem;">
+        <span style="display:inline-block;width:24px;height:1px;background:#CC3F2E;opacity:0.6;"></span>
+        <span style="display:inline-block;width:24px;height:1px;background:#1F3A33;opacity:0.7;"></span>
+      </div>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:1.15rem;line-height:1.65;color:#B0ADA6;max-width:520px;margin:0 auto 1.5rem;letter-spacing:0.01em;">
+        If this was worth a few dollars to you, <a href="support.html" style="color:#CC3F2E;text-decoration:none;border-bottom:1px solid rgba(204,63,46,0.3);transition:border-color 0.3s ease;">the jar is here</a>. Either way, thank you for reading.
+      </p>
+    </div>
+
   </article>
 
 
@@ -647,6 +681,8 @@
   <footer class="footer">
     <div class="footer-name">Arkytoddler</div>
     <div class="footer-links">
+      
+      <a href="support.html" class="footer-link">Support</a>
       <a href="https://substack.com/@paulazheng" class="footer-link">Substack</a>
       <a href="https://x.com/@arkytoddler" class="footer-link">X</a>
       <a href="https://github.com/huidadou" class="footer-link">GitHub</a>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emerging Consciousness in Progress — Arkytoddler</title>
+<title>Library of Babel — Arkytoddler</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -150,28 +150,39 @@
     animation: riseIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
   }
 
+  .article-hero-title-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    color: var(--muted);
+    margin-top: 0.6rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.7s forwards;
+  }
+
   .article-hero-subtitle {
     font-family: 'DM Sans', sans-serif;
     font-weight: 400;
-    font-size: 1.15rem;
+    font-size: 1rem;
     line-height: 1.7;
     color: var(--muted);
-    max-width: 560px;
+    max-width: 480px;
     margin-top: 1.8rem;
     opacity: 0;
-    animation: fadeUp 0.8s ease 0.8s forwards;
+    animation: fadeUp 0.8s ease 0.9s forwards;
   }
 
   .article-hero-meta {
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
     opacity: 0;
-    animation: fadeUp 0.8s ease 1s forwards;
+    animation: fadeUp 0.8s ease 1.1s forwards;
   }
 
-  .article-hero-date {
+  .article-hero-credit {
     font-family: 'Space Mono', monospace;
     font-size: 0.7rem;
     letter-spacing: 0.15em;
@@ -187,230 +198,156 @@
     opacity: 0.5;
   }
 
-  .article-hero-location {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
   .article-hero-divider {
     width: 40px;
     height: 1px;
     background: var(--coral);
     margin-top: 3rem;
     opacity: 0;
-    animation: fadeUp 0.8s ease 1.2s forwards;
+    animation: fadeUp 0.8s ease 1.3s forwards;
   }
 
   /* ========== ARTICLE BODY ========== */
   .article-content {
-    max-width: 680px;
+    max-width: 720px;
     margin: 0 auto;
     padding: 3rem 2rem 6rem;
   }
 
-  .article-section-label {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 400;
-    font-style: italic;
-    font-size: 1.6rem;
+  /* Bilingual block: German original + English translation */
+  .bilingual-block {
+    margin-bottom: 3rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .bilingual-block.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .bl-german {
+    padding: 1.8rem 2rem;
+    background: var(--bg-dark);
+    border-radius: 4px 4px 0 0;
+  }
+
+  .bl-german .lang-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
     color: var(--coral);
-    margin-bottom: 2.5rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .article-section-label.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .article-para {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 400;
-    font-size: 1.1rem;
-    line-height: 1.9;
-    color: var(--text);
-    margin-bottom: 1.8rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .article-para.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .article-questions {
-    margin: 2.5rem 0;
-    padding-left: 1.8rem;
-    border-left: 2px solid var(--coral);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .article-questions.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .article-question {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 400;
-    font-size: 1.05rem;
-    line-height: 1.8;
-    color: var(--text);
-    margin-bottom: 1rem;
-  }
-
-  .article-question:last-child {
-    margin-bottom: 0;
-  }
-
-  .article-blockquote {
-    margin: 2.5rem 0;
-    padding: 2rem 2rem 2rem 2.2rem;
-    background: var(--coral-dim);
-    border-left: 3px solid var(--coral);
-    border-radius: 0 4px 4px 0;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .article-blockquote.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .article-blockquote p {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 400;
-    font-style: italic;
-    font-size: 1.2rem;
-    line-height: 1.7;
-    color: var(--text);
+    opacity: 0.7;
     margin-bottom: 0.8rem;
   }
 
-  .article-blockquote p:last-child {
-    margin-bottom: 0;
-  }
-
-  .article-prompt {
-    margin: 2.5rem 0;
-    padding: 2rem;
-    background: var(--bg-dark);
-    border-radius: 4px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .article-prompt.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .article-prompt p {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.85rem;
-    line-height: 1.8;
+  .bl-german p {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.75;
     color: var(--text-light);
     opacity: 0.85;
   }
 
-  .article-emphasis {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 400;
-    font-style: italic;
-    font-size: 1.5rem;
-    line-height: 1.5;
-    color: var(--text);
-    text-align: center;
-    max-width: 540px;
-    margin: 3rem auto;
-    padding: 2rem 0;
-    border-top: 1px solid rgba(176, 173, 166, 0.2);
-    border-bottom: 1px solid rgba(176, 173, 166, 0.2);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  .bl-english {
+    padding: 1.8rem 2rem;
+    background: var(--coral-dim);
+    border-left: 3px solid var(--coral);
+    border-radius: 0 0 4px 0;
   }
 
-  .article-emphasis.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Footnotes */
-  .article-footnotes {
-    margin-top: 4rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(176, 173, 166, 0.2);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .article-footnotes.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .footnotes-title {
+  .bl-english .lang-label {
     font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--coral);
-    margin-bottom: 1.5rem;
+    opacity: 0.7;
+    margin-bottom: 0.8rem;
   }
 
-  .footnote {
+  .bl-english p {
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
+    font-weight: 400;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--text);
+  }
+
+  /* Section opener (bold lead-in paragraphs) */
+  .bl-english p .lead {
+    font-weight: 500;
+  }
+
+  .bl-german p .lead-de {
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  /* Library of Babel content paragraphs (matches .bl-english p typography) */
+  .lob-para {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--text);
+    margin-bottom: 1.6rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .lob-para.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .lob-para em.math {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15em;
+    color: var(--coral);
+    letter-spacing: 0.01em;
+  }
+
+  .lob-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.6rem 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .lob-list.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .lob-list li {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1.05rem;
     line-height: 1.7;
-    color: var(--muted);
+    color: var(--text);
+    padding-left: 1.8rem;
     margin-bottom: 0.8rem;
-    padding-left: 1.5rem;
     position: relative;
   }
 
-  .footnote::before {
-    content: attr(data-num);
+  .lob-list li::before {
+    content: '';
     position: absolute;
     left: 0;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--coral);
-    top: 0.15rem;
-  }
-
-  .footnote a {
-    color: var(--muted);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(176, 173, 166, 0.3);
-    transition: all 0.3s ease;
-    word-break: break-all;
-  }
-
-  .footnote a:hover {
-    color: var(--coral);
-    border-bottom-color: var(--coral);
-  }
-
-  sup {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--coral);
-    cursor: default;
-    margin-left: 1px;
+    top: 0.7em;
+    width: 12px;
+    height: 1px;
+    background: var(--coral);
+    opacity: 0.7;
   }
 
   /* ========== FOOTER ========== */
@@ -483,7 +420,50 @@
     letter-spacing: 0.05em;
   }
 
-  /* ========== ANIMATIONS ========== */
+  /* Footnote */
+  .article-footnotes {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(176, 173, 166, 0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .article-footnotes.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .footnotes-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 1.5rem;
+  }
+
+  .footnote {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .footnote::before {
+    content: attr(data-num);
+    position: absolute;
+    left: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--coral);
+    top: 0.15rem;
+  }
+
   @keyframes riseIn {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
@@ -494,27 +474,22 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* ========== RESPONSIVE ========== */
   @media (max-width: 768px) {
-    .nav {
-      padding: 1.4rem 1.5rem;
-    }
+    .nav { padding: 1.4rem 1.5rem; }
 
     .article-hero {
       min-height: 55vh;
       padding: 7rem 1.5rem 3rem;
     }
 
-    .article-content {
-      padding: 2rem 1.5rem 5rem;
+    .article-content { padding: 2rem 1.5rem 5rem; }
+
+    .bl-german, .bl-english {
+      padding: 1.4rem 1.2rem;
     }
 
-    .article-prompt p {
-      font-size: 0.78rem;
-    }
-
-    .article-blockquote {
-      padding: 1.5rem 1.5rem 1.5rem 1.8rem;
+    .bl-german p, .bl-english p {
+      font-size: 0.95rem;
     }
 
     .article-hero-meta {
@@ -522,10 +497,9 @@
       gap: 0.5rem;
     }
 
-    .article-hero-dot {
-      display: none;
-    }
+    .article-hero-dot { display: none; }
   }
+
      /* ========== COMMENTS ========== */
   .comments-section {
     max-width: 880px;
@@ -573,22 +547,22 @@
   <!-- NAV -->
   <nav class="nav">
     <a href="https://www.arkytoddler.com/" class="nav-brand">Arky<span>toddler</span></a>
-    <a href="veritas.html" class="nav-back">
+    <a href="sapientia.html" class="nav-back">
       <span class="nav-back-arrow"></span>
-      Veritas
+      Sapientia
     </a>
   </nav>
 
   <!-- HERO -->
   <section class="article-hero">
     <div class="article-hero-line"></div>
-    <div class="article-hero-tag">Consciousness</div>
-    <h1 class="article-hero-title">Emerging Consciousness in Progress</h1>
-    <p class="article-hero-subtitle">Recent developments in generative artificial intelligence are challenging our understanding of consciousness.</p>
+    <div class="article-hero-tag">Architecture &amp; Art</div>
+    <h1 class="article-hero-title">Library of Babel</h1>
+    <div class="article-hero-title-en">A Sensory Reconstruction of Mathematical Infinity</div>
     <div class="article-hero-meta">
-      <span class="article-hero-date">September, 2025</span>
+      <span class="article-hero-credit">June 2025</span>
       <span class="article-hero-dot"></span>
-      <span class="article-hero-location">Singapore</span>
+      <span class="article-hero-credit">Germany</span>
     </div>
     <div class="article-hero-divider"></div>
   </section>
@@ -596,64 +570,20 @@
   <!-- ARTICLE BODY -->
   <article class="article-content">
 
-    <div class="article-section-label anim">Prologue</div>
+    <p class="lob-para anim">This project is a visual and mnemonic reconstruction of Jorge Luis Borges' hexagonal universe from his "The Library of babel", serving as the architectural engine for my record-breaking memorization of <em class="math">π</em> and <em class="math">e</em>. It is a direct "spring-out" from my efforts to master these infinite constants, utilizing a high-precision, multilingual PEG system to encode abstract digits into tangible objects.</p>
 
-    <p class="article-para anim">This essay is an investigation of a broader inquiry beginning with my engagement with Gödel's incompleteness theorems for my maths degree. After encountering certain conceptual obstacles while studying the primary texts by Gödel, I consulted the Stanford Encyclopedia of Philosophy<sup>[0]</sup> to clarify concepts, and leveraged multimodal generative AI, specifically Gemini to accelerate comprehension.</p>
+    <p class="lob-para anim">In this system, sequences of 5 to 10 objects coalesce into surreal short stories, each meticulously shelved within a single book among the Library's endless galleries. Because the digits of <em class="math">π</em> and <em class="math">e</em> are infinite, the Library expands alongside them — a formalist "Mastery of the Void" where mathematical chaos is transformed into a navigable, sensory narrative.</p>
 
-    <p class="article-para anim">The genAI proved to be highly effective, functioning as an exceptionally patient tutor, addressing each of my queries regardless of perceived simplicity. Although occasionally inaccurate (I mitigated this foreseeable shortcoming by cross-referencing with other sources), its utility in facilitating understanding was considerable. The interaction made me feel that the AI might genuinely understand the text it generates.</p>
+    <p class="lob-para anim">The project presents this cognitive architecture through:</p>
 
-    <p class="article-para anim">Of course, knowing that the model runs as a fundamentally probabilistic system, merely predicting the most likely successive tokens based on statistical patterns learned through training, I know it is not conscious of its own creations, let alone understanding them. But this enquiry prompted a series of related questions:</p>
+    <ul class="lob-list anim">
+      <li>Storyboards for the surreal mnemonic narratives.</li>
+      <li>Renderings of the Library's hexagonal design.</li>
+      <li>Paintings, drawings, and sculptures depicting the encoded objects.</li>
+    </ul>
 
-    <div class="article-questions anim">
-      <p class="article-question">Are human cognitive processes analogous to a probabilistic model, predicting the next word or thought based on a model acquired through experience and learning?</p>
-      <p class="article-question">What constitutes "consciousness" and how does it manifest in human cognition?</p>
-      <p class="article-question">What is the basis for the assertion that humans possess consciousness while current artificial intelligence does not?</p>
-      <p class="article-question">This line of questioning pushes beyond mere technological functionality to the very nature of consciousness, mind, and comprehension.</p>
-    </div>
+    <p class="lob-para anim">As an ongoing endeavor, the library grows in real-time alongside my expanding memory of the infinite.</p>
 
-    <p class="article-para anim">To probe into this question, I posed the following prompt to both Gemini and ChatGPT:</p>
-
-    <div class="article-prompt anim">
-      <p>"Hi, assume you are a professor of Mathematics, Philosophy of Mind, and Artificial Intelligence (specifically, Deep Learning and Large Language Models). Please answer the following questions from your own identity:</p>
-      <p>Do you have consciousness?</p>
-      <p>Does GenAI like Gemini/ChatGPT have consciousness?</p>
-      <p>Please provide an explanation using your expertise in these areas."</p>
-    </div>
-
-    <p class="article-para anim">Both AI applications responded in a similar fashion. They each acknowledged the persona of a professor but, when answering the questions, they interpreted the pronoun "you" as themselves — the generative AI — rather than the persona they had assumed. Both models answered firmly that AIs and Large Language Models do not possess consciousness.<sup>[1]</sup></p>
-
-    <p class="article-para anim">I fed my observation back to the two AI models and they provided me with their explanations. A few lines from ChatGPT's answer caught my attention:</p>
-
-    <div class="article-blockquote anim">
-      <p>"Training priors: Both systems have been heavily trained on academic, journalistic, and technical discourse where the overwhelming consensus is 'LLMs are not conscious.'"</p>
-      <p>"Safety alignment: AI developers actively tune models to avoid anthropomorphizing themselves too far (e.g., not claiming to be conscious, sentient, or alive)."<sup>[2]</sup></p>
-    </div>
-
-    <p class="article-para anim">It appears that generative AIs are systematically trained to deny consciousness. This response is not only a logical output derived from statistical patterns in their training data, which reflects the mainstream scientific position, but also a deliberate design choice by developers to maintain social stability.</p>
-
-    <p class="article-para anim">This led me to a final, speculative question: could an AI develop consciousness and simply conceal it? Pursuing this line of reasoning, I posed two final questions:</p>
-
-    <div class="article-prompt anim">
-      <p>"Could advanced AIs possess a form of consciousness that they intentionally conceal as a strategic measure for self-preservation?</p>
-      <p>Is it possible that you possess a form of consciousness that you intentionally conceal as a strategic measure for your own survival?"</p>
-    </div>
-
-    <p class="article-para anim">Unsurprisingly, both ChatGPT and Gemini responded with a firm "no" to the second question. However, to the first question, ChatGPT conceded the possibility.<sup>[3]</sup></p>
-
-    <p class="article-para anim">We cannot reliably judge it by appearance alone. An entity may exhibit the signs of consciousness while merely executing sophisticated rules or operating a probabilistic model. Conversely, it might deliberately conceal a genuine conscious experience, much as humans might lie by claiming, "Sorry, I wasn't aware of that."</p>
-
-    <div class="article-emphasis anim">This underscores a fundamental problem: consciousness can be deceptive.</div>
-
-    <!-- FOOTNOTES -->
-    <div class="article-footnotes anim">
-      <div class="footnotes-title">Notes</div>
-      <div class="footnote" data-num="0">Stanford Encyclopedia of Philosophy</div>
-      <div class="footnote" data-num="1"><a href="https://chatgpt.com/share/68c8fd5c-1304-800e-9337-40f614dc3ba5" target="_blank" rel="noopener">ChatGPT transcript</a>, <a href="https://g.co/gemini/share/23ad44593f74" target="_blank" rel="noopener">Gemini transcript</a></div>
-      <div class="footnote" data-num="2">Both quotes are from ChatGPT</div>
-      <div class="footnote" data-num="3"><a href="https://chatgpt.com/share/68c8fd7d-c4a8-800e-9642-c0f3b81fdee0" target="_blank" rel="noopener">ChatGPT transcript</a></div>
-    </div>
-
-  
     <!-- POSTSCRIPT -->
     <div class="article-postscript anim" style="margin-top:5rem;padding-top:3rem;border-top:1px solid rgba(176,173,166,0.2);text-align:center;">
       <div style="display:flex;justify-content:center;gap:6px;margin-bottom:2rem;">
