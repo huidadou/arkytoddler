@@ -13,8 +13,10 @@
     --text: #2A2A28;
     --text-light: #F5F2ED;
     --muted: #B0ADA6;
-    --coral: #FF4F3B;
-    --coral-dim: rgba(255, 79, 59, 0.08);
+    --coral: #CC3F2E;
+    --coral-dim: rgba(204, 63, 46, 0.08);
+    --deep: #1F3A33;
+    --deep-soft: rgba(31, 58, 51, 0.5);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -193,7 +195,7 @@
 }
 
 .hero-subscribe-btn:hover {
-  background: #e8372a;
+  background: #B0341F;
 }
 
 @media (max-width: 768px) {
@@ -533,11 +535,22 @@
     position: relative;
     overflow: hidden;
     transition: border-color 0.3s ease, transform 0.3s ease;
+    display: block;
+    text-decoration: none;
+    color: inherit;
   }
 
   .ip-card:hover {
-    border-color: rgba(255, 79, 59, 0.3);
+    border-color: rgba(204, 63, 46, 0.3);
     transform: translateY(-2px);
+  }
+
+  a.ip-card:hover .ip-name {
+    color: var(--coral);
+  }
+
+  .ip-card .ip-name {
+    transition: color 0.3s ease;
   }
 
   .ip-card::before {
@@ -563,12 +576,12 @@
     gap: 2.5rem;
   }
 
-  .ip-technical:hover { border-color: rgba(255,79,59,0.22); }
+  .ip-technical:hover { border-color: rgba(204,63,46,0.22); }
 
   .ip-pulse {
     flex-shrink: 0;
     width: 48px; height: 48px;
-    border: 1px solid rgba(255,79,59,0.3);
+    border: 1px solid rgba(204,63,46,0.3);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -621,8 +634,8 @@
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--coral);
-    background: rgba(255,79,59,0.08);
-    border: 1px solid rgba(255,79,59,0.2);
+    background: rgba(204,63,46,0.08);
+    border: 1px solid rgba(204,63,46,0.2);
     padding: 0.35rem 0.85rem;
     border-radius: 2px;
   }
@@ -676,13 +689,23 @@
     line-height: 1.55;
   }
 
+  .ip-content .ip-sub em {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15em;
+    color: var(--coral);
+    letter-spacing: 0.01em;
+  }
+
   @media (max-width: 768px) {
     .ip-grid { grid-template-columns: 1fr; }
     .ip-technical { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
   }
 
   /* ========== CALENDAR BLOCK ========== */
+  /* Schedule temporarily hidden — remove the display:none below to bring it back */
   .cal-wrap {
+    display: none;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem 8rem;
@@ -753,11 +776,11 @@
   .cal-day:nth-last-child(-n+7) { border-bottom: none; }
 
   .cal-day.has-event {
-    background: rgba(255,79,59,0.035);
+    background: rgba(204,63,46,0.035);
   }
 
   .cal-day.has-event:hover {
-    background: rgba(255,79,59,0.07);
+    background: rgba(204,63,46,0.07);
   }
 
   .cal-day-num {
@@ -861,12 +884,32 @@
     color: var(--coral);
   }
 
+  .footer-link:nth-child(even):hover {
+    color: #4A6B62;
+  }
+
   .footer-line {
-    width: 40px;
-    height: 1px;
-    background: var(--coral);
+    display: flex;
+    justify-content: center;
+    gap: 6px;
     margin: 2rem auto 0;
-    opacity: 0.5;
+  }
+
+  .footer-line::before,
+  .footer-line::after {
+    content: '';
+    width: 24px;
+    height: 1px;
+  }
+
+  .footer-line::before {
+    background: var(--coral);
+    opacity: 0.6;
+  }
+
+  .footer-line::after {
+    background: var(--deep);
+    opacity: 0.7;
   }
 
   .footer-copy {
@@ -875,6 +918,27 @@
     color: rgba(176, 173, 166, 0.4);
     margin-top: 1.5rem;
     letter-spacing: 0.05em;
+  }
+
+  .footer-support {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1rem;
+    color: var(--muted);
+    margin-top: 1.8rem;
+    letter-spacing: 0.01em;
+  }
+
+  .footer-support a {
+    color: var(--coral);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(204, 63, 46, 0.3);
+    transition: border-color 0.3s ease;
+  }
+
+  .footer-support a:hover {
+    border-bottom-color: var(--coral);
   }
 
   /* ========== ANIMATIONS ========== */
@@ -962,24 +1026,29 @@
 
       <div class="ip-grid">
 
-        <!-- Technical -->
-        <div class="ip-card ip-technical">
-          <div class="ip-pulse"></div>
-          <div class="ip-body">
-            <div class="ip-tag">Technical</div>
-            <div class="ip-name">Adding Subscribe Button and Comment Section</div>
-            <div class="ip-desc">To add subsription option and enable comment function using Giscus. </div>
-          </div>
-          <div class="ip-badge">⬤ Active</div>
-        </div>
+        <!-- Content: Veritas -->
+        <a href="riemann-revealed-prologue.html" class="ip-card ip-content">
+          <div class="ip-tag"><span class="ip-dot"></span> Content</div>
+          <div class="ip-section">Veritas</div>
+          <div class="ip-name">Riemann Revealed</div>
+          <div class="ip-sub">A meticulous, sentence-by-sentence deciphering of Riemann's 1859 landmark paper, evolving into a living open textbook that maps the language, the history and the mathematics behind this dense 8-page masterpiece.</div>
+        </a>
+
+        <!-- Content: Sapientia -->
+        <a href="library-of-babel.html" class="ip-card ip-content">
+          <div class="ip-tag"><span class="ip-dot"></span> Content</div>
+          <div class="ip-section">Sapientia</div>
+          <div class="ip-name">The Library of Babel</div>
+          <div class="ip-sub">A visual reconstruction of Borges' hexagonal architecture, serving as a functional Method of Loci engine for the absolute memorization of <em>π</em> and <em>e</em>. Each gallery acts as a spatial anchor where bookshelves host curated renderings — visual mnemonics that transform infinite digits into a navigable, formalist experience.</div>
+        </a>
 
         <!-- Content: Hismod -->
-        <div class="ip-card ip-content" style="grid-column: 1 / -1;">
+        <a href="the-blindfolded-challenges.html" class="ip-card ip-content" style="grid-column: 1 / -1;">
           <div class="ip-tag"><span class="ip-dot"></span> Content</div>
           <div class="ip-section">Hismod</div>
           <div class="ip-name">The Blindfolded Challenges</div>
-          <div class="ip-sub">A documentation of the Blindfolded Cubing, Pi Recitation, and Blindfolded Mental Calculation challenges — undertaken in Shanghai, October 2025.</div>
-        </div>
+          <div class="ip-sub">A documentation of a series of Blindfolded Challenges and record-breaking endeavours on cubing, memorisation, mental calculation, and more.</div>
+        </a>
 
       </div>
     </div>
@@ -1102,7 +1171,7 @@
         <div class="section-number">02 — The Creative</div>
         <h2 class="section-title">Toddle towards<br>Sapientia</h2>
         <p class="section-latin">Wisdom</p>
-        <p class="section-desc">Poetry, art, products, systems — creations that emerge from nothing and come alive through experience.</p>
+        <p class="section-desc">Poetry, art, stories, systems — creations that emerge from nothing and come alive through experience.</p>
         <a href="sapientia.html" class="section-link">
           Enter <span class="section-link-arrow"></span>
         </a>
@@ -1146,12 +1215,14 @@
   <footer class="footer">
     <div class="footer-name">Arkytoddler</div>
     <div class="footer-links">
+      <a href="support.html" class="footer-link">Support</a>
       <a href="https://substack.com/@paulazheng" class="footer-link">Substack</a>
       <a href="https://x.com/@arkytoddler" class="footer-link">X</a>
       <a href="https://github.com/huidadou" class="footer-link">GitHub</a>
       <a href="https://instagram.com/arkytoddler" class="footer-link">Instagram</a>
     </div>
     <div class="footer-line"></div>
+    <p class="footer-support">Reader-supported. <a href="support.html">Throw something in the jar &rarr;</a></p>
     <p class="footer-copy">&copy; 2026 Arkytoddler. All rights reserved.</p>
   </footer>
 
