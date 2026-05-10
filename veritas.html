@@ -12,8 +12,10 @@
     --text: #2A2A28;
     --text-light: #F5F2ED;
     --muted: #B0ADA6;
-    --coral: #FF4F3B;
-    --coral-dim: rgba(255, 79, 59, 0.08);
+    --coral: #CC3F2E;
+    --coral-dim: rgba(204, 63, 46, 0.08);
+    --deep: #1F3A33;
+    --deep-soft: rgba(31, 58, 51, 0.5);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -402,12 +404,32 @@
     color: var(--coral);
   }
 
+  .footer-link:nth-child(even):hover {
+    color: #4A6B62;
+  }
+
   .footer-line {
-    width: 40px;
-    height: 1px;
-    background: var(--coral);
+    display: flex;
+    justify-content: center;
+    gap: 6px;
     margin: 2rem auto 0;
-    opacity: 0.5;
+  }
+
+  .footer-line::before,
+  .footer-line::after {
+    content: '';
+    width: 24px;
+    height: 1px;
+  }
+
+  .footer-line::before {
+    background: var(--coral);
+    opacity: 0.6;
+  }
+
+  .footer-line::after {
+    background: var(--deep);
+    opacity: 0.7;
   }
 
   .footer-copy {
@@ -524,6 +546,26 @@
             Read <span class="article-arrow-line"></span>
           </div>
           <a href="riemann-revealed-prologue.html" class="article-part-link">Prologue</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 3 -->
+    <div class="article-item">
+      <div class="article-index">3</div>
+      <div class="article-body">
+        <div class="article-tag">Translation</div>
+        <h2 class="article-title">Du bist, was du erlebst</h2>
+        <p class="article-subtitle">You are what you experience</p>
+        <p class="article-desc">A bilingual translation of Greta Lührs' philosophical essay on the nature of experience, from Husserl's stream of consciousness to the modern experience economy.</p>
+        <div class="article-meta">
+          <span class="article-date">Excerpt von Hohe Luft</span>
+        </div>
+        <div class="article-read-row">
+          <div class="article-arrow">
+            Read <span class="article-arrow-line"></span>
+          </div>
+          <a href="wir-sind-was-wir-erleben.html" class="article-part-link">Read</a>
         </div>
       </div>
     </div>
