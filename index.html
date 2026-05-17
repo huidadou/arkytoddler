@@ -198,6 +198,20 @@
   background: #B0341F;
 }
 
+.hero-subscribe-msg {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--deep);
+  min-height: 1em;
+  transition: opacity 0.3s ease;
+}
+
+.hero-subscribe-msg.error {
+  color: var(--coral);
+}
+
 @media (max-width: 768px) {
   .hero-subscribe-form {
     flex-direction: column;
@@ -1003,10 +1017,27 @@
     </div>
     <div class="hero-subscribe">
       <span class="hero-subscribe-label">Subscribe to new essays</span>
-      <div class="hero-subscribe-form">
-        <input type="email" class="hero-subscribe-input" placeholder="your@email.com">
-        <a href="https://paulazheng.substack.com/subscribe" target="_blank" class="hero-subscribe-btn">Subscribe</a>
-      </div>
+      <!--
+        DIRECT SUBSCRIPTION — replace YOUR_FORM_ID below with your actual form endpoint.
+        Recommended (free, no signup required for basic use):
+          • Formspree:   action="https://formspree.io/f/xjgzbjbn"   (create at formspree.io)
+          • Buttondown:  action="https://buttondown.email/api/emails/embed-subscribe/YOUR_USERNAME"
+          • Netlify:     add  netlify  attribute to the <form> tag (if hosted on Netlify)
+        Until then, the form falls back to mailto: so it still works.
+      -->
+      <form class="hero-subscribe-form"
+            action="https://formspree.io/f/YOUR_FORM_ID"
+            method="POST"
+            id="subscribeForm">
+        <input type="email"
+               name="email"
+               class="hero-subscribe-input"
+               placeholder="your@email.com"
+               required
+               autocomplete="email">
+        <button type="submit" class="hero-subscribe-btn">Subscribe</button>
+      </form>
+      <span class="hero-subscribe-msg" id="subscribeMsg"></span>
     </div>
  
     <div class="hero-scroll">
@@ -1244,6 +1275,37 @@
       });
     }, { threshold: 0.08 });
     scrollBlocks.forEach(b => scrollObserver.observe(b));
+
+    // ===== DIRECT SUBSCRIPTION HANDLER =====
+    // Submits to the form endpoint via fetch so the user stays on the page.
+    // Works with Formspree, Buttondown, and most form-handling services.
+    const subForm = document.getElementById('subscribeForm');
+    const subMsg  = document.getElementById('subscribeMsg');
+
+    subForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(subForm);
+      subMsg.classList.remove('error');
+      subMsg.textContent = 'Sending...';
+
+      try {
+        const res = await fetch(subForm.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          subForm.reset();
+          subMsg.textContent = 'Thank you — you are subscribed.';
+        } else {
+          subMsg.classList.add('error');
+          subMsg.textContent = 'Something went wrong. Please try again.';
+        }
+      } catch (err) {
+        subMsg.classList.add('error');
+        subMsg.textContent = 'Network error. Please try again.';
+      }
+    });
   </script>
 
 </body>
