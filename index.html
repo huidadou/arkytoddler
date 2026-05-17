@@ -1001,6 +1001,204 @@
       width: 40px;
     }
   }
+
+  /* ===== Phone (≤ 640px) ===== */
+  @media (max-width: 640px) {
+    /* Hero */
+    .hero {
+      padding: 3rem 1.25rem 5rem;
+      min-height: auto;
+    }
+
+    .hero-name {
+      font-size: clamp(2.6rem, 14vw, 4rem);
+      line-height: 1;
+    }
+
+    .hero-tagline {
+      font-size: 1.05rem;
+      margin-top: 1.1rem;
+      padding: 0 0.5rem;
+    }
+
+    .hero-x {
+      margin-top: 2.2rem;
+      gap: 0.6rem;
+    }
+
+    .hero-x-text {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-align: center;
+      padding: 0 1rem;
+    }
+
+    .hero-subscribe {
+      margin-top: 2.2rem;
+      width: 100%;
+      padding: 0 0.5rem;
+    }
+
+    .hero-subscribe-form {
+      width: 100%;
+      max-width: 340px;
+    }
+
+    .hero-subscribe-input {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      font-size: 1rem; /* >= 16px prevents iOS zoom-on-focus */
+    }
+
+    .hero-subscribe-btn {
+      padding: 0.9rem 1.2rem;
+      font-size: 0.7rem;
+    }
+
+    .hero-scroll {
+      bottom: 1.5rem;
+    }
+
+    .hero-scroll-line {
+      height: 28px;
+    }
+
+    /* Atelier "In Progress" */
+    .atelier {
+      padding: 0 1.25rem;
+    }
+
+    .atelier-block {
+      padding-top: 3.5rem;
+    }
+
+    .atelier-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+    }
+
+    .ip-grid {
+      gap: 1rem;
+    }
+
+    .ip-card {
+      padding: 1.5rem 1.4rem;
+    }
+
+    .ip-content .ip-name {
+      font-size: 1.2rem;
+    }
+
+    .ip-content .ip-sub {
+      font-size: 0.85rem;
+      line-height: 1.55;
+    }
+
+    .ip-technical {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.2rem;
+      padding: 1.5rem 1.4rem;
+    }
+
+    .ip-technical .ip-name {
+      font-size: 1.15rem;
+    }
+
+    /* Sections (Veritas / Sapientia / Hismod) */
+    .sections {
+      padding: 0 1.25rem 4rem;
+    }
+
+    .section {
+      padding: 3.5rem 0;
+      gap: 1.6rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+    }
+
+    .section-desc {
+      font-size: 1rem;
+    }
+
+    .section-link {
+      font-size: 0.75rem;
+    }
+
+    .visual-block {
+      width: 180px;
+      height: 210px;
+      margin: 0 auto;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 3rem 1.25rem;
+    }
+
+    .footer-name {
+      font-size: 1.5rem;
+    }
+
+    .footer-links {
+      flex-wrap: wrap;
+      gap: 1rem 1.4rem;
+      margin-top: 1.2rem;
+    }
+
+    .footer-link {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+    }
+
+    .footer-support {
+      font-size: 0.95rem;
+      margin-top: 1.5rem;
+      padding: 0 0.5rem;
+    }
+
+    .footer-copy {
+      font-size: 0.65rem;
+      padding: 0 0.5rem;
+    }
+  }
+
+  /* ===== Small phones (≤ 380px) ===== */
+  @media (max-width: 380px) {
+    .hero-name {
+      font-size: 2.4rem;
+    }
+
+    .hero-tagline {
+      font-size: 0.95rem;
+    }
+
+    .hero-x-text {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+    }
+
+    .ip-card {
+      padding: 1.2rem 1.1rem;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+    }
+
+    .visual-block {
+      width: 150px;
+      height: 180px;
+    }
+
+    .footer-links {
+      gap: 0.8rem 1rem;
+    }
+  }
 </style>
 </head>
 <body>
@@ -1020,13 +1218,13 @@
       <!--
         DIRECT SUBSCRIPTION — replace YOUR_FORM_ID below with your actual form endpoint.
         Recommended (free, no signup required for basic use):
-          • Formspree:   action="https://formspree.io/f/xjgzbjbn"   (create at formspree.io)
+          • Formspree:   action="https://formspree.io/f/YOUR_FORM_ID"   (create at formspree.io)
           • Buttondown:  action="https://buttondown.email/api/emails/embed-subscribe/YOUR_USERNAME"
           • Netlify:     add  netlify  attribute to the <form> tag (if hosted on Netlify)
         Until then, the form falls back to mailto: so it still works.
       -->
       <form class="hero-subscribe-form"
-            action="https://formspree.io/f/xjgzbjbn"
+            action="https://formspree.io/f/YOUR_FORM_ID"
             method="POST"
             id="subscribeForm">
         <input type="email"
