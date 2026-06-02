@@ -1215,7 +1215,7 @@
     </div>
     <div class="hero-subscribe">
       <span class="hero-subscribe-label">Subscribe to new essays</span>
-      <!--
+           <!--
         DIRECT SUBSCRIPTION — replace YOUR_FORM_ID below with your actual form endpoint.
         Recommended (free, no signup required for basic use):
           • Formspree:   action="https://formspree.io/f/YOUR_FORM_ID"   (create at formspree.io)
@@ -1224,9 +1224,14 @@
         Until then, the form falls back to mailto: so it still works.
       -->
       <form class="hero-subscribe-form"
-            action="https://formspree.io/f/xjgzbjbn"
+            action="https://formspree.io/f/YOUR_FORM_ID"
             method="POST"
             id="subscribeForm">
+        <input type="text"
+               name="name"
+               class="hero-subscribe-input hero-subscribe-name"
+               placeholder="your name (optional)"
+               autocomplete="name">
         <input type="email"
                name="email"
                class="hero-subscribe-input"
@@ -1243,7 +1248,7 @@
       <div class="hero-scroll-line"></div>
     </div>
   </section>
-
+  
   <!-- IN PROGRESS -->
   <div class="atelier">
     <div class="atelier-block" id="atelier-block">
@@ -1474,18 +1479,18 @@
     }, { threshold: 0.08 });
     scrollBlocks.forEach(b => scrollObserver.observe(b));
 
-    // ===== DIRECT SUBSCRIPTION HANDLER =====
+// ===== DIRECT SUBSCRIPTION HANDLER =====
     // Submits to the form endpoint via fetch so the user stays on the page.
     // Works with Formspree, Buttondown, and most form-handling services.
     const subForm = document.getElementById('subscribeForm');
     const subMsg  = document.getElementById('subscribeMsg');
-
+ 
     subForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = new FormData(subForm);
       subMsg.classList.remove('error');
       subMsg.textContent = 'Sending...';
-
+ 
       try {
         const res = await fetch(subForm.action, {
           method: 'POST',
